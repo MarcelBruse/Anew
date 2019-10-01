@@ -52,6 +52,19 @@ class QuotaDaoTest {
     }
 
     @Test
+    fun autoGeneratePrimaryKeysUponQuotaCreation() {
+        val name = "First quota"
+        quotaDao.save(Quota(0L, name))
+        val quotas = getValue(quotaDao.loadAll())
+        assertThat(quotas).hasSize(2)
+        val filterResult = quotas.filter { quota -> quota.id != 0L }
+            .filter { quota -> quota.id != TEST_QUOTA_ID }
+        assertThat(filterResult).hasSize(1)
+        val quota = filterResult.get(0)
+        assertThat(quota.name).isEqualTo(name)
+    }
+
+    @Test
     fun saveQuotaAlterItAndSaveItAgain() {
         val oldQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(oldQuota?.id).isEqualTo(TEST_QUOTA_ID)
