@@ -2,6 +2,7 @@ package de.quotas.persistency
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -18,5 +19,8 @@ interface QuotaDao {
 
     @Query("SELECT * FROM quota")
     fun loadAll(): LiveData<List<Quota>>
+
+    @Delete
+    fun delete(quota: Quota)
 
 }
