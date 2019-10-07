@@ -1,4 +1,4 @@
-package de.quotas
+package de.quotas.persistency
 
 import android.os.Handler
 import android.os.Looper
@@ -7,8 +7,6 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import de.quotas.models.Quota
-import de.quotas.persistency.QuotaDao
-import de.quotas.persistency.QuotasDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
