@@ -14,4 +14,8 @@ class QuotaRepository @Inject constructor(
         return quotaDao.load(quotaId)
     }
 
+    fun getAllQuotas(): LiveData<List<Quota>> {
+        return quotaDao.loadAll()
+    }
+
 }
