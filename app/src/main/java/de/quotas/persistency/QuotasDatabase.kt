@@ -33,7 +33,7 @@ abstract class QuotasDatabase : RoomDatabase() {
 
         private fun getDatabaseCallback(context: Context): Callback {
             return object : RoomDatabase.Callback() {
-                override fun onOpen(database: SupportSQLiteDatabase) {
+                override fun onCreate(database: SupportSQLiteDatabase) {
                     super.onCreate(database)
                     thread {
                         val quotaDao = getInstance(context).getQuotaDao()
