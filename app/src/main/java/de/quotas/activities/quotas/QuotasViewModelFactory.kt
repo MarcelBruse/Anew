@@ -3,9 +3,8 @@ package de.quotas.activities.quotas
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import de.quotas.models.QuotaRepository
-import javax.inject.Inject
 
-class QuotasViewModelFactory @Inject constructor(
+class QuotasViewModelFactory constructor(
     private val quotaRepository: QuotaRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 

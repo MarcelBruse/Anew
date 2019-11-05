@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import de.quotas.models.Quota
 import de.quotas.models.QuotaRepository
-import javax.inject.Inject
 
-class QuotasViewModel @Inject constructor(
+class QuotasViewModel constructor(
     quotaRepository: QuotaRepository
 ) : ViewModel() {
 
