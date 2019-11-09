@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.quotas.models.Quota
+import org.threeten.bp.Instant
 import kotlin.concurrent.thread
 
 @Database(entities = [Quota::class], version = 1)
@@ -36,8 +37,16 @@ abstract class QuotasDatabase : RoomDatabase() {
                 override fun onCreate(database: SupportSQLiteDatabase) {
                     super.onCreate(database)
                     thread {
+                        val creationTime = Instant.now()
+                        val lastFulfillmentTime = creationTime.minusSeconds(1)
+                        val quota = Quota(
+                            0L,
+                            "Some quota",
+                            creationTime.epochSecond,
+                            lastFulfillmentTime.epochSecond
+                        )
                         val quotaDao = getInstance(context).getQuotaDao()
-                        quotaDao.save(Quota(0L, "Some quota"))
+                        quotaDao.save(quota)
                     }
                 }
             }

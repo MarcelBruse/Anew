@@ -6,5 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Quota(
     @PrimaryKey(autoGenerate = true) val id: Long,
-    val name: String
+    val name: String,
+    val creationTime: Long,
+    val lastFulfillmentTime: Long
 )

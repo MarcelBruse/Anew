@@ -27,12 +27,16 @@ class QuotaDaoTest {
 
     private val TEST_QUOTA_NAME = "Quota"
 
+    private val TEST_CREATION_TIME = 0L
+
+    private val TEST_LAST_FULFILLMENT_TIME = 0L
+
     @Before
     fun createDatabase() {
         val context = InstrumentationRegistry.getInstrumentation().context
         database = Room.inMemoryDatabaseBuilder(context, QuotasDatabase::class.java).build()
         quotaDao = database.getQuotaDao()
-        quotaDao.save(Quota(TEST_QUOTA_ID, TEST_QUOTA_NAME))
+        quotaDao.save(Quota(TEST_QUOTA_ID, TEST_QUOTA_NAME, TEST_CREATION_TIME, TEST_LAST_FULFILLMENT_TIME))
     }
 
     @Test
@@ -47,12 +51,14 @@ class QuotaDaoTest {
         assertThat(quota).isNotNull()
         assertThat(quota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(quota?.name).isEqualTo(TEST_QUOTA_NAME)
+        assertThat(quota?.creationTime).isEqualTo(TEST_CREATION_TIME)
+        assertThat(quota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
     }
 
     @Test
     fun autoGeneratePrimaryKeysUponQuotaCreation() {
         val name = "First quota"
-        quotaDao.save(Quota(0L, name))
+        quotaDao.save(Quota(0L, name, 0L, 0L))
         val quotas = getValue(quotaDao.loadAll())
         assertThat(quotas).hasSize(2)
         val filterResult = quotas.filter { quota -> quota.id != 0L }
@@ -67,12 +73,16 @@ class QuotaDaoTest {
         val oldQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(oldQuota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(oldQuota?.name).isEqualTo(TEST_QUOTA_NAME)
+        assertThat(oldQuota?.creationTime).isEqualTo(TEST_CREATION_TIME)
+        assertThat(oldQuota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
         assertThat(getValue(quotaDao.loadAll())).hasSize(1)
 
-        quotaDao.save(Quota(TEST_QUOTA_ID, TEST_QUOTA_NAME.reversed()))
+        quotaDao.save(Quota(TEST_QUOTA_ID, TEST_QUOTA_NAME.reversed(), TEST_CREATION_TIME, TEST_LAST_FULFILLMENT_TIME))
         val newQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(newQuota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(newQuota?.name).isEqualTo(TEST_QUOTA_NAME.reversed())
+        assertThat(newQuota?.creationTime).isEqualTo(TEST_CREATION_TIME)
+        assertThat(newQuota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
         assertThat(getValue(quotaDao.loadAll())).hasSize(1)
     }
 
