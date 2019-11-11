@@ -37,15 +37,17 @@ abstract class QuotasDatabase : RoomDatabase() {
                 override fun onCreate(database: SupportSQLiteDatabase) {
                     super.onCreate(database)
                     thread {
-                        val quota = Quota(0L, "Some quota", Instant.now().epochSecond)
+                        val quota = Quota(
+                            0L,
+                            "Some quota",
+                            Quota.Period.WEEKLY,
+                            Instant.now().epochSecond)
                         val quotaDao = getInstance(context).getQuotaDao()
                         quotaDao.save(quota)
                     }
                 }
             }
         }
-
-
 
     }
 
