@@ -7,6 +7,5 @@ import androidx.room.PrimaryKey
 data class Quota(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val name: String,
-    val creationTime: Long,
     val lastFulfillmentTime: Long
 )
