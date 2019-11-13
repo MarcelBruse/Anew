@@ -5,17 +5,27 @@ import androidx.room.TypeConverter
 class PeriodConverter {
 
     @TypeConverter
-    fun fromEnum(period: Quota.Period): Int {
-        return period.periodCode
+    fun fromEnum(period: Period): Int {
+        return when (period) {
+            is Daily -> DAILY
+            is Weekly -> WEEKLY
+            else -> UNDEFINED
+        }
     }
 
     @TypeConverter
-    fun fromPeriodCode(periodCode: Int): Quota.Period {
+    fun fromPeriodCode(periodCode: Int): Period {
         return when (periodCode) {
-            1 -> Quota.Period.DAILY
-            2 -> Quota.Period.WEEKLY
-            else -> Quota.Period.UNDEFINED
+            DAILY -> Daily()
+            WEEKLY -> Weekly()
+            else -> UndefinedPeriod()
         }
+    }
+
+    companion object {
+        const val UNDEFINED = -1
+        const val DAILY = 1
+        const val WEEKLY = 2
     }
 
 }

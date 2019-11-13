@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import de.quotas.models.Quota
-import de.quotas.models.Quota.Period.WEEKLY
+import de.quotas.models.Weekly
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -28,6 +28,8 @@ class QuotaDaoTest {
 
     private val TEST_QUOTA_NAME = "Quota"
 
+    private val TEST_START_TIME = 100L
+
     private val TEST_LAST_FULFILLMENT_TIME = 0L
 
     @Before
@@ -35,7 +37,12 @@ class QuotaDaoTest {
         val context = InstrumentationRegistry.getInstrumentation().context
         database = Room.inMemoryDatabaseBuilder(context, QuotasDatabase::class.java).build()
         quotaDao = database.getQuotaDao()
-        quotaDao.save(Quota(TEST_QUOTA_ID, TEST_QUOTA_NAME, WEEKLY, TEST_LAST_FULFILLMENT_TIME))
+        quotaDao.save(Quota(TEST_QUOTA_ID,
+            TEST_QUOTA_NAME,
+            Weekly(),
+            TEST_START_TIME,
+            TEST_LAST_FULFILLMENT_TIME
+        ))
     }
 
     @Test
@@ -50,14 +57,15 @@ class QuotaDaoTest {
         assertThat(quota).isNotNull()
         assertThat(quota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(quota?.name).isEqualTo(TEST_QUOTA_NAME)
-        assertThat(quota?.period).isEqualTo(WEEKLY)
+        assertThat(quota?.period).isEqualTo(Weekly())
+        assertThat(quota?.startTime).isEqualTo(TEST_START_TIME)
         assertThat(quota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
     }
 
     @Test
     fun autoGeneratePrimaryKeysUponQuotaCreation() {
         val name = "First quota"
-        quotaDao.save(Quota(0L, name, WEEKLY, 0L))
+        quotaDao.save(Quota(0L, name, Weekly(), 0L, 0L))
         val quotas = getValue(quotaDao.loadAll())
         assertThat(quotas).hasSize(2)
         val filterResult = quotas.filter { quota -> quota.id != 0L }
@@ -72,15 +80,22 @@ class QuotaDaoTest {
         val oldQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(oldQuota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(oldQuota?.name).isEqualTo(TEST_QUOTA_NAME)
-        assertThat(oldQuota?.period).isEqualTo(WEEKLY)
+        assertThat(oldQuota?.period).isEqualTo(Weekly())
+        assertThat(oldQuota?.startTime).isEqualTo(TEST_START_TIME)
         assertThat(oldQuota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
         assertThat(getValue(quotaDao.loadAll())).hasSize(1)
 
-        quotaDao.save(Quota(TEST_QUOTA_ID, TEST_QUOTA_NAME.reversed(), WEEKLY, TEST_LAST_FULFILLMENT_TIME))
+        quotaDao.save(Quota(TEST_QUOTA_ID,
+            TEST_QUOTA_NAME.reversed(),
+            Weekly(),
+            TEST_START_TIME,
+            TEST_LAST_FULFILLMENT_TIME
+        ))
         val newQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(newQuota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(newQuota?.name).isEqualTo(TEST_QUOTA_NAME.reversed())
-        assertThat(newQuota?.period).isEqualTo(WEEKLY)
+        assertThat(newQuota?.period).isEqualTo(Weekly())
+        assertThat(newQuota?.startTime).isEqualTo(TEST_START_TIME)
         assertThat(newQuota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
         assertThat(getValue(quotaDao.loadAll())).hasSize(1)
     }

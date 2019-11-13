@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3c1478462e8f40646035468b66090856",
+    "identityHash": "6569e8a9cf6e555cd6abde566cde762b",
     "entities": [
       {
         "tableName": "Quota",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `period` INTEGER NOT NULL, `lastFulfillmentTime` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `period` INTEGER NOT NULL, `startTime` INTEGER NOT NULL, `lastFulfillmentTime` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -23,6 +23,12 @@
           {
             "fieldPath": "period",
             "columnName": "period",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startTime",
+            "columnName": "startTime",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -46,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c1478462e8f40646035468b66090856')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6569e8a9cf6e555cd6abde566cde762b')"
     ]
   }
 }

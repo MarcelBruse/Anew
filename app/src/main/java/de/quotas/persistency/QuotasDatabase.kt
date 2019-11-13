@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.quotas.models.Quota
+import de.quotas.models.Weekly
 import org.threeten.bp.Instant
 import kotlin.concurrent.thread
 
@@ -40,7 +41,8 @@ abstract class QuotasDatabase : RoomDatabase() {
                         val quota = Quota(
                             0L,
                             "Some quota",
-                            Quota.Period.WEEKLY,
+                            Weekly(),
+                            Instant.now().epochSecond,
                             Instant.now().epochSecond)
                         val quotaDao = getInstance(context).getQuotaDao()
                         quotaDao.save(quota)

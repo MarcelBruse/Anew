@@ -1,6 +1,8 @@
 package de.quotas.models
 
-import de.quotas.models.Quota.Period.*
+import de.quotas.models.PeriodConverter.Companion.DAILY
+import de.quotas.models.PeriodConverter.Companion.UNDEFINED
+import de.quotas.models.PeriodConverter.Companion.WEEKLY
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -9,17 +11,17 @@ class PeriodConverterTest {
     @Test
     fun convertPeriodToInteger() {
         val periodConverter = PeriodConverter()
-        assertThat(periodConverter.fromEnum(UNDEFINED)).isEqualTo(UNDEFINED.periodCode)
-        assertThat(periodConverter.fromEnum(DAILY)).isEqualTo(DAILY.periodCode)
-        assertThat(periodConverter.fromEnum(WEEKLY)).isEqualTo(WEEKLY.periodCode)
+        assertThat(periodConverter.fromEnum(UndefinedPeriod())).isEqualTo(UNDEFINED)
+        assertThat(periodConverter.fromEnum(Daily())).isEqualTo(DAILY)
+        assertThat(periodConverter.fromEnum(Weekly())).isEqualTo(WEEKLY)
     }
 
     @Test
     fun convertIntegerToPeriod() {
         val periodConverter = PeriodConverter()
-        assertThat(periodConverter.fromPeriodCode(UNDEFINED.periodCode)).isEqualTo(UNDEFINED)
-        assertThat(periodConverter.fromPeriodCode(DAILY.periodCode)).isEqualTo(DAILY)
-        assertThat(periodConverter.fromPeriodCode(WEEKLY.periodCode)).isEqualTo(WEEKLY)
+        assertThat(periodConverter.fromPeriodCode(UNDEFINED)).isEqualTo(UndefinedPeriod())
+        assertThat(periodConverter.fromPeriodCode(DAILY)).isEqualTo(Daily())
+        assertThat(periodConverter.fromPeriodCode(WEEKLY)).isEqualTo(Weekly())
     }
 
 }
