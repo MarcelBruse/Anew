@@ -1,6 +1,7 @@
 package de.quotas
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import de.quotas.di.AppComponent
 import de.quotas.di.DaggerAppComponent
 import de.quotas.di.QuotasRepositoryModule
@@ -11,6 +12,7 @@ class QuotasApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AndroidThreeTen.init(applicationContext)
         modelComponent = DaggerAppComponent
             .factory()
             .create(QuotasRepositoryModule(applicationContext))

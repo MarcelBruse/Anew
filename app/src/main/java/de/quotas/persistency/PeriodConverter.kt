@@ -1,6 +1,10 @@
-package de.quotas.models
+package de.quotas.persistency
 
 import androidx.room.TypeConverter
+import de.quotas.models.time.Daily
+import de.quotas.models.time.Period
+import de.quotas.models.time.UndefinedPeriod
+import de.quotas.models.time.Weekly
 
 class PeriodConverter {
 
@@ -16,9 +20,9 @@ class PeriodConverter {
     @TypeConverter
     fun fromPeriodCode(periodCode: Int): Period {
         return when (periodCode) {
-            DAILY -> Daily()
-            WEEKLY -> Weekly()
-            else -> UndefinedPeriod()
+            DAILY -> Daily
+            WEEKLY -> Weekly
+            else -> UndefinedPeriod
         }
     }
 

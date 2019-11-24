@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.quotas.models.Quota
-import de.quotas.models.Weekly
-import org.threeten.bp.Instant
+import de.quotas.models.time.Weekly
+import org.threeten.bp.ZonedDateTime
 import kotlin.concurrent.thread
 
 @Database(entities = [Quota::class], version = 1)
@@ -41,9 +41,9 @@ abstract class QuotasDatabase : RoomDatabase() {
                         val quota = Quota(
                             0L,
                             "Some quota",
-                            Weekly(),
-                            Instant.now().epochSecond,
-                            Instant.now().epochSecond)
+                            Weekly,
+                            ZonedDateTime.now(),
+                            ZonedDateTime.now())
                         val quotaDao = getInstance(context).getQuotaDao()
                         quotaDao.save(quota)
                     }
