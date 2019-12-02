@@ -1,9 +1,8 @@
-package de.quotas.models
+package de.quotas.persistency
 
 import de.quotas.models.time.Daily
 import de.quotas.models.time.UndefinedPeriod
 import de.quotas.models.time.Weekly
-import de.quotas.persistency.PeriodConverter
 import de.quotas.persistency.PeriodConverter.Companion.DAILY
 import de.quotas.persistency.PeriodConverter.Companion.UNDEFINED
 import de.quotas.persistency.PeriodConverter.Companion.WEEKLY

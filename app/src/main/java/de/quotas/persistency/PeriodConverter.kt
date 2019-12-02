@@ -2,14 +2,14 @@ package de.quotas.persistency
 
 import androidx.room.TypeConverter
 import de.quotas.models.time.Daily
-import de.quotas.models.time.Period
+import de.quotas.models.time.TimePeriod
 import de.quotas.models.time.UndefinedPeriod
 import de.quotas.models.time.Weekly
 
 class PeriodConverter {
 
     @TypeConverter
-    fun fromEnum(period: Period): Int {
+    fun fromEnum(period: TimePeriod): Int {
         return when (period) {
             is Daily -> DAILY
             is Weekly -> WEEKLY
@@ -18,7 +18,7 @@ class PeriodConverter {
     }
 
     @TypeConverter
-    fun fromPeriodCode(periodCode: Int): Period {
+    fun fromPeriodCode(periodCode: Int): TimePeriod {
         return when (periodCode) {
             DAILY -> Daily
             WEEKLY -> Weekly

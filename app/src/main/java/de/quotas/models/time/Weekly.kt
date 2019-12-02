@@ -5,20 +5,15 @@ import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import org.threeten.bp.temporal.TemporalAdjusters
 
-object Weekly : Period() {
+object Weekly : TimePeriod {
 
-    override fun getIntervalFromRepresentative(representative: ZonedDateTime): Interval {
+    override fun getIntervalContaining(representative: ZonedDateTime): TimeInterval {
         val monday = representative.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
         val startOfWeek = monday.truncatedTo(ChronoUnit.DAYS)
         return WeekInterval(startOfWeek)
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is Weekly
-    }
-
-    override fun hashCode(): Int {
-        return Weekly::class.hashCode() + 1
-    }
+    override fun currentIntervalIncludes(instant: ZonedDateTime) =
+        getIntervalContaining(ZonedDateTime.now()).includes(instant)
 
 }

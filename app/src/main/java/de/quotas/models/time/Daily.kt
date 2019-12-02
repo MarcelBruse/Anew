@@ -3,19 +3,14 @@ package de.quotas.models.time
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.temporal.ChronoUnit
 
-object Daily : Period() {
+object Daily : TimePeriod {
 
-    override fun getIntervalFromRepresentative(representative: ZonedDateTime): Interval {
+    override fun getIntervalContaining(representative: ZonedDateTime): TimeInterval {
         val startOfDay = representative.truncatedTo(ChronoUnit.DAYS)
         return DayInterval(startOfDay)
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is Daily
-    }
-
-    override fun hashCode(): Int {
-        return Daily::class.hashCode() + 1
-    }
+    override fun currentIntervalIncludes(instant: ZonedDateTime) =
+        getIntervalContaining(ZonedDateTime.now()).includes(instant)
 
 }

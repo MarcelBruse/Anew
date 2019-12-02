@@ -1,19 +1,10 @@
-package de.quotas.models
+package de.quotas.models.time
 
-import de.quotas.models.time.Daily
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
 class DailyPeriodTest {
-
-    @Test
-    fun oneDayEqualsTwentyFourHours() {
-        val day = Daily.getCurrentInterval().getDuration()
-        val twentyFourHours = Duration.ofHours(24)
-        assertThat(day).isEqualTo(twentyFourHours)
-    }
 
     @Test
     fun oneSecondBeforeTodayIsNotIncluded() {
@@ -57,6 +48,25 @@ class DailyPeriodTest {
         assertIsNotIncludedInInterval(representative, testee)
     }
 
+    @Test
+    fun twentyNinthOfFebruaryInLeapYear() {
+        val representative = ZonedDateTime.parse("2020-02-29T01:00:00.000+01:00[Europe/Berlin]")
+        val testee = ZonedDateTime.parse("2020-02-29T02:00:00.000+01:00[Europe/Berlin]")
+        assertIsIncludedInInterval(representative, testee)
+    }
+
+    @Test
+    fun twentyNinthOfFebruaryToFirstOfMarch() {
+        val representative = ZonedDateTime.parse("2020-02-29T23:59:59.000+01:00[Europe/Berlin]")
+        val testee = ZonedDateTime.parse("2020-03-01T02:00:00.000+01:00[Europe/Berlin]")
+        assertIsNotIncludedInInterval(representative, testee)
+    }
+
+    @Test
+    fun nowIsAlwaysIncludedInCurrentInterval() {
+        Daily.currentIntervalIncludes(ZonedDateTime.now())
+    }
+
     private fun assertIsIncludedInInterval(representative: ZonedDateTime, queryInstant: ZonedDateTime) {
         assertThat(includesInstant(representative, queryInstant)).isTrue()
     }
@@ -66,7 +76,7 @@ class DailyPeriodTest {
     }
 
     private fun includesInstant(representative: ZonedDateTime, queryInstant: ZonedDateTime): Boolean {
-        return Daily.getIntervalFromRepresentative(representative).includesInstant(queryInstant)
+        return Daily.getIntervalContaining(representative).includes(queryInstant)
     }
 
 }

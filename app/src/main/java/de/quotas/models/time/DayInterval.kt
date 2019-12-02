@@ -3,8 +3,13 @@ package de.quotas.models.time
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
-class DayInterval(startOfInterval: ZonedDateTime) : Interval(startOfInterval) {
+class DayInterval(private val startOfInterval: ZonedDateTime) : TimeInterval {
 
-    override fun getDuration(): Duration = Duration.ofDays(1)
+    private val oneDay = Duration.ofDays(1)
+
+    override fun includes(instant: ZonedDateTime): Boolean {
+        val duration = Duration.between(startOfInterval, instant)
+        return Duration.ZERO <= duration && duration < oneDay
+    }
 
 }

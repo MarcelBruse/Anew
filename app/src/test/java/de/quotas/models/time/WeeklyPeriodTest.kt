@@ -1,19 +1,10 @@
-package de.quotas.models
+package de.quotas.models.time
 
-import de.quotas.models.time.Weekly
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
 class WeeklyPeriodTest {
-
-    @Test
-    fun oneWeekEqualsSevenDays() {
-        val week = Weekly.getCurrentInterval().getDuration()
-        val sevenDays = Duration.ofDays(7)
-        assertThat(week).isEqualTo(sevenDays)
-    }
 
     @Test
     fun oneNanoSecondBeforeMondayThisWeekIsNotIncluded() {
@@ -64,6 +55,32 @@ class WeeklyPeriodTest {
         assertIsNotIncludedInInterval(representative, testee)
     }
 
+    @Test
+    fun twentyEighthOfFeburaryAndTwentyNinthOfFebruary() {
+        val representative = ZonedDateTime.parse("2020-02-29T23:59:59.000+01:00[Europe/Berlin]")
+        val testee = ZonedDateTime.parse("2020-02-28T23:59:59.000+01:00[Europe/Berlin]")
+        assertIsIncludedInInterval(representative, testee)
+    }
+
+    @Test
+    fun twentyNinthOfFebruaryAndTwentyEighthOfFeburary() {
+        val representative = ZonedDateTime.parse("2020-02-28T23:59:59.000+01:00[Europe/Berlin]")
+        val testee = ZonedDateTime.parse("2020-02-29T23:59:59.000+01:00[Europe/Berlin]")
+        assertIsIncludedInInterval(representative, testee)
+    }
+
+    @Test
+    fun twentyNinthOfFebruaryAndFirstOfMarch() {
+        val twentyNinthOfFebruary = ZonedDateTime.parse("2020-02-29T23:59:59.000+01:00[Europe/Berlin]")
+        val firstOfMarch = ZonedDateTime.parse("2020-03-01T02:00:00.000+01:00[Europe/Berlin]")
+        assertIsIncludedInInterval(twentyNinthOfFebruary, firstOfMarch)
+    }
+
+    @Test
+    fun nowIsAlwaysIncludedInCurrentInterval() {
+        Weekly.currentIntervalIncludes(ZonedDateTime.now())
+    }
+
     private fun assertIsIncludedInInterval(representative: ZonedDateTime, queryZonedDateTime: ZonedDateTime) {
         assertThat(includesZonedDateTime(representative, queryZonedDateTime)).isTrue()
     }
@@ -73,7 +90,7 @@ class WeeklyPeriodTest {
     }
 
     private fun includesZonedDateTime(representative: ZonedDateTime, queryZonedDateTime: ZonedDateTime): Boolean {
-        return Weekly.getIntervalFromRepresentative(representative).includesInstant(queryZonedDateTime)
+        return Weekly.getIntervalContaining(representative).includes(queryZonedDateTime)
     }
 
 }

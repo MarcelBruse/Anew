@@ -2,18 +2,14 @@ package de.quotas.models.time
 
 import org.threeten.bp.ZonedDateTime
 
-object UndefinedPeriod : Period() {
+object UndefinedPeriod : TimePeriod {
 
-    override fun getIntervalFromRepresentative(representative: ZonedDateTime): Interval {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getIntervalContaining(representative: ZonedDateTime): TimeInterval {
+        throw UnsupportedOperationException()
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is UndefinedPeriod
-    }
-
-    override fun hashCode(): Int {
-        return UndefinedPeriod::class.hashCode() + 1
+    override fun currentIntervalIncludes(instant: ZonedDateTime): Boolean {
+        throw UnsupportedOperationException()
     }
 
 }
