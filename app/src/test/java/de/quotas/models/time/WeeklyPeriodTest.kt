@@ -2,6 +2,7 @@ package de.quotas.models.time
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.threeten.bp.Clock
 import org.threeten.bp.ZonedDateTime
 
 class WeeklyPeriodTest {
@@ -56,7 +57,7 @@ class WeeklyPeriodTest {
     }
 
     @Test
-    fun twentyEighthOfFeburaryAndTwentyNinthOfFebruary() {
+    fun twentyEighthOfFebruaryAndTwentyNinthOfFebruary() {
         val representative = ZonedDateTime.parse("2020-02-29T23:59:59.000+01:00[Europe/Berlin]")
         val testee = ZonedDateTime.parse("2020-02-28T23:59:59.000+01:00[Europe/Berlin]")
         assertIsIncludedInInterval(representative, testee)
@@ -78,7 +79,7 @@ class WeeklyPeriodTest {
 
     @Test
     fun nowIsAlwaysIncludedInCurrentInterval() {
-        Weekly.currentIntervalIncludes(ZonedDateTime.now())
+        Weekly(Clock.systemDefaultZone()).currentIntervalIncludes(ZonedDateTime.now())
     }
 
     private fun assertIsIncludedInInterval(representative: ZonedDateTime, queryZonedDateTime: ZonedDateTime) {
@@ -90,7 +91,7 @@ class WeeklyPeriodTest {
     }
 
     private fun includesZonedDateTime(representative: ZonedDateTime, queryZonedDateTime: ZonedDateTime): Boolean {
-        return Weekly.getIntervalContaining(representative).includes(queryZonedDateTime)
+        return Weekly(Clock.systemDefaultZone()).getIntervalIncluding(representative).includes(queryZonedDateTime)
     }
 
 }

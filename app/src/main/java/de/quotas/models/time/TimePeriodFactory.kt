@@ -1,9 +1,11 @@
 package de.quotas.models.time
 
-object TimePeriodFactory {
+import org.threeten.bp.Clock
 
-    fun dailyPeriod() = Daily
+class TimePeriodFactory(private val clock: Clock) {
 
-    fun weeklyPeriod() = Weekly
+    fun dailyPeriod() = Daily(clock)
+
+    fun weeklyPeriod() = Weekly(clock)
 
 }

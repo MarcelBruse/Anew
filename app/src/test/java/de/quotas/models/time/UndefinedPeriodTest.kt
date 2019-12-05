@@ -7,7 +7,7 @@ class UndefinedPeriodTest {
 
     @Test(expected = UnsupportedOperationException::class)
     fun getIntervalContainingIsUnsupported() {
-        UndefinedPeriod.getIntervalContaining(ZonedDateTime.now())
+        UndefinedPeriod.getIntervalIncluding(ZonedDateTime.now())
     }
 
     @Test(expected = UnsupportedOperationException::class)

@@ -4,7 +4,7 @@ import org.threeten.bp.ZonedDateTime
 
 object UndefinedPeriod : TimePeriod {
 
-    override fun getIntervalContaining(representative: ZonedDateTime): TimeInterval {
+    override fun getIntervalIncluding(representative: ZonedDateTime): TimeInterval {
         throw UnsupportedOperationException()
     }
 

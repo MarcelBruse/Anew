@@ -2,17 +2,20 @@ package de.quotas.models.time
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.threeten.bp.Clock
 
 class TimePeriodFactoryTest {
 
     @Test
     fun createDailyPeriod() {
-        assertThat(TimePeriodFactory.dailyPeriod()).isInstanceOf(Daily::class.java)
+        val timePeriodFactory = TimePeriodFactory(Clock.systemUTC())
+        assertThat(timePeriodFactory.dailyPeriod()).isInstanceOf(Daily::class.java)
     }
 
     @Test
     fun createWeeklyPeriod() {
-        assertThat(TimePeriodFactory.weeklyPeriod()).isInstanceOf(Weekly::class.java)
+        val timePeriodFactory = TimePeriodFactory(Clock.systemUTC())
+        assertThat(timePeriodFactory.weeklyPeriod()).isInstanceOf(Weekly::class.java)
     }
 
 }

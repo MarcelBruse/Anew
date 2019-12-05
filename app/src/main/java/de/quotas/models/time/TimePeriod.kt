@@ -4,7 +4,7 @@ import org.threeten.bp.ZonedDateTime
 
 interface TimePeriod {
 
-    fun getIntervalContaining(representative: ZonedDateTime): TimeInterval
+    fun getIntervalIncluding(representative: ZonedDateTime): TimeInterval
 
     fun currentIntervalIncludes(instant: ZonedDateTime): Boolean
 
