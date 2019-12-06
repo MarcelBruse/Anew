@@ -5,7 +5,6 @@ import de.quotas.models.time.Daily
 import de.quotas.models.time.TimePeriod
 import de.quotas.models.time.UndefinedPeriod
 import de.quotas.models.time.Weekly
-import org.threeten.bp.Clock
 
 class PeriodConverter {
 
@@ -21,8 +20,8 @@ class PeriodConverter {
     @TypeConverter
     fun fromPeriodCode(periodCode: Int): TimePeriod {
         return when (periodCode) {
-            DAILY -> Daily(Clock.systemDefaultZone())
-            WEEKLY -> Weekly(Clock.systemDefaultZone())
+            DAILY -> Daily()
+            WEEKLY -> Weekly()
             else -> UndefinedPeriod
         }
     }

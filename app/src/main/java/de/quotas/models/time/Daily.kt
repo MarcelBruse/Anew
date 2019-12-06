@@ -6,6 +6,8 @@ import org.threeten.bp.temporal.ChronoUnit
 
 class Daily(private val clock: Clock) : TimePeriod {
 
+    constructor(): this(Clock.systemDefaultZone())
+
     override fun getIntervalIncluding(representative: ZonedDateTime): TimeInterval {
         val startOfDay = representative.truncatedTo(ChronoUnit.DAYS)
         return DayInterval(startOfDay)

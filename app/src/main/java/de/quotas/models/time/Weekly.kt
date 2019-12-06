@@ -8,6 +8,8 @@ import org.threeten.bp.temporal.TemporalAdjusters
 
 class Weekly(private val clock: Clock) : TimePeriod {
 
+    constructor(): this(Clock.systemDefaultZone())
+
     override fun getIntervalIncluding(representative: ZonedDateTime): TimeInterval {
         val monday = representative.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
         val startOfWeek = monday.truncatedTo(ChronoUnit.DAYS)
