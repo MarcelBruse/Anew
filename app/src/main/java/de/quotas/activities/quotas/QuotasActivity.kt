@@ -19,7 +19,8 @@ class QuotasActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_quotas)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         val quotaAdapter = QuotaAdapter(dataset)
         createQuotasView(quotaAdapter)
