@@ -19,7 +19,7 @@ android {
             annotationProcessorOptions {
                 arguments = [
                         "room.schemaLocation": "$projectDir/schemas".toString(),
-                        "room.incremental": "true"
+                        "room.incremental"   : "true"
                 ]
             }
         }
@@ -46,13 +46,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.11.1'
     testImplementation 'io.mockk:mockk:1.9.3'
-    testImplementation ('org.threeten:threetenbp:1.3.2') {
+    testImplementation('org.threeten:threetenbp:1.3.2') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'org.assertj:assertj-core:3.11.1'
-    androidTestImplementation ('org.threeten:threetenbp:1.3.2') {
+    androidTestImplementation('org.threeten:threetenbp:1.3.2') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
     kapt 'androidx.room:room-compiler:2.2.2'
@@ -60,4 +60,5 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.24'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
 }

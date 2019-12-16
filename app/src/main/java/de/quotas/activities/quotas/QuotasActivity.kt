@@ -1,5 +1,6 @@
 package de.quotas.activities.quotas
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.quotas.QuotasApplication
 import de.quotas.R
+import de.quotas.activities.editor.EditorActivity
 import de.quotas.models.Quota
 
 class QuotasActivity : AppCompatActivity() {
@@ -20,7 +22,7 @@ class QuotasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quotas)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.quotas_toolbar))
 
         val quotaAdapter = QuotaAdapter(dataset)
         createQuotasView(quotaAdapter)
@@ -51,6 +53,12 @@ class QuotasActivity : AppCompatActivity() {
             dataset.addAll(quotas.map { quota -> quota.name }.toMutableList())
             quotaAdapter.notifyDataSetChanged()
         }
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun openQuotaEditor(view: View) {
+        val intent = Intent(this, EditorActivity::class.java)
+        startActivity(intent)
     }
 
 }
