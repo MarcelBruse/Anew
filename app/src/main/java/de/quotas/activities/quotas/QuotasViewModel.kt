@@ -5,9 +5,7 @@ import androidx.lifecycle.ViewModel
 import de.quotas.models.Quota
 import de.quotas.models.QuotaRepository
 
-class QuotasViewModel constructor(
-    quotaRepository: QuotaRepository
-) : ViewModel() {
+class QuotasViewModel(quotaRepository: QuotaRepository) : ViewModel() {
 
     val quotas : LiveData<List<Quota>> = quotaRepository.getAllQuotas()
 

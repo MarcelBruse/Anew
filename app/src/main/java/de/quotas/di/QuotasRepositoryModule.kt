@@ -8,7 +8,7 @@ import de.quotas.persistency.QuotasDatabase
 import javax.inject.Singleton
 
 @Module
-class QuotasRepositoryModule constructor(val applicationContext: Context) {
+class QuotasRepositoryModule(private val applicationContext: Context) {
 
     @Provides
     @Singleton
