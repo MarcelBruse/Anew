@@ -1,4 +1,4 @@
-package de.quotas.activities.quotas
+package de.quotas.activity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

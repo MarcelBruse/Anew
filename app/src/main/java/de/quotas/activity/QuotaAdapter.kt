@@ -1,4 +1,4 @@
-package de.quotas.activities.quotas
+package de.quotas.activity
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -3,7 +3,6 @@
     android:id="@+id/textView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:onClick="openQuotaEditor"
     android:paddingStart="14dp"
     android:paddingTop="10dp"
     android:paddingEnd="14dp"

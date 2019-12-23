@@ -1,4 +1,4 @@
-package de.quotas.activities.quotas
+package de.quotas.activity
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

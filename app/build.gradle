@@ -34,15 +34,19 @@ android {
 }
 
 dependencies {
+    def room_version = "2.2.3"
+    def dagger_version = "2.24"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.room:room-runtime:2.2.2'
+    implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.activity:activity-ktx:1.0.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.11.1'
     testImplementation 'io.mockk:mockk:1.9.3'
@@ -55,9 +59,9 @@ dependencies {
     androidTestImplementation('org.threeten:threetenbp:1.3.2') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
-    kapt 'androidx.room:room-compiler:2.2.2'
-    api 'com.google.dagger:dagger:2.24'
-    kapt 'com.google.dagger:dagger-compiler:2.24'
+    kapt "androidx.room:room-compiler:$room_version"
+    api "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'com.google.android.material:material:1.0.0'
