@@ -1,5 +1,6 @@
 package de.quotas.activities.quotas
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,16 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.quotas.QuotasApplication
 import de.quotas.R
+import de.quotas.activities.ActivityArgumentKeys.QUOTA_ID
+import de.quotas.activities.editor.EditorActivity
 
-class QuotasActivity : AppCompatActivity() {
+class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
+
+    private lateinit var quotasViewModel: QuotasViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.quotas_activity)
         setSupportActionBar(findViewById(R.id.quotas_toolbar))
-
-        val quotasViewModel = createQuotasViewModel()
-        val quotaAdapter = QuotaAdapter(quotasViewModel)
+        quotasViewModel = createQuotasViewModel()
+        val quotaAdapter = QuotaAdapter(quotasViewModel, this)
         quotasViewModel.quotas.observe(this, Observer { quotaAdapter.notifyDataSetChanged() })
         val quotasView = createQuotasView(quotaAdapter)
         ItemTouchHelper(QuotaTouchHelper(quotaAdapter)).attachToRecyclerView(quotasView)
@@ -41,6 +45,15 @@ class QuotasActivity : AppCompatActivity() {
             adapter = quotaAdapter
         }
         return quotasView
+    }
+
+    override fun quotaItemClickedAt(position: Int) {
+        quotasViewModel.quotas.value?.elementAt(position)?.let {
+            val intent = Intent(this, EditorActivity::class.java).apply {
+                putExtra(QUOTA_ID, it.id)
+            }
+            startActivity(intent)
+        }
     }
 
 }
