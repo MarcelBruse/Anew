@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,8 @@ class QuotasActivity : AppCompatActivity() {
     private fun createQuotasViewModel(): QuotasViewModel {
         val quotasApplication = application as QuotasApplication
         val quotaRepository = quotasApplication.getModelComponent().getQuotasRepository()
-        return QuotasViewModel(quotaRepository)
+        val quotasViewModelFactory = QuotasViewModelFactory(quotaRepository)
+        return ViewModelProviders.of(this, quotasViewModelFactory).get(QuotasViewModel::class.java)
     }
 
     private fun createQuotasView(quotaAdapter: QuotaAdapter): RecyclerView {
