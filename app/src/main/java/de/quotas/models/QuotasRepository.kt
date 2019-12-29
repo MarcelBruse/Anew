@@ -8,11 +8,11 @@ import kotlinx.coroutines.launch
 class QuotasRepository(private val quotaDao: QuotaDao) {
 
     fun getQuota(quotaId: Long): LiveData<Quota> {
-        return quotaDao.load(quotaId)
+        return quotaDao.loadAsLiveData(quotaId)
     }
 
     fun getAllQuotas(): LiveData<List<Quota>> {
-        return quotaDao.loadAll()
+        return quotaDao.loadAllAsLiveData()
     }
 
     fun deleteQuota(quota: Quota) = GlobalScope.launch {

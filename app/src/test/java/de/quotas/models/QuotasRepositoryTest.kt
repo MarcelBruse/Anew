@@ -14,7 +14,7 @@ class QuotasRepositoryTest {
         val quotaId = 42L
         val quotaDao = mockk<QuotaDao>()
         val liveData = mockk<MutableLiveData<Quota>>()
-        every { quotaDao.load(quotaId) } returns liveData
+        every { quotaDao.loadAsLiveData(quotaId) } returns liveData
         val quotaRepository = QuotasRepository(quotaDao)
         val quota = quotaRepository.getQuota(quotaId)
         assertThat(quota).isEqualTo(liveData)
