@@ -7,7 +7,7 @@ import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class QuotaRepositoryTest {
+class QuotasRepositoryTest {
 
     @Test
     fun getQuotaFromRepository() {
@@ -15,7 +15,7 @@ class QuotaRepositoryTest {
         val quotaDao = mockk<QuotaDao>()
         val liveData = mockk<MutableLiveData<Quota>>()
         every { quotaDao.load(quotaId) } returns liveData
-        val quotaRepository = QuotaRepository(quotaDao)
+        val quotaRepository = QuotasRepository(quotaDao)
         val quota = quotaRepository.getQuota(quotaId)
         assertThat(quota).isEqualTo(liveData)
     }

@@ -31,8 +31,8 @@ class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
 
     private fun createQuotasViewModel(): QuotasViewModel {
         val quotasApplication = application as QuotasApplication
-        val quotaRepository = quotasApplication.getModelComponent().getQuotasRepository()
-        val quotasViewModelFactory = QuotasViewModelFactory(quotaRepository)
+        val quotasRepository = quotasApplication.getModelComponent().getQuotasRepository()
+        val quotasViewModelFactory = QuotasViewModelFactory(quotasRepository)
         return ViewModelProviders.of(this, quotasViewModelFactory).get(QuotasViewModel::class.java)
     }
 

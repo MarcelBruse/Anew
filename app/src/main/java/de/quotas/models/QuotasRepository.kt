@@ -5,7 +5,7 @@ import de.quotas.persistency.QuotaDao
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class QuotaRepository(private val quotaDao: QuotaDao) {
+class QuotasRepository(private val quotaDao: QuotaDao) {
 
     fun getQuota(quotaId: Long): LiveData<Quota> {
         return quotaDao.load(quotaId)
