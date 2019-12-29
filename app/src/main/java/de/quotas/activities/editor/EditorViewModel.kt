@@ -11,7 +11,7 @@ class EditorViewModel(private val quotasRepository: QuotasRepository, private va
 
     constructor(quotasRepository: QuotasRepository): this(quotasRepository, -1L)
 
-    private fun getQuota(): Quota? = quotasRepository.getQuota(quotaId).value
+    private fun getQuota(): Quota? = quotasRepository.getQuotaAsLiveData(quotaId).value
 
     fun getQuotaName() = getQuota()?.name ?: ""
 

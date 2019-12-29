@@ -7,7 +7,7 @@ import de.quotas.models.QuotasRepository
 
 class QuotasViewModel(private val quotasRepository: QuotasRepository) : ViewModel() {
 
-    val quotas: LiveData<List<Quota>> = quotasRepository.getAllQuotas()
+    val quotasAsLiveData: LiveData<List<Quota>> = quotasRepository.getAllQuotasAsLiveData()
 
     fun deleteQuota(quota: Quota) = quotasRepository.deleteQuota(quota)
 

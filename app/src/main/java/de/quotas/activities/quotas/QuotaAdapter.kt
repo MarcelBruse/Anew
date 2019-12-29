@@ -18,14 +18,14 @@ class QuotaAdapter(
         return QuotaViewHolder(textView, quotaItemClickListener)
     }
 
-    override fun getItemCount() = quotasViewModel.quotas.value?.size ?: 0
+    override fun getItemCount() = quotasViewModel.quotasAsLiveData.value?.size ?: 0
 
     override fun onBindViewHolder(holder: QuotaViewHolder, position: Int) {
-        holder.textView.text = quotasViewModel.quotas.value?.get(position)?.name ?: ""
+        holder.textView.text = quotasViewModel.quotasAsLiveData.value?.get(position)?.name ?: ""
     }
 
     fun deleteQuotaAt(position: Int) {
-        quotasViewModel.quotas.value?.get(position)?.let { quotasViewModel.deleteQuota(it) }
+        quotasViewModel.quotasAsLiveData.value?.get(position)?.let { quotasViewModel.deleteQuota(it) }
     }
 
     class QuotaViewHolder(

@@ -24,7 +24,7 @@ class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
         setSupportActionBar(findViewById(R.id.quotas_toolbar))
         quotasViewModel = createQuotasViewModel()
         val quotaAdapter = QuotaAdapter(quotasViewModel, this)
-        quotasViewModel.quotas.observe(this, Observer { quotaAdapter.notifyDataSetChanged() })
+        quotasViewModel.quotasAsLiveData.observe(this, Observer { quotaAdapter.notifyDataSetChanged() })
         val quotasView = createQuotasView(quotaAdapter)
         ItemTouchHelper(QuotaTouchHelper(quotaAdapter)).attachToRecyclerView(quotasView)
     }
@@ -48,7 +48,7 @@ class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
     }
 
     override fun quotaItemClickedAt(position: Int) {
-        quotasViewModel.quotas.value?.elementAt(position)?.let {
+        quotasViewModel.quotasAsLiveData.value?.elementAt(position)?.let {
             val intent = Intent(this, EditorActivity::class.java).apply {
                 putExtra(QUOTA_ID, it.id)
             }
