@@ -94,4 +94,10 @@ class WeeklyPeriodTest {
         return Weekly(Clock.systemDefaultZone()).getIntervalIncluding(representative).includes(queryZonedDateTime)
     }
 
+    @Test
+    fun weeklyHashCode() {
+        val hashCode = Weekly(Clock.systemDefaultZone()).hashCode()
+        assertThat(hashCode).isEqualTo(Weekly::class.hashCode() + Clock.systemDefaultZone()::class.hashCode())
+    }
+
 }

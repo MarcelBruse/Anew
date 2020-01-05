@@ -1,8 +1,9 @@
 package de.quotas.models
 
 import de.quotas.persistency.QuotaDao
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class QuotasRepository(private val quotaDao: QuotaDao) {
 
@@ -10,12 +11,12 @@ class QuotasRepository(private val quotaDao: QuotaDao) {
 
     fun getAllQuotas() = quotaDao.loadAll()
 
-    fun getQuotaAsLiveData(quotaId: Long) = quotaDao.loadAsLiveData(quotaId)
+    suspend fun saveQuota(quota: Quota) = withContext(Dispatchers.IO) {
+        launch { quotaDao.save(quota) }
+    }
 
-    fun getAllQuotasAsLiveData() = quotaDao.loadAllAsLiveData()
-
-    fun deleteQuota(quota: Quota) = GlobalScope.launch {
-        quotaDao.delete(quota)
+    suspend fun deleteQuota(quota: Quota) = withContext(Dispatchers.IO) {
+        launch { quotaDao.delete(quota) }
     }
 
 }

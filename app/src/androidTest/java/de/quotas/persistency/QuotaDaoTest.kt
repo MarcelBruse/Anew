@@ -42,29 +42,14 @@ class QuotaDaoTest {
 
     @Test
     fun queryForNonExistentQuota() {
-        val quota = quotaDao.load(12357L)
-        assertThat(quota).isNull()
-    }
-
-    @Test
-    fun queryForNonExistentQuotaAsLiveData() {
-        val quota = getValue(quotaDao.loadAsLiveData(12357L))
+        val quota = getValue(quotaDao.load(12357L))
         assertThat(quota).isNull()
     }
 
     @Test
     fun queryAllQuotas() {
         quotaDao.save(Quota(0L, "First quota", Weekly(Clock.systemDefaultZone()), SAMPLE_TIME, SAMPLE_TIME))
-        checkQueryResultForAllQuotas(quotaDao.loadAll())
-    }
-
-    @Test
-    fun queryAllQuotasAsLiveData() {
-        quotaDao.save(Quota(0L, "First quota", Weekly(Clock.systemDefaultZone()), SAMPLE_TIME, SAMPLE_TIME))
-        checkQueryResultForAllQuotas(getValue(quotaDao.loadAllAsLiveData()))
-    }
-
-    private fun checkQueryResultForAllQuotas(quotas: Collection<Quota>) {
+        val quotas = getValue(quotaDao.loadAll())
         assertThat(quotas).hasSize(2)
         var filterResult = quotas.filter { quota -> quota.id != 0L }
             .filter { quota -> quota.name != TEST_QUOTA_NAME }
@@ -76,7 +61,7 @@ class QuotaDaoTest {
 
     @Test
     fun saveQuota() {
-        val quota = getValue(quotaDao.loadAsLiveData(TEST_QUOTA_ID))
+        val quota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(quota).isNotNull
         assertThat(quota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(quota?.name).isEqualTo(TEST_QUOTA_NAME)
@@ -89,7 +74,7 @@ class QuotaDaoTest {
     fun autoGeneratePrimaryKeysUponQuotaCreation() {
         val name = "First quota"
         quotaDao.save(Quota(0L, name, Weekly(Clock.systemDefaultZone()), SAMPLE_TIME, SAMPLE_TIME))
-        val quotas = getValue(quotaDao.loadAllAsLiveData())
+        val quotas = getValue(quotaDao.loadAll())
         assertThat(quotas).hasSize(2)
         val filterResult = quotas.filter { quota -> quota.id != 0L }
             .filter { quota -> quota.id != TEST_QUOTA_ID }
@@ -99,15 +84,14 @@ class QuotaDaoTest {
     }
 
     @Test
-    fun saveQuotaAlterItAndSaveItAgain() {
-        val oldQuota = getValue(quotaDao.loadAsLiveData(TEST_QUOTA_ID))
+    fun saveQuotaAndAlterItAndSaveItAgain() {
+        val oldQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(oldQuota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(oldQuota?.name).isEqualTo(TEST_QUOTA_NAME)
         assertThat(oldQuota?.period).isEqualTo(Weekly(Clock.systemDefaultZone()))
         assertThat(oldQuota?.startTime).isEqualTo(TEST_START_TIME)
         assertThat(oldQuota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
-        assertThat(getValue(quotaDao.loadAllAsLiveData())).hasSize(1)
-
+        assertThat(getValue(quotaDao.loadAll())).hasSize(1)
         quotaDao.save(Quota(
             TEST_QUOTA_ID,
             TEST_QUOTA_NAME.reversed(),
@@ -115,23 +99,23 @@ class QuotaDaoTest {
             TEST_START_TIME,
             TEST_LAST_FULFILLMENT_TIME
         ))
-        val newQuota = getValue(quotaDao.loadAsLiveData(TEST_QUOTA_ID))
+        val newQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(newQuota?.id).isEqualTo(TEST_QUOTA_ID)
         assertThat(newQuota?.name).isEqualTo(TEST_QUOTA_NAME.reversed())
         assertThat(newQuota?.period).isEqualTo(Weekly(Clock.systemDefaultZone()))
         assertThat(newQuota?.startTime).isEqualTo(TEST_START_TIME)
         assertThat(newQuota?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
-        assertThat(getValue(quotaDao.loadAllAsLiveData())).hasSize(1)
+        assertThat(getValue(quotaDao.loadAll())).hasSize(1)
     }
 
     @Test
     fun deleteQuota() {
-        val quota = getValue(quotaDao.loadAsLiveData(TEST_QUOTA_ID))
+        val quota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(quota).isNotNull
         assertThat(quota?.id).isEqualTo(TEST_QUOTA_ID)
 
         quotaDao.delete(quota!!)
-        val noQuota = getValue(quotaDao.loadAsLiveData(TEST_QUOTA_ID))
+        val noQuota = getValue(quotaDao.load(TEST_QUOTA_ID))
         assertThat(noQuota).isNull()
     }
 

@@ -12,19 +12,13 @@ import de.quotas.models.Quota
 interface QuotaDao {
 
     @Query("SELECT * FROM quota WHERE id = :quotaId")
-    fun load(quotaId: Long): Quota
+    fun load(quotaId: Long): LiveData<Quota>
 
     @Query("SELECT * FROM quota")
-    fun loadAll(): List<Quota>
+    fun loadAll(): LiveData<List<Quota>>
 
     @Insert(onConflict = REPLACE)
     fun save(quota: Quota)
-
-    @Query("SELECT * FROM quota WHERE id = :quotaId")
-    fun loadAsLiveData(quotaId: Long): LiveData<Quota>
-
-    @Query("SELECT * FROM quota")
-    fun loadAllAsLiveData(): LiveData<List<Quota>>
 
     @Delete
     fun delete(quota: Quota)

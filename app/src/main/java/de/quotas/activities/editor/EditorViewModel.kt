@@ -1,22 +1,30 @@
 package de.quotas.activities.editor
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.quotas.google.SingleLiveEvent
-import de.quotas.models.Quota
 import de.quotas.models.QuotasRepository
+import kotlinx.coroutines.launch
 
-class EditorViewModel(private val quotasRepository: QuotasRepository, private val quotaId: Long) : ViewModel() {
-
-    val quotaSaved = SingleLiveEvent<Any>()
+class EditorViewModel(private val quotasRepository: QuotasRepository, quotaId: Long) : ViewModel() {
 
     constructor(quotasRepository: QuotasRepository): this(quotasRepository, -1L)
 
-    private fun getQuota(): Quota? = quotasRepository.getQuotaAsLiveData(quotaId).value
+    val quotaSavedEvent = SingleLiveEvent<Any>()
 
-    fun getQuotaName() = getQuota()?.name ?: ""
+    val quota = quotasRepository.getQuota(quotaId)
 
-    fun saveQuota() {
-        quotaSaved.call()
+    fun saveQuota(quotaName: String) {
+        if (quotaName.isBlank()) {
+            return
+        }
+        quota.value?.takeIf { it.isValid() }?.let {
+            it.name = quotaName.trim()
+            viewModelScope.launch {
+                quotasRepository.saveQuota(it)
+                quotaSavedEvent.call()
+            }
+        }
     }
 
 }

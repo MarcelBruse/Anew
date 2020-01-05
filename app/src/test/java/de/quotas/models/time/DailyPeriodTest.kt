@@ -80,4 +80,10 @@ class DailyPeriodTest {
         return Daily(Clock.systemDefaultZone()).getIntervalIncluding(representative).includes(queryInstant)
     }
 
+    @Test
+    fun dailyHashCode() {
+        val hashCode = Daily(Clock.systemDefaultZone()).hashCode()
+        assertThat(hashCode).isEqualTo(Daily::class.hashCode() + Clock.systemDefaultZone()::class.hashCode())
+    }
+
 }
