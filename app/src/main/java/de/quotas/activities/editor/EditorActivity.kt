@@ -60,7 +60,7 @@ class EditorActivity : AppCompatActivity() {
         if (quotaName.isNotBlank()) {
             editorViewModel.saveQuota(quotaName)
         } else {
-            val toast = Toast.makeText(this, "Quota name cannot be blank", Toast.LENGTH_SHORT)
+            val toast = Toast.makeText(this, getString(R.string.blank_quota_name), Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.CENTER, 0, 0)
             toast.show()
         }

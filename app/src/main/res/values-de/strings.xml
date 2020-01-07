@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Quotas</string>
-    <string name="save">Save</string>
+    <string name="save">Speichern</string>
     <string name="qutoa_name">Name</string>
-    <string name="blank_quota_name">Choose a name</string>
+    <string name="blank_quota_name">Wähle einen Namen</string>
 </resources>
