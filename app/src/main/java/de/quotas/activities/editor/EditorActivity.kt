@@ -31,6 +31,7 @@ class EditorActivity : AppCompatActivity() {
         editorViewModel = createEditorViewModel(quotaId)
         initializeQuotaNameField(editorViewModel)
         initializePeriodSpinner(editorViewModel)
+        editorViewModel.quotaSavedEvent.observe(this, Observer { finish() })
     }
 
     private fun createEditorViewModel(quotaId: Long): EditorViewModel {
@@ -45,7 +46,6 @@ class EditorActivity : AppCompatActivity() {
             val quotaNameField: TextInputEditText = findViewById(R.id.name_field)
             quotaNameField.setText(it.name)
         })
-        editorViewModel.quotaSavedEvent.observe(this, Observer { finish() })
     }
 
     private fun initializePeriodSpinner(editorViewModel: EditorViewModel) {

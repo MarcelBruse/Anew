@@ -13,6 +13,7 @@ import de.quotas.QuotasApplication
 import de.quotas.R
 import de.quotas.activities.ActivityArgumentKeys.QUOTA_ID
 import de.quotas.activities.editor.EditorActivity
+import de.quotas.persistency.QuotasDatabase
 
 class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
 
@@ -22,6 +23,9 @@ class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.quotas_activity)
         setSupportActionBar(findViewById(R.id.quotas_toolbar))
+
+        deleteDatabase(QuotasDatabase.DATABASE_NAME)
+
         quotasViewModel = createQuotasViewModel()
         val quotaAdapter = QuotaAdapter(quotasViewModel, this)
         quotasViewModel.quotas.observe(this, Observer { quotaAdapter.notifyDataSetChanged() })
