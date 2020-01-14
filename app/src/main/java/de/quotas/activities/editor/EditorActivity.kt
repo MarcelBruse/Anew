@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -12,6 +14,10 @@ import com.google.android.material.textfield.TextInputEditText
 import de.quotas.QuotasApplication
 import de.quotas.R
 import de.quotas.activities.ActivityArgumentKeys.QUOTA_ID
+import de.quotas.models.time.TimePeriod
+import de.quotas.models.time.TimePeriodEnum
+import de.quotas.models.time.TimePeriodFactory
+import org.threeten.bp.Clock
 
 class EditorActivity : AppCompatActivity() {
 
@@ -23,7 +29,8 @@ class EditorActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.editor_toolbar))
         val quotaId = intent.getLongExtra(QUOTA_ID, -1L)
         editorViewModel = createEditorViewModel(quotaId)
-        createView(editorViewModel)
+        initializeQuotaNameField(editorViewModel)
+        initializePeriodSpinner(editorViewModel)
     }
 
     private fun createEditorViewModel(quotaId: Long): EditorViewModel {
@@ -33,12 +40,24 @@ class EditorActivity : AppCompatActivity() {
         return provider.get(EditorViewModel::class.java)
     }
 
-    private fun createView(editorViewModel: EditorViewModel) {
+    private fun initializeQuotaNameField(editorViewModel: EditorViewModel) {
         editorViewModel.quota.observe(this, Observer {
-            val quotaNameField = findViewById<TextInputEditText>(R.id.name_field)
+            val quotaNameField: TextInputEditText = findViewById(R.id.name_field)
             quotaNameField.setText(it.name)
         })
         editorViewModel.quotaSavedEvent.observe(this, Observer { finish() })
+    }
+
+    private fun initializePeriodSpinner(editorViewModel: EditorViewModel) {
+        val periodNames = arrayOf(getString(R.string.daily), getString(R.string.weekly))
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, periodNames)
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+        val periodSpinner: Spinner = findViewById(R.id.period_spinner)
+        periodSpinner.adapter = adapter
+        editorViewModel.quota.observe(this, Observer {
+            val position = TimePeriodEnum.getValueByTimePeriod(it.period).ordinal
+            periodSpinner.setSelection(position)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -55,15 +74,32 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun saveQuotaIfPossible() {
-        val quotaNameField = findViewById<TextInputEditText>(R.id.name_field)
-        val quotaName = quotaNameField.text.toString()
-        if (quotaName.isNotBlank()) {
-            editorViewModel.saveQuota(quotaName)
+        val quotaName = getQuotaNameFromView()
+        val period = getPeriodFromView()
+        val errorMessageIds = editorViewModel.validateUserInput(quotaName, period)
+        if (errorMessageIds.isEmpty()) {
+            editorViewModel.saveQuota(quotaName, period)
         } else {
-            val toast = Toast.makeText(this, getString(R.string.blank_quota_name), Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.CENTER, 0, 0)
-            toast.show()
+            errorMessageIds.forEach { displayErrorMessage(it) }
         }
+    }
+
+    private fun getQuotaNameFromView(): String {
+        val quotaNameField = findViewById<TextInputEditText>(R.id.name_field)
+        return quotaNameField.text.toString()
+    }
+
+    private fun getPeriodFromView(): TimePeriod {
+        val periodSpinner: Spinner = findViewById(R.id.period_spinner)
+        val periodEnum = TimePeriodEnum.values()[periodSpinner.selectedItemPosition]
+        val periodFactory = TimePeriodFactory(Clock.systemDefaultZone())
+        return periodFactory.timePeriodByEnum(periodEnum)
+    }
+
+    private fun displayErrorMessage(errorMessageId: Int) {
+        val toast = Toast.makeText(this, getString(errorMessageId), Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
     }
 
 }

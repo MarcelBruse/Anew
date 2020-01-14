@@ -8,4 +8,12 @@ class TimePeriodFactory(private val clock: Clock) {
 
     fun weeklyPeriod() = Weekly(clock)
 
+    fun timePeriodByEnum(timePeriodEnum: TimePeriodEnum): TimePeriod {
+        return when (timePeriodEnum) {
+            TimePeriodEnum.DAILY -> Daily(clock)
+            TimePeriodEnum.WEEKLY -> Weekly(clock)
+            else -> UndefinedPeriod
+        }
+    }
+
 }

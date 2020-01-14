@@ -1,35 +1,26 @@
 package de.quotas.persistency
 
 import androidx.room.TypeConverter
-import de.quotas.models.time.Daily
-import de.quotas.models.time.TimePeriod
-import de.quotas.models.time.UndefinedPeriod
-import de.quotas.models.time.Weekly
+import de.quotas.models.time.*
 
 class PeriodConverter {
 
     @TypeConverter
     fun fromEnum(period: TimePeriod): Int {
         return when (period) {
-            is Daily -> DAILY
-            is Weekly -> WEEKLY
-            else -> UNDEFINED
+            is Daily -> TimePeriodEnum.DAILY.ordinal
+            is Weekly -> TimePeriodEnum.WEEKLY.ordinal
+            else -> TimePeriodEnum.UNDEFINED_PERIOD.ordinal
         }
     }
 
     @TypeConverter
     fun fromPeriodCode(periodCode: Int): TimePeriod {
         return when (periodCode) {
-            DAILY -> Daily()
-            WEEKLY -> Weekly()
+            TimePeriodEnum.DAILY.ordinal -> Daily()
+            TimePeriodEnum.WEEKLY.ordinal -> Weekly()
             else -> UndefinedPeriod
         }
-    }
-
-    companion object {
-        const val UNDEFINED = -1
-        const val DAILY = 1
-        const val WEEKLY = 2
     }
 
 }

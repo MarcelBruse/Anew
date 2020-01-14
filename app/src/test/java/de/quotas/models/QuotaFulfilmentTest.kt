@@ -9,19 +9,19 @@ class QuotaFulfilmentTest {
 
     @Test
     fun quotaNeverFulfilled() {
-        val quota = Quota(0L, null, Daily(), START_TIME, null)
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, null)
         assertThat(quota.isFulfilled()).isFalse()
     }
 
     @Test
     fun quotaFulfilled() {
-        val quota = Quota(0L, null, Daily(), START_TIME, ZonedDateTime.now())
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, ZonedDateTime.now())
         assertThat(quota.isFulfilled()).isTrue()
     }
 
     @Test
     fun quotaNotFulfilled() {
-        val quota = Quota(0L, null, Daily(), START_TIME, ZonedDateTime.now().minusDays(2))
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, ZonedDateTime.now().minusDays(2))
         assertThat(quota.isFulfilled()).isFalse()
     }
 

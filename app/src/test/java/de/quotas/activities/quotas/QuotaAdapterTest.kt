@@ -15,29 +15,29 @@ class QuotaAdapterTest {
 
     private lateinit var quotaAdapter: QuotaAdapter
 
-    private lateinit var quotaViewModel: QuotasViewModel
+    private lateinit var quotasViewModel: QuotasViewModel
 
     private lateinit var quotas: MutableLiveData<List<Quota>>
 
     @Before
     fun setUp() {
-        quotaViewModel = mockk()
-        every { quotaViewModel.deleteQuota(any()) } returns Job()
+        quotasViewModel = mockk()
+        every { quotasViewModel.deleteQuota(any()) } returns Job()
         val quota1 = mockk<Quota>()
         every { quota1.name } returns "Quota1"
         val quota2 = mockk<Quota>()
         every { quota2.name } returns "Quota2"
         quotas = MutableLiveData(listOf(quota1, quota2))
-        every { quotaViewModel.quotas } returns quotas
+        every { quotasViewModel.quotas } returns quotas
         val quotaItemClickListener = mockk<QuotaItemClickListener>()
-        quotaAdapter = QuotaAdapter(quotaViewModel, quotaItemClickListener)
+        quotaAdapter = QuotaAdapter(quotasViewModel, quotaItemClickListener)
     }
 
     @Test
     fun adapterDeletesQuota() {
         quotaAdapter.deleteQuotaAt(0)
         quotas.value?.let {
-            verify { quotaViewModel.deleteQuota(it[0]) }
+            verify { quotasViewModel.deleteQuota(it[0]) }
         }
     }
 

@@ -10,12 +10,6 @@ import org.threeten.bp.ZonedDateTime
 class QuotaValidityTest {
 
     @Test
-    fun invalidQuotaWithNullName() {
-        val quota = Quota(0L, null, Daily(), START_TIME, AFTER_START_TIME)
-        assertThat(quota.isValid()).isFalse()
-    }
-
-    @Test
     fun invalidQuotaWithEmptyName() {
         val quota = Quota(0L, "", Daily(), START_TIME, AFTER_START_TIME)
         assertThat(quota.isValid()).isFalse()
@@ -28,21 +22,9 @@ class QuotaValidityTest {
     }
 
     @Test
-    fun invalidQuotaWithNullPeriod() {
-        val quota = Quota(0L, "Quota", null, START_TIME, AFTER_START_TIME)
-        assertThat(quota.isValid()).isFalse()
-    }
-
-    @Test
-    fun invalidQuotaWithNullStartTime() {
-        val quota = Quota(0L, "Quota", Weekly(), null, AFTER_START_TIME)
-        assertThat(quota.isValid()).isFalse()
-    }
-
-    @Test
-    fun invalidQuotaWithNullFulfilmentTime() {
+    fun validQuotaWithNullFulfilmentTime() {
         val quota = Quota(0L, "Quota", Weekly(), START_TIME, null)
-        assertThat(quota.isValid()).isFalse()
+        assertThat(quota.isValid()).isTrue()
     }
 
     @Test
@@ -67,6 +49,56 @@ class QuotaValidityTest {
     fun validQuotaWithStartTimeBeforeFulfilmentTime() {
         val quota = Quota(0L, "Quota", Daily(), START_TIME, AFTER_START_TIME)
         assertThat(quota.isValid()).isTrue()
+    }
+
+    @Test
+    fun nameSetterKeepsInvariants() {
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, AFTER_START_TIME)
+        quota.name = ""
+        assertThat(quota.name).isEqualTo("Quota")
+        quota.name = " "
+        assertThat(quota.name).isEqualTo("Quota")
+        quota.lastFulfillmentTime = START_TIME.minusSeconds(1)
+        assertThat(quota.lastFulfillmentTime).isEqualTo(AFTER_START_TIME)
+        quota.period = UndefinedPeriod
+        assertThat(quota.period).isEqualTo(Daily())
+    }
+
+    @Test
+    fun nameSetterAcceptsValidValue() {
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, AFTER_START_TIME)
+        quota.name = quota.name.reversed()
+        assertThat(quota.name).isEqualTo("Quota".reversed())
+    }
+
+    @Test
+    fun lastFulfillmentTimeSetterKeepsInvariants() {
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, AFTER_START_TIME)
+        quota.lastFulfillmentTime = START_TIME.minusSeconds(1)
+        assertThat(quota.lastFulfillmentTime).isEqualTo(AFTER_START_TIME)
+    }
+
+    @Test
+    fun lastFulfillmentTimeSetterAcceptsValidValue() {
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, AFTER_START_TIME)
+        quota.lastFulfillmentTime = START_TIME
+        assertThat(quota.lastFulfillmentTime).isEqualTo(START_TIME)
+        quota.lastFulfillmentTime = START_TIME.plusDays(1)
+        assertThat(quota.lastFulfillmentTime).isEqualTo(START_TIME.plusDays(1))
+    }
+
+    @Test
+    fun periodSetterKeepsInvariants() {
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, AFTER_START_TIME)
+        quota.period = UndefinedPeriod
+        assertThat(quota.period).isEqualTo(Daily())
+    }
+
+    @Test
+    fun periodSetterAcceptsValidValue() {
+        val quota = Quota(0L, "Quota", Daily(), START_TIME, AFTER_START_TIME)
+        quota.period = Weekly()
+        assertThat(quota.period).isEqualTo(Weekly())
     }
 
     companion object {

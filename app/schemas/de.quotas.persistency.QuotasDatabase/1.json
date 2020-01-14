@@ -2,12 +2,30 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c7587bd8522db1721e88b4ed02883ae1",
+    "identityHash": "f853d188bc563a4b1a22c76e5e9ace0d",
     "entities": [
       {
         "tableName": "Quota",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `period` INTEGER, `startTime` INTEGER, `lastFulfillmentTime` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `period` INTEGER NOT NULL, `lastFulfillmentTime` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `startTime` INTEGER NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "period",
+            "columnName": "period",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastFulfillmentTime",
+            "columnName": "lastFulfillmentTime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
@@ -15,28 +33,10 @@
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "period",
-            "columnName": "period",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "startTime",
             "columnName": "startTime",
             "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "lastFulfillmentTime",
-            "columnName": "lastFulfillmentTime",
-            "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -52,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c7587bd8522db1721e88b4ed02883ae1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f853d188bc563a4b1a22c76e5e9ace0d')"
     ]
   }
 }

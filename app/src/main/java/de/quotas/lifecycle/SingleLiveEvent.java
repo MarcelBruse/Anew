@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package de.quotas.google;
+package de.quotas.lifecycle;
 
 import android.util.Log;
 

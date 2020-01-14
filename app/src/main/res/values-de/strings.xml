@@ -4,4 +4,9 @@
     <string name="save">Speichern</string>
     <string name="qutoa_name">Name</string>
     <string name="blank_quota_name">Wähle einen Namen</string>
+    <string name="daily">Täglich</string>
+    <string name="weekly">Wöchentlich</string>
+    <string name="quota_name_length">Der Name darf max. 40 Zeichen lang sein</string>
+    <string name="undefined_period">Wähle eine Periode</string>
+    <string name="unknown_error">Unbekannter Fehler</string>
 </resources>
