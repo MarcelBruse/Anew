@@ -2,11 +2,12 @@
 <resources>
     <string name="app_name">Quotas</string>
     <string name="save">Save</string>
-    <string name="qutoa_name">Name</string>
+    <string name="quota_name">Name</string>
     <string name="blank_quota_name">Choose a name</string>
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
     <string name="quota_name_length">Maximum name length is 40 characters</string>
     <string name="undefined_period">Choose a period</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="new_quota">New</string>
 </resources>

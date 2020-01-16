@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.quotas.R
 import de.quotas.lifecycle.SingleLiveEvent
+import de.quotas.models.QuotaFactory
 import de.quotas.models.QuotaValidator
 import de.quotas.models.QuotasRepository
 import de.quotas.models.time.TimePeriod
@@ -11,15 +12,13 @@ import kotlinx.coroutines.launch
 
 class EditorViewModel(private val quotasRepository: QuotasRepository, quotaId: Long) : ViewModel() {
 
-    constructor(quotasRepository: QuotasRepository): this(quotasRepository, -1L)
+    val quota = if (quotaId > 0) quotasRepository.getQuota(quotaId) else QuotaFactory.newQuota()
 
     val quotaSavedEvent = SingleLiveEvent<Any>()
 
-    val quota = quotasRepository.getQuota(quotaId)
-
     fun saveQuota(quotaName: String, period: TimePeriod) {
         if (validateUserInput(quotaName, period).isEmpty()) {
-            quota.value?.takeIf { it.isValid() }?.let {
+            quota.value?.let {
                 it.name = quotaName.trim()
                 it.period = period
                 viewModelScope.launch {

@@ -2,6 +2,8 @@ package de.quotas.activities.quotas
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -54,6 +56,18 @@ class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
             }
             startActivity(intent)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.quotas_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.new_menu_item -> startActivity(Intent(this, EditorActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

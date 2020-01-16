@@ -27,7 +27,7 @@ class EditorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.editor_activity)
         setSupportActionBar(findViewById(R.id.editor_toolbar))
-        val quotaId = intent.getLongExtra(QUOTA_ID, -1L)
+        val quotaId = intent.getLongExtra(QUOTA_ID, 0)
         editorViewModel = createEditorViewModel(quotaId)
         initializeQuotaNameField(editorViewModel)
         initializePeriodSpinner(editorViewModel)
