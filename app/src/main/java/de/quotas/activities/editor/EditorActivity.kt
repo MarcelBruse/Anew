@@ -29,9 +29,9 @@ class EditorActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.editor_toolbar))
         val quotaId = intent.getLongExtra(QUOTA_ID, 0)
         editorViewModel = createEditorViewModel(quotaId)
-        initializeQuotaNameField(editorViewModel)
-        initializePeriodSpinner(editorViewModel)
-        editorViewModel.quotaSavedEvent.observe(this, Observer { finish() })
+        initializePeriodSpinner()
+        bindFieldsToData()
+        editorViewModel.quotaSavedOrDeletedEvent.observe(this, Observer { finish() })
     }
 
     private fun createEditorViewModel(quotaId: Long): EditorViewModel {
@@ -41,23 +41,19 @@ class EditorActivity : AppCompatActivity() {
         return provider.get(EditorViewModel::class.java)
     }
 
-    private fun initializeQuotaNameField(editorViewModel: EditorViewModel) {
-        editorViewModel.quota.observe(this, Observer {
-            val quotaNameField: TextInputEditText = findViewById(R.id.name_field)
-            quotaNameField.setText(it.name)
-        })
-    }
-
-    private fun initializePeriodSpinner(editorViewModel: EditorViewModel) {
+    private fun initializePeriodSpinner() {
         val periodNames = arrayOf(getString(R.string.daily), getString(R.string.weekly))
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, periodNames)
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         val periodSpinner: Spinner = findViewById(R.id.period_spinner)
         periodSpinner.adapter = adapter
-        editorViewModel.quota.observe(this, Observer {
-            val position = TimePeriodEnum.getValueByTimePeriod(it.period).ordinal
-            periodSpinner.setSelection(position)
-        })
+    }
+
+    private fun bindFieldsToData() {
+        val quotaNameField: TextInputEditText = findViewById(R.id.name_field)
+        val quotaPeriodSpinner: Spinner = findViewById(R.id.period_spinner)
+        val quotaObserver = QuotaObserver(quotaNameField, quotaPeriodSpinner)
+        editorViewModel.quota.observe(this, quotaObserver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -67,20 +63,25 @@ class EditorActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.save_menu_item -> saveQuotaIfPossible()
-            else -> super.onOptionsItemSelected(item)
+            R.id.save_menu_item -> {
+                val saved = saveQuotaIfPossible()
+                item.isEnabled = !saved
+            }
+            R.id.delete_menu_item -> editorViewModel.deleteQuota()
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
 
-    private fun saveQuotaIfPossible() {
+    private fun saveQuotaIfPossible(): Boolean {
         val quotaName = getQuotaNameFromView()
         val period = getPeriodFromView()
         val errorMessageIds = editorViewModel.validateUserInput(quotaName, period)
-        if (errorMessageIds.isEmpty()) {
+        return if (errorMessageIds.isEmpty()) {
             editorViewModel.saveQuota(quotaName, period)
+            true
         } else {
             errorMessageIds.forEach { displayErrorMessage(it) }
+            false
         }
     }
 

@@ -10,4 +10,5 @@
     <string name="undefined_period">Choose a period</string>
     <string name="unknown_error">Unknown error</string>
     <string name="new_quota">New</string>
+    <string name="delete_quota">Delete</string>
 </resources>

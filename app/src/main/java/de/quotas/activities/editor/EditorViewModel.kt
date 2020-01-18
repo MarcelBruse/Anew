@@ -14,7 +14,7 @@ class EditorViewModel(private val quotasRepository: QuotasRepository, quotaId: L
 
     val quota = if (quotaId > 0) quotasRepository.getQuota(quotaId) else QuotaFactory.newQuota()
 
-    val quotaSavedEvent = SingleLiveEvent<Any>()
+    val quotaSavedOrDeletedEvent = SingleLiveEvent<Any>()
 
     fun saveQuota(quotaName: String, period: TimePeriod) {
         if (validateUserInput(quotaName, period).isEmpty()) {
@@ -23,7 +23,7 @@ class EditorViewModel(private val quotasRepository: QuotasRepository, quotaId: L
                 it.period = period
                 viewModelScope.launch {
                     quotasRepository.saveQuota(it)
-                    quotaSavedEvent.call()
+                    quotaSavedOrDeletedEvent.call()
                 }
             }
         }
@@ -47,6 +47,15 @@ class EditorViewModel(private val quotasRepository: QuotasRepository, quotaId: L
             QuotaValidator.Error.QUOTA_NAME_LENGTH_EXCEEDS_LIMIT -> R.string.quota_name_length
             QuotaValidator.Error.UNDEFINED_PERIOD -> R.string.undefined_period
             else -> R.string.unknown_error
+        }
+    }
+
+    fun deleteQuota() {
+        quota.value?.let {
+            viewModelScope.launch {
+                quotasRepository.deleteQuota(it)
+                quotaSavedOrDeletedEvent.call()
+            }
         }
     }
 
