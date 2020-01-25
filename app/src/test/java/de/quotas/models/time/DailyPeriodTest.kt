@@ -3,6 +3,8 @@ package de.quotas.models.time
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.threeten.bp.Clock
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
 class DailyPeriodTest {
@@ -77,13 +79,37 @@ class DailyPeriodTest {
     }
 
     private fun includesInstant(representative: ZonedDateTime, queryInstant: ZonedDateTime): Boolean {
-        return Daily(Clock.systemDefaultZone()).getIntervalIncluding(representative).includes(queryInstant)
+        return Daily(Clock.systemDefaultZone()).intervalIncluding(representative).includes(queryInstant)
+    }
+
+    @Test
+    fun currentIntervalShortCut() {
+        val expectedStartOfInterval = ZonedDateTime.parse("2020-02-01T00:00:00.000+01:00[Europe/Berlin]")
+        val now = ZonedDateTime.parse("2020-02-01T02:00:00.000+01:00[Europe/Berlin]")
+        val instant = now.plusHours(1)
+        val fixedClock = Clock.fixed(now.toInstant(), ZoneId.systemDefault())
+        val intervalIncluding = Daily(fixedClock).intervalIncluding(instant)
+        val currentInterval = Daily(fixedClock).currentInterval()
+        assertThat(intervalIncluding.start()).isEqualTo(currentInterval.start())
+        assertThat(intervalIncluding.start()).isEqualTo(expectedStartOfInterval)
     }
 
     @Test
     fun dailyHashCode() {
         val hashCode = Daily(Clock.systemDefaultZone()).hashCode()
         assertThat(hashCode).isEqualTo(Daily::class.hashCode() + Clock.systemDefaultZone()::class.hashCode())
+    }
+
+    @Test
+    fun dailyIsEqualToOtherDaily() {
+        assertThat(Daily()).isEqualTo(Daily(Clock.systemDefaultZone()))
+    }
+
+    @Test
+    fun dailyIsNotEqualToOtherDaily() {
+        val fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
+        val defaultClock = Clock.systemDefaultZone()
+        assertThat(Daily(fixedClock)).isNotEqualTo(Daily(defaultClock))
     }
 
 }
