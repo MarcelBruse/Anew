@@ -9,9 +9,7 @@ class QuotaFactoryTest {
 
     @Test
     fun newQuota() {
-        val quotaLiveData = QuotaFactory.newQuota()
-        assertThat(quotaLiveData.value).isNotNull
-        val quota = quotaLiveData.value!!
+        val quota = QuotaFactory.newQuota()
         assertThat(quota.id).isEqualTo(0)
         assertThat(quota.name).isEqualTo("")
         assertThat(quota.period).isInstanceOf(Daily::class.java)

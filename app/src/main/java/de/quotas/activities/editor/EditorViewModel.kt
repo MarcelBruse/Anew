@@ -1,5 +1,6 @@
 package de.quotas.activities.editor
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.quotas.R
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class EditorViewModel(private val quotasRepository: QuotasRepository, quotaId: Long) : ViewModel() {
 
-    val quota = if (quotaId > 0) quotasRepository.getQuota(quotaId) else QuotaFactory.newQuota()
+    val quota = if (quotaId > 0) quotasRepository.getQuota(quotaId) else MutableLiveData(QuotaFactory.newQuota())
 
     val quotaSavedOrDeletedEvent = SingleLiveEvent<Any>()
 

@@ -1,9 +1,7 @@
 package de.quotas.activities.editor
 
 import android.widget.Spinner
-import androidx.lifecycle.LiveData
 import com.google.android.material.textfield.TextInputEditText
-import de.quotas.models.Quota
 import de.quotas.models.QuotaFactory
 import de.quotas.models.time.TimePeriodEnum
 import io.mockk.every
@@ -21,11 +19,11 @@ class QuotaObserverTest {
         val periodSpinner = mockk<Spinner>()
         every { periodSpinner.setSelection(TimePeriodEnum.DAILY.ordinal) } returns Unit
 
-        val quota: LiveData<Quota> = QuotaFactory.newQuota()
-        quota.value?.name = "Quota"
+        val quota = QuotaFactory.newQuota()
+        quota.name = "Quota"
 
         val quotaObserver = QuotaObserver(textField, periodSpinner)
-        quotaObserver.onChanged(quota.value)
+        quotaObserver.onChanged(quota)
 
         verify { textField.setText("Quota") }
         verify { periodSpinner.setSelection(0) }
