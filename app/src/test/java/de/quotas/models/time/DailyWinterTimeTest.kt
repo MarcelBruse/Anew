@@ -63,7 +63,7 @@ class DailyWinterTimeTest {
         val lastSummerTimeDayStart = ZonedDateTime.parse("2020-10-25T00:00+02:00[Europe/Berlin]")
         val firstWinterTimeDayStart = ZonedDateTime.parse("2020-10-26T00:00+01:00[Europe/Berlin]")
         val summerTimeDay = Daily().intervalIncluding(lastSummerTimeDayStart)
-        assertThat(summerTimeDay.next().start()).isEqualTo(firstWinterTimeDayStart)
+        assertThat(summerTimeDay.next().startsAt()).isEqualTo(firstWinterTimeDayStart)
     }
 
 }

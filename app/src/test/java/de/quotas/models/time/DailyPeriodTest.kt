@@ -90,8 +90,8 @@ class DailyPeriodTest {
         val fixedClock = Clock.fixed(now.toInstant(), ZoneId.systemDefault())
         val intervalIncluding = Daily(fixedClock).intervalIncluding(instant)
         val currentInterval = Daily(fixedClock).currentInterval()
-        assertThat(intervalIncluding.start()).isEqualTo(currentInterval.start())
-        assertThat(intervalIncluding.start()).isEqualTo(expectedStartOfInterval)
+        assertThat(intervalIncluding.startsAt()).isEqualTo(currentInterval.startsAt())
+        assertThat(intervalIncluding.startsAt()).isEqualTo(expectedStartOfInterval)
     }
 
     @Test

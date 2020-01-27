@@ -7,7 +7,9 @@ class WeekInterval(private val startOfWeek: ZonedDateTime) : TimeInterval {
 
     private val oneWeek = Period.ofWeeks(1)
 
-    override fun start() = startOfWeek
+    override fun startsAt() = startOfWeek
+
+    override fun endsBefore() = next().startOfWeek
 
     override fun next() = WeekInterval(startOfWeek + oneWeek)
 

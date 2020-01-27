@@ -4,7 +4,9 @@ import org.threeten.bp.ZonedDateTime
 
 interface TimeInterval {
 
-    fun start(): ZonedDateTime
+    fun startsAt(): ZonedDateTime
+
+    fun endsBefore(): ZonedDateTime
 
     fun next(): TimeInterval
 

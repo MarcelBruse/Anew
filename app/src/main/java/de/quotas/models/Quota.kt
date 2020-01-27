@@ -46,6 +46,14 @@ class Quota(
         return false
     }
 
+    fun dueDate(): ZonedDateTime {
+        lastFulfillmentTime?.let {
+            return period.intervalIncluding(it).next().endsBefore()
+        }
+        return period.intervalIncluding(startTime).endsBefore()
+
+    }
+
     fun isValid() = QuotaValidator.validate(this).isEmpty()
 
 }

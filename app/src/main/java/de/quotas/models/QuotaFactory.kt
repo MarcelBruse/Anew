@@ -6,8 +6,6 @@ import org.threeten.bp.ZonedDateTime
 
 object QuotaFactory {
 
-    fun newQuota(): Quota {
-        return Quota(0, "", Daily(), ZonedDateTime.now(ZoneId.systemDefault()), null)
-    }
+    fun newQuota() = Quota(0, "", Daily(), ZonedDateTime.now(ZoneId.systemDefault()), null)
 
 }
