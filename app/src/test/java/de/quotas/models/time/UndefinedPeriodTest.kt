@@ -6,6 +6,11 @@ import org.threeten.bp.ZonedDateTime
 class UndefinedPeriodTest {
 
     @Test(expected = UnsupportedOperationException::class)
+    fun clockIsUnsupported() {
+        UndefinedPeriod.clock()
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
     fun getCurrentIntervalIsUnsupported() {
         UndefinedPeriod.currentInterval()
     }

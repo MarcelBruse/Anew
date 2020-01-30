@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import de.quotas.models.time.TimePeriod
 import de.quotas.persistency.PeriodConverter
 import de.quotas.persistency.ZonedDateTimeConverter
+import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
 @Entity
@@ -52,6 +53,11 @@ class Quota(
         }
         return period.intervalIncluding(startTime).endsBefore()
 
+    }
+
+    fun dueIn(): Duration {
+        val now = ZonedDateTime.now(period.clock())
+        return Duration.between(now, dueDate())
     }
 
     fun isValid() = QuotaValidator.validate(this).isEmpty()

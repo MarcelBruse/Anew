@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.threeten.bp.ZonedDateTime
 
-class QuotaFulfilmentTest {
+class QuotaFulfillmentTest {
 
     @Test
     fun quotaNeverFulfilled() {

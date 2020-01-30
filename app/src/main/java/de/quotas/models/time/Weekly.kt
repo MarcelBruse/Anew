@@ -10,6 +10,8 @@ class Weekly(private val clock: Clock) : TimePeriod {
 
     constructor(): this(Clock.systemDefaultZone())
 
+    override fun clock() = clock
+
     override fun currentInterval() = intervalIncluding(ZonedDateTime.now(clock))
 
     override fun intervalIncluding(representative: ZonedDateTime): TimeInterval {

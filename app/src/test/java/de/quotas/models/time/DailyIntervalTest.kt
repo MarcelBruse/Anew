@@ -2,9 +2,18 @@ package de.quotas.models.time
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.threeten.bp.Clock
 import org.threeten.bp.ZonedDateTime
 
 class DailyIntervalTest {
+
+    @Test
+    fun clockIsInitialized() {
+        val systemClock = Clock.systemUTC()
+        val daily = Daily(systemClock)
+        assertThat(systemClock).isNotNull
+        assertThat(daily.clock()).isEqualTo(systemClock)
+    }
 
     @Test
     fun startOfIntervalIsStartOfToday() {

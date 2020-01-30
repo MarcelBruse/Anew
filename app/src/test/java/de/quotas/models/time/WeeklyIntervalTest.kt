@@ -2,9 +2,18 @@ package de.quotas.models.time
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.threeten.bp.Clock
 import org.threeten.bp.ZonedDateTime
 
 class WeeklyIntervalTest {
+
+    @Test
+    fun clockIsInitialized() {
+        val systemClock = Clock.systemUTC()
+        val weekly = Weekly(systemClock)
+        assertThat(systemClock).isNotNull
+        assertThat(weekly.clock()).isEqualTo(systemClock)
+    }
 
     @Test
     fun startOfIntervalIsMonday() {
