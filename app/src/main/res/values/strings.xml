@@ -11,4 +11,15 @@
     <string name="unknown_error">Unknown error</string>
     <string name="new_quota">New</string>
     <string name="delete_quota">Delete</string>
+    <string name="one_second">1 second</string>
+    <string name="one_minute">1 minute</string>
+    <string name="one_hour">1 hour</string>
+    <string name="one_day">1 day</string>
+    <string name="one_week">1 week</string>
+    <string name="d_seconds">%d seconds</string>
+    <string name="d_minutes">%d minutes</string>
+    <string name="d_hours">%d hours</string>
+    <string name="d_days">%d days</string>
+    <string name="d_weeks">%d weeks</string>
+    <string name="and">and</string>
 </resources>
