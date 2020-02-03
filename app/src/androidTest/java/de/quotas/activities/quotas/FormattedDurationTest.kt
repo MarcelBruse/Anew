@@ -233,6 +233,30 @@ class FormattedDurationTest {
         checkFormatOf(duration, "2 Wochen und 3 Tage", deDE)
     }
 
+    @Test
+    fun minusOneSecond() {
+        val duration = Duration.ofSeconds(1).negated()
+        assertThat(duration.isNegative).isTrue()
+        checkFormatOf(duration, "1 second", enEN)
+        checkFormatOf(duration, "1 Sekunde", deDE)
+    }
+
+    @Test
+    fun minusOneMinuteAndTwelveSeconds() {
+        val duration = Duration.ofSeconds(72).negated()
+        assertThat(duration.isNegative).isTrue()
+        checkFormatOf(duration, "1 minute and 12 seconds", enEN)
+        checkFormatOf(duration, "1 Minute und 12 Sekunden", deDE)
+    }
+
+    @Test
+    fun minusThreeDaysAndOneHour() {
+        val duration = Duration.ofDays(3).plusHours(1).negated()
+        assertThat(duration.isNegative).isTrue()
+        checkFormatOf(duration, "3 days and 1 hour", enEN)
+        checkFormatOf(duration, "3 Tage und 1 Stunde", deDE)
+    }
+
     private fun checkFormatOf(duration: Duration, expected: String, locale: Locale) {
         val context = createNewContextWithLocale(locale)
         assertThat(context).isNotNull

@@ -7,12 +7,13 @@ import org.threeten.bp.Duration
 class DurationFormatter(private val context: Context) {
 
     fun format(duration: Duration): String {
+        val absoluteDuration = duration.abs()
         return when {
-            duration < Duration.ofMinutes(1) -> formatSeconds(duration)
-            duration < Duration.ofHours(1) -> formatMinutesAndSeconds(duration)
-            duration < Duration.ofDays(1) -> formatHoursAndMinutes(duration)
-            duration < Duration.ofDays(7) -> formatDaysAndHours(duration)
-            else -> formatWeeksAndDays(duration)
+            absoluteDuration < Duration.ofMinutes(1) -> formatSeconds(absoluteDuration)
+            absoluteDuration < Duration.ofHours(1) -> formatMinutesAndSeconds(absoluteDuration)
+            absoluteDuration < Duration.ofDays(1) -> formatHoursAndMinutes(absoluteDuration)
+            absoluteDuration < Duration.ofDays(7) -> formatDaysAndHours(absoluteDuration)
+            else -> formatWeeksAndDays(absoluteDuration)
         }
     }
 
