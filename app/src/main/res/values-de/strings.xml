@@ -19,7 +19,9 @@
     <string name="d_seconds">%d Sekunden</string>
     <string name="d_minutes">%d Minuten</string>
     <string name="d_hours">%d Stunden</string>
-    <string name="d_days">%d Tage</string>
+    <string name="d_days">%d Tagen</string>
     <string name="d_weeks">%d Wochen</string>
     <string name="and">und</string>
+    <string name="due_in">Fällig in</string>
+    <string name="overdue_since">Fällig seit</string>
 </resources>

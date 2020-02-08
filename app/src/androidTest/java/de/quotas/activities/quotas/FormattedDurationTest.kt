@@ -167,35 +167,35 @@ class FormattedDurationTest {
     fun twoDays() {
         val duration = Duration.ofDays(2)
         checkFormatOf(duration, "2 days and 0 hours", enEN)
-        checkFormatOf(duration, "2 Tage und 0 Stunden", deDE)
+        checkFormatOf(duration, "2 Tagen und 0 Stunden", deDE)
     }
 
     @Test
     fun twoDaysAndTwelveHours() {
         val duration = Duration.ofDays(2).plusHours(12)
         checkFormatOf(duration, "2 days and 12 hours", enEN)
-        checkFormatOf(duration, "2 Tage und 12 Stunden", deDE)
+        checkFormatOf(duration, "2 Tagen und 12 Stunden", deDE)
     }
 
     @Test
     fun sixDaysAndTwentyThreeHours() {
         val duration = Duration.ofDays(6).plusHours(23)
         checkFormatOf(duration, "6 days and 23 hours", enEN)
-        checkFormatOf(duration, "6 Tage und 23 Stunden", deDE)
+        checkFormatOf(duration, "6 Tagen und 23 Stunden", deDE)
     }
 
     @Test
     fun oneWeek() {
         val duration = Duration.ofDays(7)
         checkFormatOf(duration, "1 week and 0 days", enEN)
-        checkFormatOf(duration, "1 Woche und 0 Tage", deDE)
+        checkFormatOf(duration, "1 Woche und 0 Tagen", deDE)
     }
 
     @Test
     fun oneWeekAndOneHour() {
         val duration = Duration.ofDays(7).plusHours(1)
         checkFormatOf(duration, "1 week and 0 days", enEN)
-        checkFormatOf(duration, "1 Woche und 0 Tage", deDE)
+        checkFormatOf(duration, "1 Woche und 0 Tagen", deDE)
     }
 
     @Test
@@ -209,28 +209,28 @@ class FormattedDurationTest {
     fun oneWeekAndTwoDays() {
         val duration = Duration.ofDays(7).plusDays(2)
         checkFormatOf(duration, "1 week and 2 days", enEN)
-        checkFormatOf(duration, "1 Woche und 2 Tage", deDE)
+        checkFormatOf(duration, "1 Woche und 2 Tagen", deDE)
     }
 
     @Test
     fun oneWeekAndSixDays() {
         val duration = Duration.ofDays(7).plusDays(6)
         checkFormatOf(duration, "1 week and 6 days", enEN)
-        checkFormatOf(duration, "1 Woche und 6 Tage", deDE)
+        checkFormatOf(duration, "1 Woche und 6 Tagen", deDE)
     }
 
     @Test
     fun twoWeeks() {
         val duration = Duration.ofDays(14)
         checkFormatOf(duration, "2 weeks and 0 days", enEN)
-        checkFormatOf(duration, "2 Wochen und 0 Tage", deDE)
+        checkFormatOf(duration, "2 Wochen und 0 Tagen", deDE)
     }
 
     @Test
     fun twoWeeksAndThreeDays() {
         val duration = Duration.ofDays(17)
         checkFormatOf(duration, "2 weeks and 3 days", enEN)
-        checkFormatOf(duration, "2 Wochen und 3 Tage", deDE)
+        checkFormatOf(duration, "2 Wochen und 3 Tagen", deDE)
     }
 
     @Test
@@ -254,7 +254,7 @@ class FormattedDurationTest {
         val duration = Duration.ofDays(3).plusHours(1).negated()
         assertThat(duration.isNegative).isTrue()
         checkFormatOf(duration, "3 days and 1 hour", enEN)
-        checkFormatOf(duration, "3 Tage und 1 Stunde", deDE)
+        checkFormatOf(duration, "3 Tagen und 1 Stunde", deDE)
     }
 
     private fun checkFormatOf(duration: Duration, expected: String, locale: Locale) {

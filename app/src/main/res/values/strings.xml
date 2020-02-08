@@ -22,4 +22,6 @@
     <string name="d_days">%d days</string>
     <string name="d_weeks">%d weeks</string>
     <string name="and">and</string>
+    <string name="due_in">Due in</string>
+    <string name="overdue_since">Overdue since</string>
 </resources>
