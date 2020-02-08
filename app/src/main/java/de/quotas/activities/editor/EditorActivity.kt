@@ -9,7 +9,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import de.quotas.QuotasApplication
 import de.quotas.R
@@ -37,7 +37,7 @@ class EditorActivity : AppCompatActivity() {
     private fun createEditorViewModel(quotaId: Long): EditorViewModel {
         val quotasApplication = application as QuotasApplication
         val quotasRepository = quotasApplication.getModelComponent().getQuotasRepository()
-        val provider = ViewModelProviders.of(this, EditorViewModelFactory(quotasRepository, quotaId))
+        val provider = ViewModelProvider(this, EditorViewModelFactory(quotasRepository, quotaId))
         return provider.get(EditorViewModel::class.java)
     }
 

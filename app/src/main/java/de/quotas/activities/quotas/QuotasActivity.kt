@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +35,7 @@ class QuotasActivity : AppCompatActivity(), QuotaItemClickListener {
         val quotasApplication = application as QuotasApplication
         val quotasRepository = quotasApplication.getModelComponent().getQuotasRepository()
         val quotasViewModelFactory = QuotasViewModelFactory(quotasRepository)
-        return ViewModelProviders.of(this, quotasViewModelFactory).get(QuotasViewModel::class.java)
+        return ViewModelProvider(this, quotasViewModelFactory).get(QuotasViewModel::class.java)
     }
 
     private fun createQuotasView(quotaAdapter: QuotaAdapter): RecyclerView {
