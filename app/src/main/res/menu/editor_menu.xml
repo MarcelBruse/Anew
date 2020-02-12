@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/delete_menu_item"
-        android:title="@string/delete_quota"
+        android:title="@string/delete_task"
         app:showAsAction="never" />
 
 </menu>

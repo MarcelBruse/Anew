@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Quotas</string>
+    <string name="app_name">Anew</string>
     <string name="save">Speichern</string>
-    <string name="quota_name">Name</string>
-    <string name="blank_quota_name">Wähle einen Namen</string>
+    <string name="task_name">Name</string>
+    <string name="blank_task_name">Wähle einen Namen</string>
     <string name="daily">Täglich</string>
     <string name="weekly">Wöchentlich</string>
-    <string name="quota_name_length">Der Name darf max. 40 Zeichen lang sein</string>
+    <string name="task_name_length">Der Name darf max. 40 Zeichen lang sein</string>
     <string name="undefined_period">Wähle eine Periode</string>
     <string name="unknown_error">Unbekannter Fehler</string>
-    <string name="new_quota">Neu</string>
-    <string name="delete_quota">Löschen</string>
+    <string name="new_task">Neu</string>
+    <string name="delete_task">Löschen</string>
     <string name="one_second">1 Sekunde</string>
     <string name="one_minute">1 Minute</string>
     <string name="one_hour">1 Stunde</string>
