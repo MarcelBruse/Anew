@@ -13,8 +13,7 @@ import kotlinx.coroutines.launch
 
 class EditorViewModel(private val tasksRepository: TasksRepository, taskId: Long) : ViewModel() {
 
-    val task = if (taskId > 0) tasksRepository.getTask(taskId) else MutableLiveData(
-        TaskFactory.newTask())
+    val task = if (taskId > 0) tasksRepository.getTask(taskId) else MutableLiveData(TaskFactory.newTask())
 
     val taskSavedOrDeletedEvent = SingleLiveEvent<Any>()
 
