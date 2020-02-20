@@ -1,6 +1,6 @@
-package de.anew.models
+package de.anew.models.task
 
-import de.anew.models.TaskValidator.Error.*
+import de.anew.models.task.TaskValidator.Error.*
 import de.anew.models.time.TimePeriod
 import de.anew.models.time.UndefinedPeriod
 import org.threeten.bp.ZonedDateTime
@@ -35,7 +35,12 @@ object TaskValidator {
         val errors = ArrayList<Error>()
         errors.addAll(validateTaskName(task.name))
         errors.addAll(validatePeriod(task.period))
-        errors.addAll(validateLastFulfilmentDate(task, task.lastFulfillmentTime))
+        errors.addAll(
+            validateLastFulfilmentDate(
+                task,
+                task.lastFulfillmentTime
+            )
+        )
         return errors
     }
 

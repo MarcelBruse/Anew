@@ -2,7 +2,7 @@ package de.anew.activities.editor
 
 import android.widget.Spinner
 import com.google.android.material.textfield.TextInputEditText
-import de.anew.models.TaskFactory
+import de.anew.models.task.TaskFactory
 import de.anew.models.time.TimePeriodEnum
 import io.mockk.every
 import io.mockk.mockk

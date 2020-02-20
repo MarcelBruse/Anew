@@ -5,15 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.anew.R
 import de.anew.lifecycle.SingleLiveEvent
-import de.anew.models.TaskFactory
-import de.anew.models.TaskValidator
-import de.anew.models.TasksRepository
+import de.anew.models.task.TaskFactory
+import de.anew.models.task.TaskValidator
+import de.anew.models.task.TasksRepository
 import de.anew.models.time.TimePeriod
 import kotlinx.coroutines.launch
 
 class EditorViewModel(private val tasksRepository: TasksRepository, taskId: Long) : ViewModel() {
 
-    val task = if (taskId > 0) tasksRepository.getTask(taskId) else MutableLiveData(TaskFactory.newTask())
+    val task = if (taskId > 0) tasksRepository.getTask(taskId) else MutableLiveData(
+        TaskFactory.newTask())
 
     val taskSavedOrDeletedEvent = SingleLiveEvent<Any>()
 

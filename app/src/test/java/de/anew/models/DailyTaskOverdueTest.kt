@@ -1,5 +1,6 @@
 package de.anew.models
 
+import de.anew.models.task.Task
 import de.anew.models.time.Daily
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -13,7 +14,8 @@ class DailyTaskOverdueTest {
         val fixedClock = Clock.fixed(fixedTime, ZoneId.of("Europe/London"))
         val now = ZonedDateTime.now(fixedClock)
         val startTime = now.minusDays(1)
-        val task = Task(0, "", Daily(fixedClock), startTime, null)
+        val task =
+            Task(0, "", Daily(fixedClock), startTime, null)
         assertThat(task.dueIn().abs()).isEqualTo(Duration.ofHours(22))
         assertThat(task.dueIn().isNegative).isTrue()
     }
@@ -25,7 +27,13 @@ class DailyTaskOverdueTest {
         val now = ZonedDateTime.now(fixedClock)
         val startTime = now.minusDays(10)
         val lastFulfillmentTime = now.minusDays(3)
-        val task = Task(0, "", Daily(fixedClock), startTime, lastFulfillmentTime)
+        val task = Task(
+            0,
+            "",
+            Daily(fixedClock),
+            startTime,
+            lastFulfillmentTime
+        )
         assertThat(task.dueIn().abs()).isEqualTo(Duration.ofHours(44))
         assertThat(task.dueIn().isNegative).isTrue()
     }

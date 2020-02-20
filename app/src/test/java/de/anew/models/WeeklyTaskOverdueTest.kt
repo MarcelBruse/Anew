@@ -1,5 +1,6 @@
 package de.anew.models
 
+import de.anew.models.task.Task
 import de.anew.models.time.Weekly
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -13,7 +14,8 @@ class WeeklyTaskOverdueTest {
         val fixedClock = Clock.fixed(fixedTime, ZoneId.of("Europe/London"))
         val now = ZonedDateTime.now(fixedClock)
         val startTime = now.minusWeeks(1)
-        val task = Task(0, "", Weekly(fixedClock), startTime, null)
+        val task =
+            Task(0, "", Weekly(fixedClock), startTime, null)
         assertThat(task.dueIn().abs()).isEqualTo(Duration.ofDays(2))
         assertThat(task.dueIn().isNegative).isTrue()
     }
@@ -25,7 +27,13 @@ class WeeklyTaskOverdueTest {
         val now = ZonedDateTime.now(fixedClock)
         val startTime = now.minusWeeks(20)
         val lastFulfillmentTime = now.minusWeeks(2)
-        val task = Task(0, "", Weekly(fixedClock), startTime, lastFulfillmentTime)
+        val task = Task(
+            0,
+            "",
+            Weekly(fixedClock),
+            startTime,
+            lastFulfillmentTime
+        )
         assertThat(task.dueIn().abs()).isEqualTo(Duration.ofDays(2))
         assertThat(task.dueIn().isNegative).isTrue()
     }

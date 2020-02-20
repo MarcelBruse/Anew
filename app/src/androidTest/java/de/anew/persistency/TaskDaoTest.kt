@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import de.anew.models.Task
+import de.anew.models.task.Task
 import de.anew.models.time.Weekly
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -31,13 +31,15 @@ class TaskDaoTest {
         val context = InstrumentationRegistry.getInstrumentation().context
         database = Room.inMemoryDatabaseBuilder(context, TasksDatabase::class.java).build()
         taskDao = database.getTaskDao()
-        taskDao.save(Task(
-            TEST_TASK_ID,
-            TEST_TASK_NAME,
-            Weekly(Clock.systemDefaultZone()),
-            TEST_START_TIME,
-            TEST_LAST_FULFILLMENT_TIME
-        ))
+        taskDao.save(
+            Task(
+                TEST_TASK_ID,
+                TEST_TASK_NAME,
+                Weekly(Clock.systemDefaultZone()),
+                TEST_START_TIME,
+                TEST_LAST_FULFILLMENT_TIME
+            )
+        )
     }
 
     @Test
@@ -48,7 +50,15 @@ class TaskDaoTest {
 
     @Test
     fun queryAllTasks() {
-        taskDao.save(Task(0L, "First task", Weekly(Clock.systemDefaultZone()), SAMPLE_TIME, SAMPLE_TIME))
+        taskDao.save(
+            Task(
+                0L,
+                "First task",
+                Weekly(Clock.systemDefaultZone()),
+                SAMPLE_TIME,
+                SAMPLE_TIME
+            )
+        )
         val tasks = getValue(taskDao.loadAll())
         assertThat(tasks).hasSize(2)
         var filterResult = tasks.filter { task -> task.id != 0L }
@@ -73,7 +83,15 @@ class TaskDaoTest {
     @Test
     fun autoGeneratePrimaryKeysUponTaskCreation() {
         val name = "First task"
-        taskDao.save(Task(0L, name, Weekly(Clock.systemDefaultZone()), SAMPLE_TIME, SAMPLE_TIME))
+        taskDao.save(
+            Task(
+                0L,
+                name,
+                Weekly(Clock.systemDefaultZone()),
+                SAMPLE_TIME,
+                SAMPLE_TIME
+            )
+        )
         val tasks = getValue(taskDao.loadAll())
         assertThat(tasks).hasSize(2)
         val filterResult = tasks.filter { task -> task.id != 0L }
@@ -92,13 +110,15 @@ class TaskDaoTest {
         assertThat(oldTask?.startTime).isEqualTo(TEST_START_TIME)
         assertThat(oldTask?.lastFulfillmentTime).isEqualTo(TEST_LAST_FULFILLMENT_TIME)
         assertThat(getValue(taskDao.loadAll())).hasSize(1)
-        taskDao.save(Task(
-            TEST_TASK_ID,
-            TEST_TASK_NAME.reversed(),
-            Weekly(Clock.systemDefaultZone()),
-            TEST_START_TIME,
-            TEST_LAST_FULFILLMENT_TIME
-        ))
+        taskDao.save(
+            Task(
+                TEST_TASK_ID,
+                TEST_TASK_NAME.reversed(),
+                Weekly(Clock.systemDefaultZone()),
+                TEST_START_TIME,
+                TEST_LAST_FULFILLMENT_TIME
+            )
+        )
         val newTask = getValue(taskDao.load(TEST_TASK_ID))
         assertThat(newTask?.id).isEqualTo(TEST_TASK_ID)
         assertThat(newTask?.name).isEqualTo(TEST_TASK_NAME.reversed())

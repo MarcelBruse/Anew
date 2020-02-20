@@ -1,4 +1,4 @@
-package de.anew.models
+package de.anew.models.task
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -35,7 +35,10 @@ class Task(
 
     var lastFulfillmentTime: ZonedDateTime? = lastFulfillmentTime
         set(lastFulfillmentTime) {
-            if (TaskValidator.validateLastFulfilmentDate(this, lastFulfillmentTime).isEmpty()) {
+            if (TaskValidator.validateLastFulfilmentDate(
+                    this,
+                    lastFulfillmentTime
+                ).isEmpty()) {
                 field = lastFulfillmentTime
             }
         }

@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import de.anew.models.Task
+import de.anew.models.task.Task
 
 @Dao
 interface TaskDao {

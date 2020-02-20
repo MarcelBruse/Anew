@@ -2,7 +2,7 @@ package de.anew.activities.editor
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import de.anew.models.TasksRepository
+import de.anew.models.task.TasksRepository
 
 class EditorViewModelFactory(
     private val tasksRepository: TasksRepository,

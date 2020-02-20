@@ -1,8 +1,8 @@
 package de.anew.activities.tasks
 
 import androidx.lifecycle.LiveData
-import de.anew.models.Task
-import de.anew.models.TasksRepository
+import de.anew.models.task.Task
+import de.anew.models.task.TasksRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

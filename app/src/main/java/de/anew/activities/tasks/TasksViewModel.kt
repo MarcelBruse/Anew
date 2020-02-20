@@ -3,8 +3,8 @@ package de.anew.activities.tasks
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.anew.models.Task
-import de.anew.models.TasksRepository
+import de.anew.models.task.Task
+import de.anew.models.task.TasksRepository
 import kotlinx.coroutines.launch
 
 class TasksViewModel(private val tasksRepository: TasksRepository) : ViewModel() {

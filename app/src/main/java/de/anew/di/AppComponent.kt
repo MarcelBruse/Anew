@@ -1,7 +1,7 @@
 package de.anew.di
 
 import dagger.Component
-import de.anew.models.TasksRepository
+import de.anew.models.task.TasksRepository
 import javax.inject.Singleton
 
 @Singleton

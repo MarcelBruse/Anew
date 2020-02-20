@@ -1,6 +1,8 @@
 package de.anew.models
 
-import de.anew.models.TaskValidator.Error.*
+import de.anew.models.task.TaskValidator.Error.*
+import de.anew.models.task.Task
+import de.anew.models.task.TaskValidator
 import de.anew.models.time.Daily
 import de.anew.models.time.UndefinedPeriod
 import org.assertj.core.api.Assertions.assertThat
@@ -49,14 +51,26 @@ class TaskValidatorTest {
 
     @Test
     fun validTask() {
-        val task = Task(0L, "Some task", Daily(), ZonedDateTime.now(), ZonedDateTime.now())
+        val task = Task(
+            0L,
+            "Some task",
+            Daily(),
+            ZonedDateTime.now(),
+            ZonedDateTime.now()
+        )
         val errors = TaskValidator.validate(task)
         assertThat(errors).isEmpty()
     }
 
     @Test
     fun invalidTask() {
-        val task = Task(0L, "", UndefinedPeriod, ZonedDateTime.now(), ZonedDateTime.now())
+        val task = Task(
+            0L,
+            "",
+            UndefinedPeriod,
+            ZonedDateTime.now(),
+            ZonedDateTime.now()
+        )
         val errors = TaskValidator.validate(task)
         assertThat(errors).containsOnly(TASK_NAME_IS_BLANK, UNDEFINED_PERIOD)
     }

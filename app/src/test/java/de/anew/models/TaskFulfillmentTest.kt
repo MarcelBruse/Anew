@@ -1,5 +1,6 @@
 package de.anew.models
 
+import de.anew.models.task.Task
 import de.anew.models.time.Daily
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -9,19 +10,32 @@ class TaskFulfillmentTest {
 
     @Test
     fun taskNeverFulfilled() {
-        val task = Task(0L, "Task", Daily(), START_TIME, null)
+        val task =
+            Task(0L, "Task", Daily(), START_TIME, null)
         assertThat(task.isFulfilled()).isFalse()
     }
 
     @Test
     fun taskFulfilled() {
-        val task = Task(0L, "Task", Daily(), START_TIME, ZonedDateTime.now())
+        val task = Task(
+            0L,
+            "Task",
+            Daily(),
+            START_TIME,
+            ZonedDateTime.now()
+        )
         assertThat(task.isFulfilled()).isTrue()
     }
 
     @Test
     fun taskNotFulfilled() {
-        val task = Task(0L, "Task", Daily(), START_TIME, ZonedDateTime.now().minusDays(2))
+        val task = Task(
+            0L,
+            "Task",
+            Daily(),
+            START_TIME,
+            ZonedDateTime.now().minusDays(2)
+        )
         assertThat(task.isFulfilled()).isFalse()
     }
 

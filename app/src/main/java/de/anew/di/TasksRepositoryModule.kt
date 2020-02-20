@@ -3,7 +3,7 @@ package de.anew.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import de.anew.models.TasksRepository
+import de.anew.models.task.TasksRepository
 import de.anew.persistency.TasksDatabase
 import javax.inject.Singleton
 
@@ -13,7 +13,11 @@ class TasksRepositoryModule(private val applicationContext: Context) {
     @Provides
     @Singleton
     fun provideTasksRepository(): TasksRepository {
-        return TasksRepository(TasksDatabase.getInstance(applicationContext).getTaskDao())
+        return TasksRepository(
+            TasksDatabase.getInstance(
+                applicationContext
+            ).getTaskDao()
+        )
     }
 
 }

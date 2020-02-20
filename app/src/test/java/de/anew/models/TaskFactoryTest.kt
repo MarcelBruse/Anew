@@ -1,5 +1,6 @@
 package de.anew.models
 
+import de.anew.models.task.TaskFactory
 import de.anew.models.time.Daily
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

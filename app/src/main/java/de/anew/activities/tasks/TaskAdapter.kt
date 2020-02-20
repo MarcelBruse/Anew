@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.anew.R
 import de.anew.activities.tasks.TaskAdapter.TaskViewHolder
-import de.anew.models.Task
+import de.anew.models.task.Task
 class TaskAdapter(
     private val tasksViewModel: TasksViewModel,
     private val taskItemClickListener: TaskItemClickListener

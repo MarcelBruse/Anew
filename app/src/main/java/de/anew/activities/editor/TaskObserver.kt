@@ -3,7 +3,7 @@ package de.anew.activities.editor
 import android.widget.Spinner
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
-import de.anew.models.Task
+import de.anew.models.task.Task
 import de.anew.models.time.TimePeriodEnum
 
 class TaskObserver(

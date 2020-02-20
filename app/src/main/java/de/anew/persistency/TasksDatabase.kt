@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import de.anew.models.Task
+import de.anew.models.task.Task
 import de.anew.models.time.Weekly
 import org.threeten.bp.ZonedDateTime
 import kotlin.concurrent.thread
@@ -43,7 +43,8 @@ abstract class TasksDatabase : RoomDatabase() {
                             "Some task",
                             Weekly(),
                             ZonedDateTime.now(),
-                            ZonedDateTime.now())
+                            ZonedDateTime.now()
+                        )
                         val taskDao = getInstance(context).getTaskDao()
                         taskDao.save(task)
                     }
