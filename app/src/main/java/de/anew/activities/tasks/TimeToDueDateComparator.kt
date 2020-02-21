@@ -3,7 +3,7 @@ package de.anew.activities.tasks
 import de.anew.models.task.Task
 import org.threeten.bp.ZonedDateTime
 
-class TimeToCompletionComparator : Comparator<Task> {
+class TimeToDueDateComparator : Comparator<Task> {
 
     override fun compare(task1: Task?, task2: Task?): Int {
         if (task1 == null || task2 == null) {

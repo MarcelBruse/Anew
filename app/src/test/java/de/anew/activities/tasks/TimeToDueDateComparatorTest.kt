@@ -6,14 +6,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.threeten.bp.ZonedDateTime
 
-class TimeToCompletionComparatorTest {
+class TimeToDueDateComparatorTest {
 
     @Test
     fun firstTaskIsDueBeforeSecondTask() {
         val now = ZonedDateTime.now()
         val task1 = Task(0L, "Task1", Daily(), now.minusDays(2), null)
         val task2 = Task(1L, "Task2", Daily(), now, null)
-        assertThat(TimeToCompletionComparator().compare(task1, task2)).isNegative()
+        assertThat(TimeToDueDateComparator().compare(task1, task2)).isNegative()
     }
 
     @Test
@@ -21,7 +21,7 @@ class TimeToCompletionComparatorTest {
         val now = ZonedDateTime.now()
         val task1 = Task(0L, "Task1", Daily(), now, null)
         val task2 = Task(1L, "Task2", Daily(), now.minusDays(2), null)
-        assertThat(TimeToCompletionComparator().compare(task1, task2)).isPositive()
+        assertThat(TimeToDueDateComparator().compare(task1, task2)).isPositive()
     }
 
     @Test
@@ -29,12 +29,12 @@ class TimeToCompletionComparatorTest {
         val now = ZonedDateTime.now()
         val task1 = Task(0L, "Task1", Daily(), now, null)
         val task2 = Task(1L, "Task2", Daily(), now, null)
-        assertThat(TimeToCompletionComparator().compare(task1, task2)).isEqualTo(0)
+        assertThat(TimeToDueDateComparator().compare(task1, task2)).isEqualTo(0)
     }
 
     @Test
     fun tasksAreNull() {
-        assertThat(TimeToCompletionComparator().compare(null, null)).isEqualTo(0)
+        assertThat(TimeToDueDateComparator().compare(null, null)).isEqualTo(0)
     }
 
 }
