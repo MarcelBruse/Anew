@@ -58,10 +58,9 @@ class Task(
 
     }
 
-    fun dueIn(): Duration {
-        val now = ZonedDateTime.now(period.clock())
-        return Duration.between(now, dueDate())
-    }
+    fun dueIn() = dueIn(ZonedDateTime.now(period.clock()))
+
+    fun dueIn(startingFrom: ZonedDateTime): Duration = Duration.between(startingFrom, dueDate())
 
     fun isValid() = TaskValidator.validate(this).isEmpty()
 
