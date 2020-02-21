@@ -9,8 +9,8 @@ class TimeToCompletionComparator : Comparator<Task> {
         if (task1 == null || task2 == null) {
             return 0
         }
-        val now = ZonedDateTime.now()
-        val timeDifference = task1.dueIn(now).minus(task2.dueIn(now))
+        val startingFromNow = ZonedDateTime.now()
+        val timeDifference = task1.dueIn(startingFromNow).minus(task2.dueIn(startingFromNow))
         return when {
             timeDifference.isZero -> 0
             timeDifference.isNegative -> -1
