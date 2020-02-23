@@ -5,8 +5,10 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.anew.models.task.Task
+import de.anew.models.task.TaskValidator
 import de.anew.models.task.TasksRepository
 import kotlinx.coroutines.launch
+import org.threeten.bp.ZonedDateTime
 
 class TasksViewModel(private val tasksRepository: TasksRepository) : ViewModel() {
 
@@ -24,8 +26,16 @@ class TasksViewModel(private val tasksRepository: TasksRepository) : ViewModel()
         tasks = sortedTasks
     }
 
-    fun deleteTask(task: Task) = viewModelScope.launch {
-        tasksRepository.deleteTask(task)
+    fun markTaskAsFulfilled(task: Task) = viewModelScope.launch {
+        val fulfilledNow = ZonedDateTime.now()
+        if (validateFulfillmentTime(task, fulfilledNow)) {
+            task.lastFulfillmentTime = fulfilledNow
+            tasksRepository.saveTask(task)
+        }
+    }
+
+    private fun validateFulfillmentTime(task: Task, lastFulfillmentTimeCandidate: ZonedDateTime): Boolean {
+        return TaskValidator.validateLastFulfilmentTime(task, lastFulfillmentTimeCandidate).isEmpty()
     }
 
 }

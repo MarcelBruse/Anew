@@ -22,7 +22,7 @@ object TaskValidator {
         return if (periodCandidate is UndefinedPeriod) listOf(UNDEFINED_PERIOD) else emptyList()
     }
 
-    fun validateLastFulfilmentDate(task: Task, lastFulfillmentTimeCandidate: ZonedDateTime?): List<Error> {
+    fun validateLastFulfilmentTime(task: Task, lastFulfillmentTimeCandidate: ZonedDateTime?): List<Error> {
         lastFulfillmentTimeCandidate?.let {
             if (task.startTime.isAfter(it)) {
                 return listOf(FULFILLED_BEFORE_START)
@@ -36,7 +36,7 @@ object TaskValidator {
         errors.addAll(validateTaskName(task.name))
         errors.addAll(validatePeriod(task.period))
         errors.addAll(
-            validateLastFulfilmentDate(
+            validateLastFulfilmentTime(
                 task,
                 task.lastFulfillmentTime
             )

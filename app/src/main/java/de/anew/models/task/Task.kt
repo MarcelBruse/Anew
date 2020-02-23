@@ -35,7 +35,7 @@ class Task(
 
     var lastFulfillmentTime: ZonedDateTime? = lastFulfillmentTime
         set(lastFulfillmentTime) {
-            if (TaskValidator.validateLastFulfilmentDate(
+            if (TaskValidator.validateLastFulfilmentTime(
                     this,
                     lastFulfillmentTime
                 ).isEmpty()) {

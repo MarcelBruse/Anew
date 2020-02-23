@@ -57,9 +57,9 @@ class TaskAdapter(
         }
     }
 
-    fun deleteTaskAt(position: Int) {
+    fun markTaskAsFulfullied(position: Int) {
         tasksViewModel.tasks.value?.get(position)?.let {
-            tasksViewModel.deleteTask(it)
+            tasksViewModel.markTaskAsFulfilled(it)
         }
     }
 
