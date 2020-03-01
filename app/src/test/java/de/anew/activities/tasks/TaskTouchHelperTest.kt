@@ -14,7 +14,7 @@ class TaskTouchHelperTest {
     @Before
     fun setUp() {
         taskAdapter = mockk()
-        every { taskAdapter.markTaskAsFulfullied(any()) } returns Unit
+        every { taskAdapter.markTaskAsFulfilled(any()) } returns Unit
     }
 
     @Test

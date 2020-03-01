@@ -1,4 +1,4 @@
-package de.anew.models
+package de.anew.models.task
 
 import de.anew.models.task.TaskValidator.Error.*
 import de.anew.models.task.Task

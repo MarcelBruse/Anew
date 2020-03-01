@@ -1,4 +1,4 @@
-package de.anew.models
+package de.anew.models.task
 
 import androidx.lifecycle.MutableLiveData
 import de.anew.models.task.Task

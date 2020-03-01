@@ -1,8 +1,6 @@
 package de.anew.activities.tasks
 
-import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,11 +8,7 @@ import org.threeten.bp.Duration
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class FormattedDurationTest {
-
-    private val enEN = Locale("en", "EN")
-
-    private val deDE = Locale("de", "DE")
+class DurationFormatterTest: LocalizationTest() {
 
     @Test
     fun timeIsUp() {
@@ -263,14 +257,6 @@ class FormattedDurationTest {
         context?.let {
             assertThat(DurationFormatter(it).format(duration)).isEqualTo(expected)
         }
-    }
-
-    private fun createNewContextWithLocale(locale: Locale): Context? {
-        Locale.setDefault(locale)
-        val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-        val configuration = context.resources.configuration
-        configuration.setLocale(locale)
-        return context.createConfigurationContext(configuration)
     }
 
 }

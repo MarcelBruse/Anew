@@ -1,4 +1,4 @@
-package de.anew.models
+package de.anew.models.task
 
 import de.anew.models.task.Task
 import de.anew.models.time.Weekly

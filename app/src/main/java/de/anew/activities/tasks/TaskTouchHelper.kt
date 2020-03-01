@@ -8,7 +8,7 @@ class TaskTouchHelper(private val taskAdapter: TaskAdapter) : ItemTouchHelper.Si
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        taskAdapter.markTaskAsFulfullied(viewHolder.adapterPosition)
+        taskAdapter.markTaskAsFulfilled(viewHolder.adapterPosition)
         taskAdapter.notifyDataSetChanged()
     }
 

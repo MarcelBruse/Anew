@@ -1,6 +1,5 @@
-package de.anew.models
+package de.anew.models.task
 
-import de.anew.models.task.Task
 import de.anew.models.time.Daily
 import de.anew.models.time.UndefinedPeriod
 import de.anew.models.time.Weekly
@@ -37,7 +36,8 @@ class TaskValidityTest {
     @Test
     fun validTaskWithNullFulfilmentTime() {
         val task =
-            Task(0L, "Task", Weekly(), START_TIME, null)
+            Task(0L, "Task", Weekly(),
+                START_TIME, null)
         assertThat(task.isValid()).isTrue()
     }
 
@@ -68,7 +68,10 @@ class TaskValidityTest {
     @Test
     fun validTaskWithSameStartAndFulfilmentTime() {
         val task =
-            Task(0L, "Task", Daily(), START_TIME, START_TIME)
+            Task(0L, "Task", Daily(),
+                START_TIME,
+                START_TIME
+            )
         assertThat(task.isValid()).isTrue()
     }
 
@@ -138,7 +141,8 @@ class TaskValidityTest {
             START_TIME,
             AFTER_START_TIME
         )
-        task.lastFulfillmentTime = START_TIME
+        task.lastFulfillmentTime =
+            START_TIME
         assertThat(task.lastFulfillmentTime).isEqualTo(START_TIME)
         task.lastFulfillmentTime = START_TIME.plusDays(1)
         assertThat(task.lastFulfillmentTime).isEqualTo(START_TIME.plusDays(1))

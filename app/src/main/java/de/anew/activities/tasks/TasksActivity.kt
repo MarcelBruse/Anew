@@ -20,14 +20,17 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
 
     private lateinit var tasksViewModel: TasksViewModel
 
+    private lateinit var taskAdapter: TaskAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tasks_activity)
         setSupportActionBar(findViewById(R.id.tasks_toolbar))
         tasksViewModel = createTasksViewModel()
-        val taskAdapter = TaskAdapter(tasksViewModel, this)
+        val timeToDueDateFormatter = TimeToDueDateFormatter(applicationContext)
+        taskAdapter = TaskAdapter(tasksViewModel, this, timeToDueDateFormatter)
         tasksViewModel.tasks.observe(this, Observer { taskAdapter.notifyDataSetChanged() })
-        val tasksView = createTasksView(taskAdapter)
+        val tasksView = createTasksView()
         ItemTouchHelper(TaskTouchHelper(taskAdapter)).attachToRecyclerView(tasksView)
     }
 
@@ -38,7 +41,7 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
         return ViewModelProvider(this, tasksViewModelFactory).get(TasksViewModel::class.java)
     }
 
-    private fun createTasksView(taskAdapter: TaskAdapter): RecyclerView {
+    private fun createTasksView(): RecyclerView {
         val linearLayoutManager = LinearLayoutManager(this)
         val tasksView = findViewById<View>(R.id.recycler_view) as RecyclerView
         tasksView.apply {
@@ -68,6 +71,11 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
             R.id.new_menu_item -> startActivity(Intent(this, EditorActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        taskAdapter.removeCallbacksAndMessages()
+        super.onDestroy()
     }
 
 }
