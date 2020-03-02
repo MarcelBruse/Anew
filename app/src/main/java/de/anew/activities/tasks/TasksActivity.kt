@@ -18,7 +18,7 @@ import de.anew.activities.editor.EditorActivity
 
 class TasksActivity : AppCompatActivity(), TaskItemClickListener {
 
-    private val tasksViewCacheSize = 20
+    private val tasksViewCacheSize = 10
 
     private lateinit var tasksViewModel: TasksViewModel
 

@@ -23,10 +23,13 @@ class TaskAdapter(
 
     private val dueDateViewPosition = 1
 
+    private lateinit var recyclerView: RecyclerView
+
     private val dueDateViewUpdateHandler = Handler(Looper.getMainLooper())
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
         DueDateViewUpdateTrigger(this, dueDateViewUpdateHandler).schedule()
     }
 
@@ -68,6 +71,13 @@ class TaskAdapter(
         val dueDateView = taskView.getChildAt(dueDateViewPosition) as TextView
         dueDateView.text = timeToDueDateFormatter.getFormattedDueDate(task)
     }
+
+    fun getPositionOfFirstVisibleTaskView(): Int {
+        val firstVisibleChildPosition = recyclerView.getChildAt(0)
+        return recyclerView.getChildAdapterPosition(firstVisibleChildPosition)
+    }
+
+    fun getNumberOfVisibleTaskViews() = recyclerView.childCount
 
     fun markTaskAsFulfilled(position: Int) {
         tasksViewModel.tasks.value?.get(position)?.let {
