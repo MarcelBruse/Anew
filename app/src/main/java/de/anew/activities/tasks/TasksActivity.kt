@@ -18,6 +18,8 @@ import de.anew.activities.editor.EditorActivity
 
 class TasksActivity : AppCompatActivity(), TaskItemClickListener {
 
+    private val tasksViewCacheSize = 20
+
     private lateinit var tasksViewModel: TasksViewModel
 
     private lateinit var taskAdapter: TaskAdapter
@@ -45,9 +47,10 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
         val linearLayoutManager = LinearLayoutManager(this)
         val tasksView = findViewById<View>(R.id.recycler_view) as RecyclerView
         tasksView.apply {
-            setHasFixedSize(true)
             layoutManager = linearLayoutManager
             adapter = taskAdapter
+            setHasFixedSize(true)
+            setItemViewCacheSize(tasksViewCacheSize)
         }
         return tasksView
     }
