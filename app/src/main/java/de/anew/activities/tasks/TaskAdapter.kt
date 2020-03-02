@@ -41,8 +41,8 @@ class TaskAdapter(
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         tasksViewModel.tasks.value?.let {
             val task = it[position]
-            bindTaskNameView(holder, task)
-            bindDueDateView(holder, task)
+            setTaskName(holder, task)
+            setDueDate(holder, task)
         }
     }
 
@@ -50,20 +50,20 @@ class TaskAdapter(
         if (payloads.contains(UPDATE_DUE_DATE_VIEW)) {
             tasksViewModel.tasks.value?.let {
                 val task = it[position]
-                bindDueDateView(holder, task)
+                setDueDate(holder, task)
             }
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }
     }
 
-    private fun bindTaskNameView(holder: TaskViewHolder, task: Task) {
+    private fun setTaskName(holder: TaskViewHolder, task: Task) {
         val taskView = holder.taskView
         val taskNameView = taskView.getChildAt(taskNameViewPosition) as TextView
         taskNameView.text = task.name
     }
 
-    private fun bindDueDateView(holder: TaskViewHolder, task: Task) {
+    private fun setDueDate(holder: TaskViewHolder, task: Task) {
         val taskView = holder.taskView
         val dueDateView = taskView.getChildAt(dueDateViewPosition) as TextView
         dueDateView.text = timeToDueDateFormatter.getFormattedDueDate(task)
