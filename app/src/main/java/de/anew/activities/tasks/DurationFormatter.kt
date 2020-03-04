@@ -4,7 +4,29 @@ import android.content.Context
 import de.anew.R
 import org.threeten.bp.Duration
 
-class DurationFormatter(private val context: Context) {
+class DurationFormatter(context: Context) {
+
+    private val dSeconds = context.getString(R.string.d_seconds)
+
+    private val oneSecond = context.getString(R.string.one_second)
+
+    private val dMinutes = context.getString(R.string.d_minutes)
+
+    private val oneMinute = context.getString(R.string.one_minute)
+
+    private val dHours = context.getString(R.string.d_hours)
+
+    private val oneHour = context.getString(R.string.one_hour)
+
+    private val dDays = context.getString(R.string.d_days)
+
+    private val oneDay = context.getString(R.string.one_day)
+
+    private val dWeeks = context.getString(R.string.d_weeks)
+
+    private val oneWeek = context.getString(R.string.one_week)
+
+    private val conjunction = context.getString(R.string.and)
 
     fun format(duration: Duration): String {
         val absoluteDuration = duration.abs()
@@ -19,9 +41,9 @@ class DurationFormatter(private val context: Context) {
 
     private fun formatSeconds(duration: Duration): String {
         return when {
-            duration <= Duration.ZERO -> context.getString(R.string.d_seconds).format(duration.seconds)
-            duration == Duration.ofSeconds(1) -> context.getString(R.string.one_second)
-            else -> context.getString(R.string.d_seconds).format(duration.seconds)
+            duration <= Duration.ZERO -> dSeconds.format(duration.seconds)
+            duration == Duration.ofSeconds(1) -> oneSecond
+            else -> dSeconds.format(duration.seconds)
         }
     }
 
@@ -48,39 +70,39 @@ class DurationFormatter(private val context: Context) {
     private fun formatMinutes(duration: Duration): String {
         val durationInMinutes = duration.toMinutes()
         return when {
-            durationInMinutes < 1L -> context.getString(R.string.d_minutes).format(durationInMinutes)
-            durationInMinutes == 1L -> context.getString(R.string.one_minute)
-            else -> context.getString(R.string.d_minutes).format(durationInMinutes)
+            durationInMinutes < 1L -> dMinutes.format(durationInMinutes)
+            durationInMinutes == 1L -> oneMinute
+            else -> dMinutes.format(durationInMinutes)
         }
     }
 
     private fun formatHours(duration: Duration): String {
         val durationInHours = duration.toHours()
         return when {
-            durationInHours < 1L -> context.getString(R.string.d_hours).format(durationInHours)
-            durationInHours == 1L -> context.getString(R.string.one_hour)
-            else -> context.getString(R.string.d_hours).format(durationInHours)
+            durationInHours < 1L -> dHours.format(durationInHours)
+            durationInHours == 1L -> oneHour
+            else -> dHours.format(durationInHours)
         }
     }
 
     private fun formatDays(duration: Duration): String {
         val durationInDays = duration.toDays()
         return when {
-            durationInDays < 1L -> context.getString(R.string.d_days).format(durationInDays)
-            durationInDays == 1L -> context.getString(R.string.one_day)
-            else -> context.getString(R.string.d_days).format(durationInDays)
+            durationInDays < 1L -> dDays.format(durationInDays)
+            durationInDays == 1L -> oneDay
+            else -> dDays.format(durationInDays)
         }
     }
 
     private fun formatWeeks(duration: Duration): String {
         val durationInWeeks = duration.toDays() / 7
         return when {
-            durationInWeeks < 1L -> context.getString(R.string.d_weeks).format(0)
-            durationInWeeks == 1L -> context.getString(R.string.one_week)
-            else -> context.getString(R.string.d_weeks).format(durationInWeeks)
+            durationInWeeks < 1L -> dWeeks.format(0)
+            durationInWeeks == 1L -> oneWeek
+            else -> dWeeks.format(durationInWeeks)
         }
     }
 
-    private fun formatAnd() = " %s ".format(context.getString(R.string.and))
+    private fun formatAnd() = " %s ".format(conjunction)
 
 }

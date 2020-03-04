@@ -6,21 +6,21 @@ import de.anew.models.task.Task
 
 class TimeToDueDateFormatter(private val context: Context) {
 
+    private val periodNames: HashMap<String, String> = hashMapOf(
+        "Daily" to context.getString(R.string.daily),
+        "Weekly" to context.getString(R.string.weekly)
+    )
+
+    private val dueInLabel = context.getString(R.string.due_in)
+
+    private val overdueSinceLabel = context.getString(R.string.overdue_since)
+
     fun getFormattedDueDate(task: Task): String {
         val dueIn = task.dueIn()
-        val periodName = getLocalizedPeriodName(task)
-        val dueOrOverdueId = if (dueIn.isNegative) R.string.overdue_since else R.string.due_in
-        val dueOrOverdue = context.getString(dueOrOverdueId)
+        val periodName = periodNames.getOrDefault(task.period::class.java.simpleName, "Unknown period")
+        val dueOrOverdue = if (dueIn.isNegative) overdueSinceLabel else dueInLabel
         val formattedDuration = DurationFormatter(context).format(dueIn)
         return "%s · %s %s".format(periodName, dueOrOverdue, formattedDuration)
-    }
-
-    private fun getLocalizedPeriodName(task: Task): String {
-        return when (task.period::class.java.simpleName) {
-            "Daily" -> context.getString(R.string.daily)
-            "Weekly" -> context.getString(R.string.weekly)
-            else -> "Undefined period"
-        }
     }
 
 }
