@@ -31,7 +31,7 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
         tasksViewModel = createTasksViewModel()
         val timeToDueDateFormatter = TimeToDueDateFormatter(applicationContext)
         taskAdapter = TaskAdapter(tasksViewModel, this, timeToDueDateFormatter)
-        tasksViewModel.tasks.observe(this, Observer { taskAdapter.notifyDataSetChanged() })
+        tasksViewModel.tasks.observe(this, Observer { taskAdapter.setTasks(it) })
         val tasksView = createTasksView()
         ItemTouchHelper(TaskTouchHelper(taskAdapter)).attachToRecyclerView(tasksView)
     }

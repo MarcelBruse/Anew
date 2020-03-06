@@ -12,6 +12,7 @@ import de.anew.R
 import de.anew.activities.tasks.TaskAdapter.Payloads.UPDATE_DUE_DATE_VIEW
 import de.anew.activities.tasks.TaskAdapter.TaskViewHolder
 import de.anew.models.task.Task
+import java.util.concurrent.CopyOnWriteArrayList
 
 class TaskAdapter(
     private val tasksViewModel: TasksViewModel,
@@ -25,6 +26,8 @@ class TaskAdapter(
 
     private lateinit var recyclerView: RecyclerView
 
+    private val tasks = CopyOnWriteArrayList<Task>()
+
     private val dueDateViewUpdateHandler = Handler(Looper.getMainLooper())
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -33,28 +36,29 @@ class TaskAdapter(
         DueDateViewUpdateTrigger(this, dueDateViewUpdateHandler).schedule()
     }
 
+    fun setTasks(tasksToAdd: Collection<Task>) {
+        tasks.clear()
+        tasks.addAll(tasksToAdd)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val taskView = LayoutInflater.from(parent.context)
             .inflate(R.layout.task_view, parent, false) as LinearLayout
         return TaskViewHolder(taskView, taskItemClickListener)
     }
 
-    override fun getItemCount() = tasksViewModel.tasks.value?.size ?: 0
+    override fun getItemCount() = tasks.size
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        tasksViewModel.tasks.value?.let {
-            val task = it[position]
-            setTaskName(holder, task)
-            setDueDate(holder, task)
-        }
+        val task = tasks[position]
+        setTaskName(holder, task)
+        setDueDate(holder, task)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.contains(UPDATE_DUE_DATE_VIEW)) {
-            tasksViewModel.tasks.value?.let {
-                val task = it[position]
-                setDueDate(holder, task)
-            }
+            setDueDate(holder, tasks[position])
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }
@@ -80,9 +84,7 @@ class TaskAdapter(
     fun getNumberOfVisibleTaskViews() = recyclerView.childCount
 
     fun markTaskAsFulfilled(position: Int) {
-        tasksViewModel.tasks.value?.get(position)?.let {
-            tasksViewModel.markTaskAsFulfilled(it)
-        }
+        tasksViewModel.markTaskAsFulfilled(tasks[position])
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
