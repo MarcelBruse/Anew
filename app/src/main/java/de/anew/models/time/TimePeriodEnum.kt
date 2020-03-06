@@ -6,7 +6,7 @@ enum class TimePeriodEnum {
 
     companion object {
 
-        fun getValueByTimePeriod(timePeriod: TimePeriod): TimePeriodEnum {
+        fun getByTimePeriod(timePeriod: TimePeriod): TimePeriodEnum {
             return when (timePeriod) {
                 is Daily -> DAILY
                 is Weekly -> WEEKLY

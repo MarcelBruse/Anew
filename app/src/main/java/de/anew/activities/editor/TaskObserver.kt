@@ -14,7 +14,7 @@ class TaskObserver(
     override fun onChanged(task: Task?) {
         task?.let {
             taskNameField.setText(it.name)
-            val position = TimePeriodEnum.getValueByTimePeriod(it.period).ordinal
+            val position = TimePeriodEnum.getByTimePeriod(it.period).ordinal
             timePeriodSpinner.setSelection(position)
         }
     }
