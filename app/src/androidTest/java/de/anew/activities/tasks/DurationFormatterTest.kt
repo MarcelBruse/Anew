@@ -230,7 +230,7 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun minusOneSecond() {
         val duration = Duration.ofSeconds(1).negated()
-        assertThat(duration.isNegative).isTrue()
+        assertThat(duration.isNegative)
         checkFormatOf(duration, "1 second", enEN)
         checkFormatOf(duration, "1 Sekunde", deDE)
     }
@@ -238,7 +238,7 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun minusOneMinuteAndTwelveSeconds() {
         val duration = Duration.ofSeconds(72).negated()
-        assertThat(duration.isNegative).isTrue()
+        assertThat(duration.isNegative)
         checkFormatOf(duration, "1 minute and 12 seconds", enEN)
         checkFormatOf(duration, "1 Minute und 12 Sekunden", deDE)
     }
@@ -246,7 +246,7 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun minusThreeDaysAndOneHour() {
         val duration = Duration.ofDays(3).plusHours(1).negated()
-        assertThat(duration.isNegative).isTrue()
+        assertThat(duration.isNegative)
         checkFormatOf(duration, "3 days and 1 hour", enEN)
         checkFormatOf(duration, "3 Tagen und 1 Stunde", deDE)
     }

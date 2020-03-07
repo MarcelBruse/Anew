@@ -6,25 +6,25 @@ import org.threeten.bp.Duration
 
 class DurationFormatter(context: Context) {
 
-    private val dSeconds = context.getString(R.string.d_seconds)
+    private val seconds = context.getString(R.string.seconds)
 
-    private val oneSecond = context.getString(R.string.one_second)
+    private val second = context.getString(R.string.second)
 
-    private val dMinutes = context.getString(R.string.d_minutes)
+    private val minutes = context.getString(R.string.minutes)
 
-    private val oneMinute = context.getString(R.string.one_minute)
+    private val minute = context.getString(R.string.minute)
 
-    private val dHours = context.getString(R.string.d_hours)
+    private val hours = context.getString(R.string.hours)
 
-    private val oneHour = context.getString(R.string.one_hour)
+    private val hour = context.getString(R.string.hour)
 
-    private val dDays = context.getString(R.string.d_days)
+    private val days = context.getString(R.string.days)
 
-    private val oneDay = context.getString(R.string.one_day)
+    private val day = context.getString(R.string.day)
 
-    private val dWeeks = context.getString(R.string.d_weeks)
+    private val weeks = context.getString(R.string.weeks)
 
-    private val oneWeek = context.getString(R.string.one_week)
+    private val week = context.getString(R.string.week)
 
     private val conjunction = context.getString(R.string.and)
 
@@ -41,68 +41,68 @@ class DurationFormatter(context: Context) {
 
     private fun formatSeconds(duration: Duration): String {
         return when {
-            duration <= Duration.ZERO -> dSeconds.format(duration.seconds)
-            duration == Duration.ofSeconds(1) -> oneSecond
-            else -> dSeconds.format(duration.seconds)
+            duration <= Duration.ZERO -> "${duration.seconds} $seconds"
+            duration == Duration.ofSeconds(1) -> second
+            else -> "${duration.seconds} $seconds"
         }
     }
 
     private fun formatMinutesAndSeconds(duration: Duration): String {
         val remainingSeconds = Duration.ofSeconds(duration.seconds % 60)
-        return formatMinutes(duration) + formatAnd() + formatSeconds(remainingSeconds)
+        return applyAnd(formatMinutes(duration), formatSeconds(remainingSeconds))
     }
 
     private fun formatHoursAndMinutes(duration: Duration): String {
         val remainingMinutes = Duration.ofMinutes(duration.toMinutes() % 60)
-        return formatHours(duration) + formatAnd() + formatMinutes(remainingMinutes)
+        return applyAnd(formatHours(duration), formatMinutes(remainingMinutes))
     }
 
     private fun formatDaysAndHours(duration: Duration): String {
         val remainingHours = Duration.ofHours(duration.toHours() % 24)
-        return formatDays(duration) + formatAnd() + formatHours(remainingHours)
+        return applyAnd(formatDays(duration), formatHours(remainingHours))
     }
 
     private fun formatWeeksAndDays(duration: Duration): String {
         val remainingDays = Duration.ofDays(duration.toDays() % 7)
-        return formatWeeks(duration) + formatAnd() + formatDays(remainingDays)
+        return applyAnd(formatWeeks(duration), formatDays(remainingDays))
     }
 
     private fun formatMinutes(duration: Duration): String {
         val durationInMinutes = duration.toMinutes()
         return when {
-            durationInMinutes < 1L -> dMinutes.format(durationInMinutes)
-            durationInMinutes == 1L -> oneMinute
-            else -> dMinutes.format(durationInMinutes)
+            durationInMinutes < 1L -> "$durationInMinutes $minutes"
+            durationInMinutes == 1L -> minute
+            else -> "$durationInMinutes $minutes"
         }
     }
 
     private fun formatHours(duration: Duration): String {
         val durationInHours = duration.toHours()
         return when {
-            durationInHours < 1L -> dHours.format(durationInHours)
-            durationInHours == 1L -> oneHour
-            else -> dHours.format(durationInHours)
+            durationInHours < 1L -> "$durationInHours $hours"
+            durationInHours == 1L -> hour
+            else -> "$durationInHours $hours"
         }
     }
 
     private fun formatDays(duration: Duration): String {
         val durationInDays = duration.toDays()
         return when {
-            durationInDays < 1L -> dDays.format(durationInDays)
-            durationInDays == 1L -> oneDay
-            else -> dDays.format(durationInDays)
+            durationInDays < 1L -> "$durationInDays $days"
+            durationInDays == 1L -> day
+            else -> "$durationInDays $days"
         }
     }
 
     private fun formatWeeks(duration: Duration): String {
         val durationInWeeks = duration.toDays() / 7
         return when {
-            durationInWeeks < 1L -> dWeeks.format(0)
-            durationInWeeks == 1L -> oneWeek
-            else -> dWeeks.format(durationInWeeks)
+            durationInWeeks < 1L -> "0 $weeks"
+            durationInWeeks == 1L -> week
+            else -> "$durationInWeeks $weeks"
         }
     }
 
-    private fun formatAnd() = " %s ".format(conjunction)
+    private fun applyAnd(first: String, second: String) = "$first $conjunction $second"
 
 }

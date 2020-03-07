@@ -25,7 +25,7 @@ class TimeToDueDateFormatter(context: Context) {
         val dueIn = task.dueIn()
         val dueOrOverdue = if (dueIn.isNegative) overdueSinceLabel else dueInLabel
         val formattedDuration = durationFormatter.format(dueIn)
-        return "%s · %s %s".format(periodName, dueOrOverdue, formattedDuration)
+        return "$periodName · $dueOrOverdue $formattedDuration"
     }
 
 }
