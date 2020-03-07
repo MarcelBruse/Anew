@@ -28,12 +28,12 @@ class TaskAdapter(
 
     private val tasks = CopyOnWriteArrayList<Task>()
 
-    private val dueDateViewUpdateHandler = Handler(Looper.getMainLooper())
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
-        DueDateViewUpdateTrigger(this, dueDateViewUpdateHandler).schedule()
+        PeriodicUpdateNotifier(this, handler).schedule()
     }
 
     fun setTasks(tasksToAdd: Collection<Task>) {
@@ -93,7 +93,7 @@ class TaskAdapter(
     }
 
     fun removeCallbacksAndMessages() {
-        dueDateViewUpdateHandler.removeCallbacksAndMessages(null)
+        handler.removeCallbacksAndMessages(null)
     }
 
     class TaskViewHolder(
