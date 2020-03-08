@@ -7,7 +7,7 @@ import de.anew.models.time.TimePeriodEnum
 
 class TimeToDueDateFormatter(context: Context) {
 
-    private val periodNames: HashMap<TimePeriodEnum, String> = hashMapOf(
+    private val periodNames = hashMapOf(
         TimePeriodEnum.DAILY to context.getString(R.string.daily),
         TimePeriodEnum.WEEKLY to context.getString(R.string.weekly),
         TimePeriodEnum.UNDEFINED_PERIOD to "Unknown period"
@@ -19,7 +19,7 @@ class TimeToDueDateFormatter(context: Context) {
 
     private val durationFormatter = DurationFormatter(context)
 
-    fun getFormattedDueDate(task: Task): String {
+    fun formatteDueDate(task: Task): String {
         val timePeriodEnum = TimePeriodEnum.getByTimePeriod(task.period)
         val periodName = periodNames[timePeriodEnum]
         val dueIn = task.dueIn()

@@ -60,7 +60,7 @@ class TimeToDueDateFormatterTest : LocalizationTest() {
         val context = createNewContextWithLocale(locale)
         assertThat(context).isNotNull
         context?.let {
-            assertThat(TimeToDueDateFormatter(it).getFormattedDueDate(task)).isEqualTo(expected)
+            assertThat(TimeToDueDateFormatter(it).formatteDueDate(task)).isEqualTo(expected)
         }
     }
 

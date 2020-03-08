@@ -76,9 +76,4 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDestroy() {
-        taskAdapter.removeCallbacksAndMessages()
-        super.onDestroy()
-    }
-
 }

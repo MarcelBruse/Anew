@@ -1,17 +1,17 @@
 package de.anew.activities.tasks
 
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import de.anew.R
 import de.anew.activities.tasks.TaskAdapter.Payloads.UPDATE_DUE_DATE_VIEW
 import de.anew.activities.tasks.TaskAdapter.TaskViewHolder
 import de.anew.models.task.Task
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 class TaskAdapter(
@@ -28,17 +28,23 @@ class TaskAdapter(
 
     private val tasks = CopyOnWriteArrayList<Task>()
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val timeToDueDateCache = ConcurrentHashMap<Task, String>()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
-        PeriodicUpdateNotifier(this, handler).schedule()
+        PeriodicViewUpdater(
+            this,
+            tasks,
+            timeToDueDateCache,
+            timeToDueDateFormatter
+        ).schedule(tasksViewModel.viewModelScope)
     }
 
     fun setTasks(tasksToAdd: Collection<Task>) {
         tasks.clear()
         tasks.addAll(tasksToAdd)
+        timeToDueDateCache.keys.retainAll(tasks)
         notifyDataSetChanged()
     }
 
@@ -73,7 +79,7 @@ class TaskAdapter(
     private fun setDueDate(holder: TaskViewHolder, task: Task) {
         val taskView = holder.taskView
         val dueDateView = taskView.getChildAt(dueDateViewPosition) as TextView
-        dueDateView.text = timeToDueDateFormatter.getFormattedDueDate(task)
+        dueDateView.text = timeToDueDateCache.computeIfAbsent(task, timeToDueDateFormatter::formatteDueDate)
     }
 
     fun getPositionOfFirstVisibleTaskView(): Int {
@@ -85,15 +91,6 @@ class TaskAdapter(
 
     fun markTaskAsFulfilled(position: Int) {
         tasksViewModel.markTaskAsFulfilled(tasks[position])
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        removeCallbacksAndMessages()
-    }
-
-    fun removeCallbacksAndMessages() {
-        handler.removeCallbacksAndMessages(null)
     }
 
     class TaskViewHolder(
