@@ -79,7 +79,7 @@ class TaskAdapter(
     private fun setDueDate(holder: TaskViewHolder, task: Task) {
         val taskView = holder.taskView
         val dueDateView = taskView.getChildAt(dueDateViewPosition) as TextView
-        dueDateView.text = timeToDueDateCache.computeIfAbsent(task, timeToDueDateFormatter::formatteDueDate)
+        dueDateView.text = timeToDueDateCache.computeIfAbsent(task, timeToDueDateFormatter::formatDueDate)
     }
 
     fun getPositionOfFirstVisibleTaskView(): Int {

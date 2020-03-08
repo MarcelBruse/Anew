@@ -19,7 +19,7 @@ class TimeToDueDateFormatter(context: Context) {
 
     private val durationFormatter = DurationFormatter(context)
 
-    fun formatteDueDate(task: Task): String {
+    fun formatDueDate(task: Task): String {
         val timePeriodEnum = TimePeriodEnum.getByTimePeriod(task.period)
         val periodName = periodNames[timePeriodEnum]
         val dueIn = task.dueIn()

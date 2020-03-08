@@ -39,7 +39,7 @@ class PeriodicViewUpdater(
             val lastVisibleView = firstVisibleView + numberOfVisibleViews
             for (i in firstVisibleView until lastVisibleView) {
                 val task = tasks[i]
-                updatedTimes[task] = timeToDueDateFormatter.formatteDueDate(task)
+                updatedTimes[task] = timeToDueDateFormatter.formatDueDate(task)
             }
             timeToDueDateCache.putAll(updatedTimes)
         }
