@@ -16,33 +16,31 @@ class PeriodicViewUpdater(
     private val delayMillis = 1000L
 
     fun schedule(scope: CoroutineScope) {
-        scope.launch { updateAndNotify() }
+        scope.launch(Dispatchers.Main) {
+            while (isActive) {
+                updateAndNotify()
+                delay(delayMillis)
+            }
+        }
     }
 
     private suspend fun updateAndNotify() {
-        withContext(Dispatchers.Main) {
-            val firstVisibleView = max(taskAdapter.getPositionOfFirstVisibleTaskView(), 0)
-            val numberOfVisibleViews = taskAdapter.getNumberOfVisibleTaskViews()
-            async {
-                updateTimeToDueDateCache(firstVisibleView, numberOfVisibleViews)
-            }.invokeOnCompletion {
-                taskAdapter.notifyItemRangeChanged(firstVisibleView, numberOfVisibleViews, UPDATE_DUE_DATE_VIEW)
-            }
-            delay(delayMillis)
-            updateAndNotify()
+        val firstVisibleView = max(taskAdapter.getPositionOfFirstVisibleTaskView(), 0)
+        val numberOfVisibleViews = taskAdapter.getNumberOfVisibleTaskViews()
+        withContext(Dispatchers.Default) {
+            updateTimeToDueDateCache(firstVisibleView, numberOfVisibleViews)
         }
+        taskAdapter.notifyItemRangeChanged(firstVisibleView, numberOfVisibleViews, UPDATE_DUE_DATE_VIEW)
     }
 
-    private suspend fun updateTimeToDueDateCache(firstVisibleView: Int, numberOfVisibleViews: Int) {
-        withContext(Dispatchers.Default) {
-            val updatedTimes = mutableMapOf<Task, String>()
-            val lastVisibleView = firstVisibleView + numberOfVisibleViews
-            for (i in firstVisibleView until lastVisibleView) {
-                val task = tasks[i]
-                updatedTimes[task] = timeToDueDateFormatter.formatDueDate(task)
-            }
-            timeToDueDateCache.putAll(updatedTimes)
+    private fun updateTimeToDueDateCache(firstVisibleView: Int, numberOfVisibleViews: Int) {
+        val updatedTimes = mutableMapOf<Task, String>()
+        val lastVisibleView = firstVisibleView + numberOfVisibleViews
+        for (taskIndex in firstVisibleView until lastVisibleView) {
+            val task = tasks[taskIndex]
+            updatedTimes[task] = timeToDueDateFormatter.formatDueDate(task)
         }
+        timeToDueDateCache.putAll(updatedTimes)
     }
 
 }
