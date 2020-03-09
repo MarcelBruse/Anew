@@ -21,7 +21,7 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
 
     private val tasksViewCacheSize = 20
 
-    private val maxNumberOfTasks = 30
+    private val maxNumberOfTasks = 50
 
     private lateinit var tasksViewModel: TasksViewModel
 
