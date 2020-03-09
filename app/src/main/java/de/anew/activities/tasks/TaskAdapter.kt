@@ -55,6 +55,8 @@ class TaskAdapter(
         return TaskViewHolder(taskView, taskItemClickListener)
     }
 
+    override fun getItemId(position: Int) = tasks[position].id
+
     override fun getItemCount() = tasks.size
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
