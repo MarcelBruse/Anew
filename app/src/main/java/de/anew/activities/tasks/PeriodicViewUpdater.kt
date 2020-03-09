@@ -35,8 +35,8 @@ class PeriodicViewUpdater(
 
     private fun updateTimeToDueDateCache(firstVisibleView: Int, numberOfVisibleViews: Int) {
         val updatedTimes = mutableMapOf<Task, String>()
-        val lastVisibleView = firstVisibleView + numberOfVisibleViews
-        for (taskIndex in firstVisibleView until lastVisibleView) {
+        val lastVisibleView = firstVisibleView + numberOfVisibleViews - 1
+        for (taskIndex in firstVisibleView.rangeTo(lastVisibleView)) {
             val task = tasks[taskIndex]
             updatedTimes[task] = timeToDueDateFormatter.formatDueDate(task)
         }
