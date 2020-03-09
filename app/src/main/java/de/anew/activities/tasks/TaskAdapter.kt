@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import de.anew.R
 import de.anew.activities.tasks.TaskAdapter.Payloads.UPDATE_DUE_DATE_VIEW
@@ -41,11 +42,11 @@ class TaskAdapter(
         ).schedule(tasksViewModel.viewModelScope)
     }
 
-    fun setTasks(tasksToAdd: Collection<Task>) {
+    fun setTasks(newTasks: List<Task>) {
+        DiffUtil.calculateDiff(TasksDiffCallback(tasks, newTasks)).dispatchUpdatesTo(this)
+        timeToDueDateCache.keys.retainAll(newTasks)
         tasks.clear()
-        tasks.addAll(tasksToAdd)
-        timeToDueDateCache.keys.retainAll(tasks)
-        notifyDataSetChanged()
+        tasks.addAll(newTasks)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
