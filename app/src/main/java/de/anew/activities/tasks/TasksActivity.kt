@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,8 @@ import de.anew.activities.editor.EditorActivity
 class TasksActivity : AppCompatActivity(), TaskItemClickListener {
 
     private val tasksViewCacheSize = 20
+
+    private val maxNumberOfTasks = 30
 
     private lateinit var tasksViewModel: TasksViewModel
 
@@ -71,9 +74,17 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.new_menu_item -> startActivity(Intent(this, EditorActivity::class.java))
+            R.id.new_menu_item -> startEditorWithNewTask()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun startEditorWithNewTask() {
+        if (tasksViewModel.getNumberOfTasks() < maxNumberOfTasks) {
+            startActivity(Intent(this, EditorActivity::class.java))
+        } else {
+            Toast.makeText(this, getString(R.string.max_number_of_tasks), Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

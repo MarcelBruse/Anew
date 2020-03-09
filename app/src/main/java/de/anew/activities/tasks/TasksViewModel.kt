@@ -26,6 +26,8 @@ class TasksViewModel(private val tasksRepository: TasksRepository) : ViewModel()
         tasks = sortedTasks
     }
 
+    fun getNumberOfTasks() = tasks.value?.size ?: 0
+
     fun markTaskAsFulfilled(task: Task) = viewModelScope.launch {
         val fulfilledNow = ZonedDateTime.now()
         if (validateFulfillmentTime(task, fulfilledNow)) {

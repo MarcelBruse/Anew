@@ -24,4 +24,5 @@
     <string name="and">and</string>
     <string name="due_in">Due in</string>
     <string name="overdue_since">Overdue since</string>
+    <string name="max_number_of_tasks">Maximum number of tasks reached</string>
 </resources>
