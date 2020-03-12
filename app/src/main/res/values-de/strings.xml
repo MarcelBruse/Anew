@@ -23,6 +23,6 @@
     <string name="weeks">Wochen</string>
     <string name="and">und</string>
     <string name="due_in">Fällig in</string>
-    <string name="overdue_since">Fällig seit</string>
+    <string name="overdue_since">Überfällig seit</string>
     <string name="max_number_of_tasks">Höchstzahl an Aufgaben erreicht</string>
 </resources>

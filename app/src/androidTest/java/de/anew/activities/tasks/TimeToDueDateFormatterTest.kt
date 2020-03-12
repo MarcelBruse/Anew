@@ -42,7 +42,7 @@ class TimeToDueDateFormatterTest : LocalizationTest() {
         val fixedClock = Clock.fixed(now.toInstant(), now.zone)
         val task = Task(0L, "Task", Daily(fixedClock), startTime, lastFulfillmentTime)
         checkFormatOf(task, "Daily · Overdue since 1 second", enEN)
-        checkFormatOf(task, "Täglich · Fällig seit 1 Sekunde", deDE)
+        checkFormatOf(task, "Täglich · Überfällig seit 1 Sekunde", deDE)
     }
 
     @Test
@@ -53,7 +53,7 @@ class TimeToDueDateFormatterTest : LocalizationTest() {
         val fixedClock = Clock.fixed(now.toInstant(), now.zone)
         val task = Task(0L, "Task", Daily(fixedClock), startTime, lastFulfillmentTime)
         checkFormatOf(task, "Daily · Overdue since 2 minutes and 0 seconds", enEN)
-        checkFormatOf(task, "Täglich · Fällig seit 2 Minuten und 0 Sekunden", deDE)
+        checkFormatOf(task, "Täglich · Überfällig seit 2 Minuten und 0 Sekunden", deDE)
     }
 
     private fun checkFormatOf(task: Task, expected: String, locale: Locale) {
