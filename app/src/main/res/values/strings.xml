@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Anew</string>
+    <string name="tasks">Tasks</string>
+    <string name="task">Task</string>
     <string name="save">Save</string>
     <string name="task_name">Name</string>
     <string name="blank_task_name">Choose a name</string>
