@@ -7,13 +7,18 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DiffUtil.DiffResult
 import androidx.recyclerview.widget.RecyclerView
 import de.anew.R
 import de.anew.activities.tasks.TaskAdapter.Payloads.UPDATE_DUE_DATE_VIEW
 import de.anew.activities.tasks.TaskAdapter.TaskViewHolder
 import de.anew.models.task.Task
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.CopyOnWriteArrayList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
+import java.util.*
 
 class TaskAdapter(
     private val tasksViewModel: TasksViewModel,
@@ -27,23 +32,50 @@ class TaskAdapter(
 
     private lateinit var recyclerView: RecyclerView
 
-    private val tasks = CopyOnWriteArrayList<Task>()
+    private val tasks = mutableListOf<Task>()
 
-    private val timeToDueDateCache = ConcurrentHashMap<Task, String>()
+    private val timeToDueDateCache = mutableMapOf<Task, String>()
+
+    private val pendingTaskUpdates = ArrayDeque<List<Task>>()
+
+    private val scope = tasksViewModel.viewModelScope
+
+    private val updateMutex = Mutex()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
-        PeriodicViewUpdater(
-            this,
-            tasks,
-            timeToDueDateCache,
-            timeToDueDateFormatter
-        ).schedule(tasksViewModel.viewModelScope)
+        PeriodicViewUpdater(this, tasks, timeToDueDateCache, timeToDueDateFormatter, updateMutex).schedule(scope)
     }
 
     fun setTasks(newTasks: List<Task>) {
-        DiffUtil.calculateDiff(TasksDiffCallback(tasks, newTasks)).dispatchUpdatesTo(this)
+        val copyOfNewTasks = newTasks.toList()
+        pendingTaskUpdates.add(copyOfNewTasks)
+        if (pendingTaskUpdates.size <= 1) {
+            updateViewAndTasks(copyOfNewTasks)
+        }
+
+    }
+
+    private fun updateViewAndTasks(newTasks: List<Task>) {
+        scope.launch(Dispatchers.Main) {
+            val diffResult = withContext(Dispatchers.Default) {
+                DiffUtil.calculateDiff(TasksDiffCallback(tasks, newTasks))
+            }
+            updateMutex.withLock {
+                dispatchUpdatesToView(diffResult)
+                updateTasks(newTasks)
+            }
+            pendingTaskUpdates.remove()
+            if (pendingTaskUpdates.size > 0) {
+                updateViewAndTasks(pendingTaskUpdates.peek())
+            }
+        }
+    }
+
+    private fun dispatchUpdatesToView(diffResult: DiffResult) = diffResult.dispatchUpdatesTo(this)
+
+    private fun updateTasks(newTasks: List<Task>) {
         timeToDueDateCache.keys.retainAll(newTasks)
         tasks.clear()
         tasks.addAll(newTasks)
