@@ -2,8 +2,9 @@ package de.anew.activities.tasks
 
 import android.content.Context
 import de.anew.R
-import de.anew.models.task.Task
+import de.anew.models.time.TimePeriod
 import de.anew.models.time.TimePeriodEnum
+import org.threeten.bp.Duration
 
 class TimeToDueDateFormatter(context: Context) {
 
@@ -19,10 +20,9 @@ class TimeToDueDateFormatter(context: Context) {
 
     private val durationFormatter = DurationFormatter(context)
 
-    fun formatDueDate(task: Task): String {
-        val timePeriodEnum = TimePeriodEnum.getByTimePeriod(task.period)
+    fun formatDueDate(period: TimePeriod, dueIn: Duration): String {
+        val timePeriodEnum = TimePeriodEnum.getByTimePeriod(period)
         val periodName = periodNames[timePeriodEnum]
-        val dueIn = task.dueIn()
         val dueOrOverdue = if (dueIn.isNegative) overdueSinceLabel else dueInLabel
         val formattedDuration = durationFormatter.format(dueIn)
         return "$periodName · $dueOrOverdue $formattedDuration"

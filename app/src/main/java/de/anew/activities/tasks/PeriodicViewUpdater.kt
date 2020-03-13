@@ -1,5 +1,6 @@
 package de.anew.activities.tasks
 
+import de.anew.activities.tasks.TaskAdapter.CachedTaskProperties
 import de.anew.activities.tasks.TaskAdapter.Payloads.UPDATE_DUE_DATE_VIEW
 import de.anew.models.task.Task
 import kotlinx.coroutines.*
@@ -11,7 +12,7 @@ import kotlin.math.min
 class PeriodicViewUpdater(
     private val taskAdapter: TaskAdapter,
     private val tasks: List<Task>,
-    private val timeToDueDateCache: MutableMap<Task, String>,
+    private val taskPropertiesCache: MutableMap<Task, CachedTaskProperties>,
     private val timeToDueDateFormatter: TimeToDueDateFormatter,
     private val updateView: Mutex
 ) {
@@ -39,14 +40,17 @@ class PeriodicViewUpdater(
     }
 
     private fun updateTimeToDueDateCache(firstVisibleView: Int, numberOfVisibleViews: Int) {
-        val updatedTimes = mutableMapOf<Task, String>()
+        val updatedCache = mutableMapOf<Task, CachedTaskProperties>()
         val firstTaskIndex = max(firstVisibleView, 0)
         val lastTaskIndex = min(firstVisibleView + numberOfVisibleViews - 1, tasks.size - 1)
         for (taskIndex in firstTaskIndex.rangeTo(lastTaskIndex)) {
             val task = tasks[taskIndex]
-            updatedTimes[task] = timeToDueDateFormatter.formatDueDate(task)
+            val dueIn = task.dueIn()
+            val timeToDueDate = timeToDueDateFormatter.formatDueDate(task.period, dueIn)
+            val backgroundColor = TaskColorizer.getBackgroundColor(task.isFulfilled(), dueIn)
+            updatedCache[task] = CachedTaskProperties(timeToDueDate, backgroundColor)
         }
-        timeToDueDateCache.putAll(updatedTimes)
+        taskPropertiesCache.putAll(updatedCache)
     }
 
 }

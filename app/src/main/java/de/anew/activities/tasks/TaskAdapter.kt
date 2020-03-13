@@ -34,7 +34,7 @@ class TaskAdapter(
 
     private val tasks = mutableListOf<Task>()
 
-    private val timeToDueDateCache = mutableMapOf<Task, String>()
+    private val taskPropertyCaches = mutableMapOf<Task, CachedTaskProperties>()
 
     private val pendingTaskUpdates = ArrayDeque<List<Task>>()
 
@@ -45,7 +45,7 @@ class TaskAdapter(
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
-        PeriodicViewUpdater(this, tasks, timeToDueDateCache, timeToDueDateFormatter, updateMutex).schedule(scope)
+        PeriodicViewUpdater(this, tasks, taskPropertyCaches, timeToDueDateFormatter, updateMutex).schedule(scope)
     }
 
     fun setTasks(newTasks: List<Task>) {
@@ -54,7 +54,6 @@ class TaskAdapter(
         if (pendingTaskUpdates.size <= 1) {
             updateViewAndTasks(copyOfNewTasks)
         }
-
     }
 
     private fun updateViewAndTasks(newTasks: List<Task>) {
@@ -73,10 +72,12 @@ class TaskAdapter(
         }
     }
 
-    private fun dispatchUpdatesToView(diffResult: DiffResult) = diffResult.dispatchUpdatesTo(this)
+    private fun dispatchUpdatesToView(diffResult: DiffResult) {
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     private fun updateTasks(newTasks: List<Task>) {
-        timeToDueDateCache.keys.retainAll(newTasks)
+        taskPropertyCaches.keys.retainAll(newTasks)
         tasks.clear()
         tasks.addAll(newTasks)
     }
@@ -93,16 +94,29 @@ class TaskAdapter(
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
+        val cachedTaskProperties = getCachedTaskProperties(task)
         setTaskName(holder, task)
-        setDueDate(holder, task)
+        setDueDate(holder, cachedTaskProperties)
+        setBackgroundColor(holder, cachedTaskProperties)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.contains(UPDATE_DUE_DATE_VIEW)) {
-            setDueDate(holder, tasks[position])
+            val cachedTaskProperties = getCachedTaskProperties(tasks[position])
+            setDueDate(holder, cachedTaskProperties)
+            setBackgroundColor(holder, cachedTaskProperties)
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }
+    }
+
+    private fun getCachedTaskProperties(task: Task) = taskPropertyCaches.computeIfAbsent(task, this::createCachedTaskProperties)
+
+    private fun createCachedTaskProperties(task: Task): CachedTaskProperties {
+        val dueIn = task.dueIn()
+        val timeToDueDate = timeToDueDateFormatter.formatDueDate(task.period, dueIn)
+        val backgroundColor = TaskColorizer.getBackgroundColor(task.isFulfilled(), dueIn)
+        return CachedTaskProperties(timeToDueDate, backgroundColor)
     }
 
     private fun setTaskName(holder: TaskViewHolder, task: Task) {
@@ -111,10 +125,14 @@ class TaskAdapter(
         taskNameView.text = task.name
     }
 
-    private fun setDueDate(holder: TaskViewHolder, task: Task) {
+    private fun setDueDate(holder: TaskViewHolder, cachedTaskProperties: CachedTaskProperties) {
         val taskView = holder.taskView
         val dueDateView = taskView.getChildAt(dueDateViewPosition) as TextView
-        dueDateView.text = timeToDueDateCache.computeIfAbsent(task, timeToDueDateFormatter::formatDueDate)
+        dueDateView.text = cachedTaskProperties.timeToDueDate
+    }
+
+    private fun setBackgroundColor(holder: TaskViewHolder, cachedTaskProperties: CachedTaskProperties) {
+        holder.taskView.setBackgroundColor(cachedTaskProperties.backgroundColor)
     }
 
     fun getPositionOfFirstVisibleTaskView(): Int {
@@ -142,6 +160,8 @@ class TaskAdapter(
         }
 
     }
+
+    data class CachedTaskProperties(val timeToDueDate: String, val backgroundColor: Int)
 
     enum class Payloads {
         UPDATE_DUE_DATE_VIEW
