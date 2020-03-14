@@ -32,6 +32,8 @@ class TaskAdapter(
 
     private lateinit var recyclerView: RecyclerView
 
+    private lateinit var periodicUpdater: PeriodicViewUpdater
+
     private val tasks = mutableListOf<Task>()
 
     private val taskPropertyCaches = mutableMapOf<Task, CachedTaskProperties>()
@@ -45,7 +47,8 @@ class TaskAdapter(
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
-        PeriodicViewUpdater(this, tasks, taskPropertyCaches, timeToDueDateFormatter, updateMutex).schedule(scope)
+        periodicUpdater = PeriodicViewUpdater(this, tasks, taskPropertyCaches, timeToDueDateFormatter, updateMutex)
+        periodicUpdater.schedule(scope)
     }
 
     fun setTasks(newTasks: List<Task>) {
@@ -65,6 +68,7 @@ class TaskAdapter(
                 dispatchUpdatesToView(diffResult)
                 updateTasks(newTasks)
             }
+            updateViewImmediately()
             pendingTaskUpdates.remove()
             if (pendingTaskUpdates.size > 0) {
                 updateViewAndTasks(pendingTaskUpdates.peek())
@@ -80,6 +84,10 @@ class TaskAdapter(
         taskPropertyCaches.keys.retainAll(newTasks)
         tasks.clear()
         tasks.addAll(newTasks)
+    }
+
+    fun updateViewImmediately() {
+        periodicUpdater.updateImmediately(scope)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

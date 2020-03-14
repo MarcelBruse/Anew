@@ -87,4 +87,9 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
         }
     }
 
+    override fun onResume() {
+        taskAdapter.updateViewImmediately()
+        super.onResume()
+    }
+
 }

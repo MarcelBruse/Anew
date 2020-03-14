@@ -14,22 +14,35 @@ class PeriodicViewUpdater(
     private val tasks: List<Task>,
     private val taskPropertiesCache: MutableMap<Task, CachedTaskProperties>,
     private val timeToDueDateFormatter: TimeToDueDateFormatter,
-    private val updateView: Mutex
+    private val updateMutex: Mutex
 ) {
 
     private val delayMillis = 1000L
 
+    private var immediatelyUpdated = false
+
     fun schedule(scope: CoroutineScope) {
         scope.launch(Dispatchers.Main) {
             while (isActive) {
-                updateAndNotify()
+                if (!immediatelyUpdated) {
+                    updateAndNotify()
+                } else {
+                    immediatelyUpdated = false
+                }
                 delay(delayMillis)
             }
         }
     }
 
+    fun updateImmediately(scope: CoroutineScope) {
+        scope.launch(Dispatchers.Main) {
+            immediatelyUpdated = true
+            updateAndNotify()
+        }
+    }
+
     private suspend fun updateAndNotify() {
-        updateView.withLock {
+        updateMutex.withLock {
             val firstVisibleView = max(taskAdapter.getPositionOfFirstVisibleTaskView(), 0)
             val numberOfVisibleViews = taskAdapter.getNumberOfVisibleTaskViews()
             withContext(Dispatchers.Default) {
