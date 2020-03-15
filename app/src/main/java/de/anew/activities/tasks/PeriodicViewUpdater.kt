@@ -1,6 +1,6 @@
 package de.anew.activities.tasks
 
-import de.anew.activities.tasks.TaskAdapter.CachedTaskProperties
+import de.anew.activities.tasks.TaskAdapter.TaskViewProperties
 import de.anew.activities.tasks.TaskAdapter.Payloads.UPDATE_DUE_DATE_VIEW
 import de.anew.models.task.Task
 import kotlinx.coroutines.*
@@ -9,13 +9,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlin.math.max
 import kotlin.math.min
 
-class PeriodicViewUpdater(
-    private val taskAdapter: TaskAdapter,
-    private val tasks: List<Task>,
-    private val taskPropertiesCache: MutableMap<Task, CachedTaskProperties>,
-    private val timeToDueDateFormatter: TimeToDueDateFormatter,
-    private val updateMutex: Mutex
-) {
+class PeriodicViewUpdater(private val taskAdapter: TaskAdapter, private val updateMutex: Mutex) {
 
     private val delayMillis = 1000L
 
@@ -46,24 +40,27 @@ class PeriodicViewUpdater(
             val firstVisibleView = max(taskAdapter.getPositionOfFirstVisibleTaskView(), 0)
             val numberOfVisibleViews = taskAdapter.getNumberOfVisibleTaskViews()
             withContext(Dispatchers.Default) {
-                updateTimeToDueDateCache(firstVisibleView, numberOfVisibleViews)
+                updateTaskPropertyCache(firstVisibleView, numberOfVisibleViews)
             }
             taskAdapter.notifyItemRangeChanged(firstVisibleView, numberOfVisibleViews, UPDATE_DUE_DATE_VIEW)
         }
     }
 
-    private fun updateTimeToDueDateCache(firstVisibleView: Int, numberOfVisibleViews: Int) {
-        val updatedCache = mutableMapOf<Task, CachedTaskProperties>()
+    private fun updateTaskPropertyCache(firstVisibleView: Int, numberOfVisibleViews: Int) {
+        val updatedCache = mutableMapOf<Task, TaskViewProperties>()
+        val tasks = taskAdapter.getTasks()
         val firstTaskIndex = max(firstVisibleView, 0)
         val lastTaskIndex = min(firstVisibleView + numberOfVisibleViews - 1, tasks.size - 1)
         for (taskIndex in firstTaskIndex.rangeTo(lastTaskIndex)) {
             val task = tasks[taskIndex]
+            val isFulfilled = task.isFulfilled()
             val dueIn = task.dueIn()
-            val timeToDueDate = timeToDueDateFormatter.formatDueDate(task.period, dueIn)
-            val backgroundColor = TaskColorizer.getBackgroundColor(task.isFulfilled(), dueIn)
-            updatedCache[task] = CachedTaskProperties(timeToDueDate, backgroundColor)
+            val timeToDueDate = taskAdapter.formatDueDate(task.period, dueIn)
+            val fontColor = taskAdapter.getTaskFontColor(isFulfilled, dueIn)
+            val backgroundColor = taskAdapter.getTaskBackgroundColor(isFulfilled, dueIn)
+            updatedCache[task] = TaskViewProperties(timeToDueDate, fontColor, backgroundColor)
         }
-        taskPropertiesCache.putAll(updatedCache)
+        taskAdapter.updateTaskPropertyCache(updatedCache)
     }
 
 }
