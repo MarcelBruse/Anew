@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -31,6 +32,7 @@ class EditorActivity : AppCompatActivity() {
         editorViewModel = createEditorViewModel(taskId)
         initializePeriodSpinner()
         bindFieldsToData()
+        setFocusToTaskNameField()
         editorViewModel.taskSavedOrDeletedEvent.observe(this, Observer { finish() })
     }
 
@@ -43,7 +45,7 @@ class EditorActivity : AppCompatActivity() {
 
     private fun initializePeriodSpinner() {
         val periodNames = arrayOf(getString(R.string.daily), getString(R.string.weekly))
-        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, periodNames)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, periodNames)
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         val periodSpinner: Spinner = findViewById(R.id.period_spinner)
         periodSpinner.adapter = adapter
@@ -54,6 +56,13 @@ class EditorActivity : AppCompatActivity() {
         val taskPeriodSpinner: Spinner = findViewById(R.id.period_spinner)
         val taskObserver = TaskObserver(taskNameField, taskPeriodSpinner)
         editorViewModel.task.observe(this, taskObserver)
+    }
+
+    private fun setFocusToTaskNameField() {
+        val taskNameField: TextInputEditText = findViewById(R.id.name_field)
+        if(taskNameField.requestFocus()) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
