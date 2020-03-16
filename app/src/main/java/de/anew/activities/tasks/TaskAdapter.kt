@@ -33,7 +33,7 @@ class TaskAdapter(
 
     private lateinit var recyclerView: RecyclerView
 
-    private lateinit var periodicUpdater: PeriodicViewUpdater
+    private lateinit var viewUpdater: ViewUpdater
 
     private val tasks = mutableListOf<Task>()
 
@@ -54,8 +54,7 @@ class TaskAdapter(
         this.recyclerView = recyclerView
         timeToDueDateFormatter = TimeToDueDateFormatter(recyclerView.context)
         taskColorizer = TaskColorizer(recyclerView.context)
-        periodicUpdater = PeriodicViewUpdater(this, updateMutex)
-        periodicUpdater.schedule(scope)
+        viewUpdater = ViewUpdater(this, updateMutex)
     }
 
     fun setTasks(newTasks: List<Task>) {
@@ -77,7 +76,6 @@ class TaskAdapter(
                 dispatchUpdatesToView(diffResult)
                 updateTasks(newTasks)
             }
-            updateViewImmediately()
             pendingTaskUpdates.remove()
             if (pendingTaskUpdates.size > 0) {
                 updateViewAndTasks(pendingTaskUpdates.peek())
@@ -95,12 +93,10 @@ class TaskAdapter(
         tasks.addAll(newTasks)
     }
 
+    fun updateView(completionCallback: () -> Unit) = viewUpdater.update(scope, completionCallback)
+
     fun updateTaskPropertyCache(newTaskPropertyCache: Map<Task, TaskViewProperties>) {
         taskPropertyCache.putAll(newTaskPropertyCache)
-    }
-
-    fun updateViewImmediately() {
-        periodicUpdater.updateImmediately(scope)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -118,14 +114,14 @@ class TaskAdapter(
         val cachedTaskProperties = getCachedTaskProperties(task)
         setTaskName(holder, task)
         setDueDate(holder, cachedTaskProperties)
-        setColors(holder, cachedTaskProperties)
+        setFontColor(holder, cachedTaskProperties)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.contains(UPDATE_DUE_DATE_VIEW)) {
             val cachedTaskProperties = getCachedTaskProperties(tasks[position])
             setDueDate(holder, cachedTaskProperties)
-            setColors(holder, cachedTaskProperties)
+            setFontColor(holder, cachedTaskProperties)
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }
@@ -138,15 +134,12 @@ class TaskAdapter(
         val dueIn = task.dueIn()
         val timeToDueDate = formatDueDate(task.period, dueIn)
         val fontColor = getTaskFontColor(isFulfilled, dueIn)
-        val backgroundColor = getTaskBackgroundColor(isFulfilled, dueIn)
-        return TaskViewProperties(timeToDueDate, fontColor, backgroundColor)
+        return TaskViewProperties(timeToDueDate, fontColor)
     }
 
     fun formatDueDate(period: TimePeriod, dueIn: Duration) = timeToDueDateFormatter.formatDueDate(period, dueIn)
 
     fun getTaskFontColor(taskIsFulfilled: Boolean, dueIn: Duration) = taskColorizer.getFontColor(taskIsFulfilled, dueIn)
-
-    fun getTaskBackgroundColor(taskIsFulfilled: Boolean, dueIn: Duration) = taskColorizer.getBackgroundColor(taskIsFulfilled, dueIn)
 
     private fun setTaskName(holder: TaskViewHolder, task: Task) {
         val taskView = holder.taskView
@@ -160,21 +153,13 @@ class TaskAdapter(
         dueDateView.text = taskViewProperties.timeToDueDate
     }
 
-    private fun setColors(holder: TaskViewHolder, taskViewProperties: TaskViewProperties) {
+    private fun setFontColor(holder: TaskViewHolder, taskViewProperties: TaskViewProperties) {
         val taskView = holder.taskView
-        taskView.setBackgroundColor(taskViewProperties.backgroundColor)
         val textView = taskView.getChildAt(taskNameViewPosition) as TextView
         val dueDateView = taskView.getChildAt(dueDateViewPosition) as TextView
         textView.setTextColor(taskViewProperties.fontColor)
         dueDateView.setTextColor(taskViewProperties.fontColor)
     }
-
-    fun getPositionOfFirstVisibleTaskView(): Int {
-        val firstVisibleChildPosition = recyclerView.getChildAt(0)
-        return recyclerView.getChildAdapterPosition(firstVisibleChildPosition)
-    }
-
-    fun getNumberOfVisibleTaskViews() = recyclerView.childCount
 
     fun markTaskAsFulfilled(position: Int) {
         tasksViewModel.markTaskAsFulfilled(tasks[position])
@@ -195,7 +180,7 @@ class TaskAdapter(
 
     }
 
-    data class TaskViewProperties(val timeToDueDate: String, val fontColor: Int, val backgroundColor: Int)
+    data class TaskViewProperties(val timeToDueDate: String, val fontColor: Int)
 
     enum class Payloads {
         UPDATE_DUE_DATE_VIEW

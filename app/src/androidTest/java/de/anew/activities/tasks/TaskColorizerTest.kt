@@ -15,19 +15,19 @@ class TaskColorizerTest {
 
     @Test
     fun colorOfFulfilledTasks() {
-        val backgroundColor = taskColorizer.getBackgroundColor(true, Duration.ZERO)
+        val backgroundColor = taskColorizer.getFontColor(true, Duration.ZERO)
         assertThat(backgroundColor).isEqualTo(context.getColor(R.color.fulfilledGreen))
     }
 
     @Test
     fun colorOfDueTasks() {
-        val backgroundColor = taskColorizer.getBackgroundColor(false, Duration.ofHours(1))
-        assertThat(backgroundColor).isEqualTo(0x0)
+        val backgroundColor = taskColorizer.getFontColor(false, Duration.ofHours(1))
+        assertThat(backgroundColor).isEqualTo(context.getColor(R.color.lightFont))
     }
 
     @Test
     fun colorOfOverdueTasks() {
-        val backgroundColor = taskColorizer.getBackgroundColor(false, Duration.ofHours(1).negated())
+        val backgroundColor = taskColorizer.getFontColor(false, Duration.ofHours(1).negated())
         assertThat(backgroundColor).isEqualTo(context.getColor(R.color.overdueYellow))
     }
 

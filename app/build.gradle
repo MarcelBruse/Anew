@@ -35,10 +35,11 @@ android {
 
 dependencies {
     def assertj_version = "3.11.1"
-    def room_version = "2.2.3"
+    def room_version = "2.2.4"
     def dagger_version = "2.24"
     def lifecycle_version = "2.2.0"
     def mockk_version = "1.9.3"
+    def threetenbp_version = "1.4.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -50,23 +51,25 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.1.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
     testImplementation 'junit:junit:4.12'
     testImplementation "org.assertj:assertj-core:$assertj_version"
     testImplementation "io.mockk:mockk:$mockk_version"
-    testImplementation('org.threeten:threetenbp:1.3.2') {
+    testImplementation("org.threeten:threetenbp:$threetenbp_version") {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation "org.assertj:assertj-core:$assertj_version"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
-    androidTestImplementation('org.threeten:threetenbp:1.3.2') {
+    androidTestImplementation("org.threeten:threetenbp:$threetenbp_version") {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
     kapt "androidx.room:room-compiler:$room_version"
     api "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation 'com.google.android.material:material:1.1.0'
 }

@@ -12,12 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import de.anew.R
 import de.anew.TasksApplication
 import de.anew.activities.ActivityArgumentKeys.TASK_ID
 import de.anew.activities.editor.EditorActivity
 
-class TasksActivity : AppCompatActivity(), TaskItemClickListener {
+class TasksActivity : AppCompatActivity(), TaskItemClickListener, OnRefreshListener {
 
     private val tasksViewCacheSize = 20
 
@@ -27,6 +29,8 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
 
     private lateinit var taskAdapter: TaskAdapter
 
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tasks_activity)
@@ -35,6 +39,7 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
         taskAdapter = TaskAdapter(tasksViewModel, this)
         tasksViewModel.tasks.observe(this, Observer { taskAdapter.setTasks(it) })
         val tasksView = createTasksView()
+        setSwipeRefreshListener()
         ItemTouchHelper(TaskTouchHelper(taskAdapter)).attachToRecyclerView(tasksView)
     }
 
@@ -55,6 +60,11 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
             setItemViewCacheSize(tasksViewCacheSize)
         }
         return tasksView
+    }
+
+    private fun setSwipeRefreshListener() {
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener(this)
     }
 
     override fun taskItemClickedAt(position: Int) {
@@ -87,8 +97,14 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener {
     }
 
     override fun onResume() {
-        taskAdapter.updateViewImmediately()
+        taskAdapter.updateView {}
         super.onResume()
+    }
+
+    override fun onRefresh() {
+        taskAdapter.updateView {
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
 }

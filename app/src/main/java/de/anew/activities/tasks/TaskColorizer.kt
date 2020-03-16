@@ -6,29 +6,17 @@ import org.threeten.bp.Duration
 
 class TaskColorizer(context: Context) {
 
-    private val lightFontColor = context.getColor(R.color.lightFont)
+    private val defaultColor = context.getColor(R.color.lightFont)
 
-    private val darkFontColor = context.getColor(R.color.darkFont)
+    private val fulfilledGreen = context.getColor(R.color.fulfilledGreen)
 
-    private val fulfilledBackgroundColor = context.getColor(R.color.fulfilledGreen)
-
-    private val overdueBackgroundColor = context.getColor(R.color.overdueYellow)
-
-    private val noColor = 0x0
+    private val overdueYellow = context.getColor(R.color.overdueYellow)
 
     fun getFontColor(isFulfilled: Boolean, dueIn: Duration): Int {
         return when {
-            isFulfilled -> darkFontColor
-            dueIn.isNegative -> darkFontColor
-            else -> lightFontColor
-        }
-    }
-
-    fun getBackgroundColor(isFulfilled: Boolean, dueIn: Duration): Int {
-        return when {
-            isFulfilled -> fulfilledBackgroundColor
-            dueIn.isNegative -> overdueBackgroundColor
-            else -> noColor
+            isFulfilled -> fulfilledGreen
+            dueIn.isNegative -> overdueYellow
+            else -> defaultColor
         }
     }
 
