@@ -31,7 +31,7 @@ class DurationFormatter(context: Context) {
     fun format(duration: Duration): String {
         val absoluteDuration = duration.abs()
         return when {
-            absoluteDuration < Duration.ofMinutes(1) -> formatSeconds(absoluteDuration)
+            absoluteDuration < Duration.ofMinutes(1) -> formatSecondsIncludingZero(absoluteDuration)
             absoluteDuration < Duration.ofHours(1) -> formatMinutesAndSeconds(absoluteDuration)
             absoluteDuration < Duration.ofDays(1) -> formatHoursAndMinutes(absoluteDuration)
             absoluteDuration < Duration.ofDays(7) -> formatDaysAndHours(absoluteDuration)
@@ -39,9 +39,13 @@ class DurationFormatter(context: Context) {
         }
     }
 
+    private fun formatSecondsIncludingZero(duration: Duration): String {
+        return if (duration.isZero) "${duration.seconds} $seconds" else  formatSeconds(duration)
+    }
+
     private fun formatSeconds(duration: Duration): String {
         return when {
-            duration <= Duration.ZERO -> "${duration.seconds} $seconds"
+            duration <= Duration.ZERO -> ""
             duration == Duration.ofSeconds(1) -> oneSecond
             else -> "${duration.seconds} $seconds"
         }
@@ -70,7 +74,7 @@ class DurationFormatter(context: Context) {
     private fun formatMinutes(duration: Duration): String {
         val durationInMinutes = duration.toMinutes()
         return when {
-            durationInMinutes < 1L -> "$durationInMinutes $minutes"
+            durationInMinutes < 1L -> ""
             durationInMinutes == 1L -> oneMinute
             else -> "$durationInMinutes $minutes"
         }
@@ -79,7 +83,7 @@ class DurationFormatter(context: Context) {
     private fun formatHours(duration: Duration): String {
         val durationInHours = duration.toHours()
         return when {
-            durationInHours < 1L -> "$durationInHours $hours"
+            durationInHours < 1L -> ""
             durationInHours == 1L -> oneHour
             else -> "$durationInHours $hours"
         }
@@ -88,7 +92,7 @@ class DurationFormatter(context: Context) {
     private fun formatDays(duration: Duration): String {
         val durationInDays = duration.toDays()
         return when {
-            durationInDays < 1L -> "$durationInDays $days"
+            durationInDays < 1L -> ""
             durationInDays == 1L -> oneDay
             else -> "$durationInDays $days"
         }
@@ -97,12 +101,14 @@ class DurationFormatter(context: Context) {
     private fun formatWeeks(duration: Duration): String {
         val durationInWeeks = duration.toDays() / 7
         return when {
-            durationInWeeks < 1L -> "0 $weeks"
+            durationInWeeks < 1L -> ""
             durationInWeeks == 1L -> oneWeek
             else -> "$durationInWeeks $weeks"
         }
     }
 
-    private fun applyAnd(first: String, second: String) = "$first $conjunction $second"
+    private fun applyAnd(first: String, second: String): String {
+        return if (second.isNotEmpty()) "$first $conjunction $second" else first
+    }
 
 }

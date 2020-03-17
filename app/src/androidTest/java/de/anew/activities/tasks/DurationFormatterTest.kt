@@ -41,8 +41,8 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun oneMinute() {
         val duration = Duration.ofSeconds(60)
-        checkFormatOf(duration, "1 minute and 0 seconds", enEN)
-        checkFormatOf(duration, "1 Minute und 0 Sekunden", deDE)
+        checkFormatOf(duration, "1 minute", enEN)
+        checkFormatOf(duration, "1 Minute", deDE)
     }
 
     @Test
@@ -69,8 +69,15 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun twoMinutes() {
         val duration = Duration.ofMinutes(2)
-        checkFormatOf(duration, "2 minutes and 0 seconds", enEN)
-        checkFormatOf(duration, "2 Minuten und 0 Sekunden", deDE)
+        checkFormatOf(duration, "2 minutes", enEN)
+        checkFormatOf(duration, "2 Minuten", deDE)
+    }
+
+    @Test
+    fun twoMinutesAndOneSecond() {
+        val duration = Duration.ofMinutes(2).plusSeconds(1)
+        checkFormatOf(duration, "2 minutes and 1 second", enEN)
+        checkFormatOf(duration, "2 Minuten und 1 Sekunde", deDE)
     }
 
     @Test
@@ -90,15 +97,15 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun oneHour() {
         val duration = Duration.ofHours(1)
-        checkFormatOf(duration, "1 hour and 0 minutes", enEN)
-        checkFormatOf(duration, "1 Stunde und 0 Minuten", deDE)
+        checkFormatOf(duration, "1 hour", enEN)
+        checkFormatOf(duration, "1 Stunde", deDE)
     }
 
     @Test
     fun oneHourAndOneSecond() {
         val duration = Duration.ofHours(1).plusSeconds(1)
-        checkFormatOf(duration, "1 hour and 0 minutes", enEN)
-        checkFormatOf(duration, "1 Stunde und 0 Minuten", deDE)
+        checkFormatOf(duration, "1 hour", enEN)
+        checkFormatOf(duration, "1 Stunde", deDE)
     }
 
     @Test
@@ -125,15 +132,15 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun oneDay() {
         val duration = Duration.ofDays(1)
-        checkFormatOf(duration, "1 day and 0 hours", enEN)
-        checkFormatOf(duration, "1 Tag und 0 Stunden", deDE)
+        checkFormatOf(duration, "1 day", enEN)
+        checkFormatOf(duration, "1 Tag", deDE)
     }
 
     @Test
     fun oneDayAndOneMinute() {
         val duration = Duration.ofDays(1).plusMinutes(1)
-        checkFormatOf(duration, "1 day and 0 hours", enEN)
-        checkFormatOf(duration, "1 Tag und 0 Stunden", deDE)
+        checkFormatOf(duration, "1 day", enEN)
+        checkFormatOf(duration, "1 Tag", deDE)
     }
 
     @Test
@@ -160,8 +167,8 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun twoDays() {
         val duration = Duration.ofDays(2)
-        checkFormatOf(duration, "2 days and 0 hours", enEN)
-        checkFormatOf(duration, "2 Tagen und 0 Stunden", deDE)
+        checkFormatOf(duration, "2 days", enEN)
+        checkFormatOf(duration, "2 Tagen", deDE)
     }
 
     @Test
@@ -181,15 +188,15 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun oneWeek() {
         val duration = Duration.ofDays(7)
-        checkFormatOf(duration, "1 week and 0 days", enEN)
-        checkFormatOf(duration, "1 Woche und 0 Tagen", deDE)
+        checkFormatOf(duration, "1 week", enEN)
+        checkFormatOf(duration, "1 Woche", deDE)
     }
 
     @Test
     fun oneWeekAndOneHour() {
         val duration = Duration.ofDays(7).plusHours(1)
-        checkFormatOf(duration, "1 week and 0 days", enEN)
-        checkFormatOf(duration, "1 Woche und 0 Tagen", deDE)
+        checkFormatOf(duration, "1 week", enEN)
+        checkFormatOf(duration, "1 Woche", deDE)
     }
 
     @Test
@@ -216,8 +223,8 @@ class DurationFormatterTest: LocalizationTest() {
     @Test
     fun twoWeeks() {
         val duration = Duration.ofDays(14)
-        checkFormatOf(duration, "2 weeks and 0 days", enEN)
-        checkFormatOf(duration, "2 Wochen und 0 Tagen", deDE)
+        checkFormatOf(duration, "2 weeks", enEN)
+        checkFormatOf(duration, "2 Wochen", deDE)
     }
 
     @Test
