@@ -18,6 +18,7 @@ import de.anew.R
 import de.anew.TasksApplication
 import de.anew.activities.ActivityArgumentKeys.TASK_ID
 import de.anew.activities.editor.EditorActivity
+import de.anew.persistency.TasksDatabase
 
 class TasksActivity : AppCompatActivity(), TaskItemClickListener, OnRefreshListener {
 
@@ -84,6 +85,7 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener, OnRefreshListe
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.new_menu_item -> startEditorWithNewTask()
+            R.id.refresh_items -> taskAdapter.updateView {}
         }
         return super.onOptionsItemSelected(item)
     }

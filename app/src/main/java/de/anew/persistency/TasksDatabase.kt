@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import de.anew.R
 import de.anew.models.task.Task
 import de.anew.models.time.Weekly
 import org.threeten.bp.ZonedDateTime
@@ -38,13 +39,8 @@ abstract class TasksDatabase : RoomDatabase() {
                 override fun onCreate(database: SupportSQLiteDatabase) {
                     super.onCreate(database)
                     thread {
-                        val task = Task(
-                            0L,
-                            "Some task",
-                            Weekly(),
-                            ZonedDateTime.now(),
-                            ZonedDateTime.now()
-                        )
+                        val nameOfFirstTask = context.getString(R.string.name_of_first_task)
+                        val task = Task(0L, nameOfFirstTask, Weekly(), ZonedDateTime.now(), null)
                         val taskDao = getInstance(context).getTaskDao()
                         taskDao.save(task)
                     }
