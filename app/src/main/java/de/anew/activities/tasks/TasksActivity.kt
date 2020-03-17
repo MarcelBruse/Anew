@@ -18,7 +18,6 @@ import de.anew.R
 import de.anew.TasksApplication
 import de.anew.activities.ActivityArgumentKeys.TASK_ID
 import de.anew.activities.editor.EditorActivity
-import de.anew.persistency.TasksDatabase
 
 class TasksActivity : AppCompatActivity(), TaskItemClickListener, OnRefreshListener {
 
