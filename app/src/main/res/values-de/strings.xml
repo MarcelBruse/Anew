@@ -29,4 +29,5 @@
     <string name="max_number_of_tasks">Höchstzahl an Aufgaben erreicht</string>
     <string name="refresh">Aktualisieren</string>
     <string name="name_of_first_task">Pflanzen gießen</string>
+    <string name="done">Erledigt</string>
 </resources>

@@ -3,6 +3,7 @@ package de.anew.activities.tasks
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import de.anew.models.task.Task
 import de.anew.models.time.Daily
+import de.anew.models.time.Weekly
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,8 +31,8 @@ class TimeToDueDateFormatterTest : LocalizationTest() {
         val yesterdayAtTheSameTime = now.minusDays(1)
         val fixedClock = Clock.fixed(now.toInstant(), now.zone)
         val task = Task(0L, "Task", Daily(fixedClock), now, yesterdayAtTheSameTime)
-        checkFormatOf(task, "Daily · Due in 2 minutes and 0 seconds", enEN)
-        checkFormatOf(task, "Täglich · Fällig in 2 Minuten und 0 Sekunden", deDE)
+        checkFormatOf(task, "Daily · Due in 2 minutes", enEN)
+        checkFormatOf(task, "Täglich · Fällig in 2 Minuten", deDE)
     }
 
     @Test
@@ -52,15 +53,34 @@ class TimeToDueDateFormatterTest : LocalizationTest() {
         val lastFulfillmentTime = now.minusDays(2)
         val fixedClock = Clock.fixed(now.toInstant(), now.zone)
         val task = Task(0L, "Task", Daily(fixedClock), startTime, lastFulfillmentTime)
-        checkFormatOf(task, "Daily · Overdue since 2 minutes and 0 seconds", enEN)
-        checkFormatOf(task, "Täglich · Überfällig seit 2 Minuten und 0 Sekunden", deDE)
+        checkFormatOf(task, "Daily · Overdue since 2 minutes", enEN)
+        checkFormatOf(task, "Täglich · Überfällig seit 2 Minuten", deDE)
+    }
+
+    @Test
+    fun doneDaily() {
+        val now = ZonedDateTime.parse("2019-11-16T00:02:00+01:00[Europe/Berlin]")
+        val fixedClock = Clock.fixed(now.toInstant(), now.zone)
+        val task = Task(0L, "Task", Daily(fixedClock), now, now.plusMinutes(2))
+        checkFormatOf(task, "Daily · Done", enEN)
+        checkFormatOf(task, "Täglich · Erledigt", deDE)
+    }
+
+    @Test
+    fun doneWeekly() {
+        val now = ZonedDateTime.parse("2019-11-16T00:02:00+01:00[Europe/Berlin]")
+        val fixedClock = Clock.fixed(now.toInstant(), now.zone)
+        val task = Task(0L, "Task", Weekly(fixedClock), now, now.plusMinutes(2))
+        checkFormatOf(task, "Weekly · Done", enEN)
+        checkFormatOf(task, "Wöchentlich · Erledigt", deDE)
     }
 
     private fun checkFormatOf(task: Task, expected: String, locale: Locale) {
         val context = createNewContextWithLocale(locale)
         assertThat(context).isNotNull
         context?.let {
-            assertThat(TimeToDueDateFormatter(it).formatDueDate(task.period, task.dueIn())).isEqualTo(expected)
+            val formatDueDate = TimeToDueDateFormatter(it).formatDueDate(task.period, task.isFulfilled(), task.dueIn())
+            assertThat(formatDueDate).isEqualTo(expected)
         }
     }
 

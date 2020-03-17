@@ -29,4 +29,5 @@
     <string name="max_number_of_tasks">Maximum number of tasks reached</string>
     <string name="refresh">Refresh</string>
     <string name="name_of_first_task">Water the plants</string>
+    <string name="done">Done</string>
 </resources>

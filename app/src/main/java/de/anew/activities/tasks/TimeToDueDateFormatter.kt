@@ -13,6 +13,8 @@ class TimeToDueDateFormatter(context: Context) {
         TimePeriodEnum.WEEKLY to context.getString(R.string.weekly),
         TimePeriodEnum.UNDEFINED_PERIOD to "Unknown period"
     )
+    
+    private val doneLabel = context.getString(R.string.done)
 
     private val dueInLabel = context.getString(R.string.due_in)
 
@@ -20,12 +22,21 @@ class TimeToDueDateFormatter(context: Context) {
 
     private val durationFormatter = DurationFormatter(context)
 
-    fun formatDueDate(period: TimePeriod, dueIn: Duration): String {
+    fun formatDueDate(period: TimePeriod, isFulfilled: Boolean, dueIn: Duration): String {
         val timePeriodEnum = TimePeriodEnum.getByTimePeriod(period)
         val periodName = periodNames[timePeriodEnum]
-        val dueOrOverdue = if (dueIn.isNegative) overdueSinceLabel else dueInLabel
+        val doneOrDueOrOverdue = getDoneOrDueOrOverdue(isFulfilled, dueIn)
         val formattedDuration = durationFormatter.format(dueIn)
-        return "$periodName · $dueOrOverdue $formattedDuration"
+        val periodAndStatus = "$periodName · $doneOrDueOrOverdue"
+        return if (isFulfilled) periodAndStatus else "$periodAndStatus $formattedDuration"
+    }
+
+    private fun getDoneOrDueOrOverdue(isFulfilled: Boolean, dueIn: Duration): String {
+        return when {
+            isFulfilled -> doneLabel
+            dueIn.isNegative -> overdueSinceLabel
+            else -> dueInLabel
+        }
     }
 
 }

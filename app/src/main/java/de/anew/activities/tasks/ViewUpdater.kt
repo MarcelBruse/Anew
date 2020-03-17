@@ -29,7 +29,7 @@ class ViewUpdater(
         for (task in taskAdapter.getTasks()) {
             val isFulfilled = task.isFulfilled()
             val dueIn = task.dueIn()
-            val timeToDueDate = taskAdapter.formatDueDate(task.period, dueIn)
+            val timeToDueDate = taskAdapter.formatDueDate(task.period, isFulfilled, dueIn)
             val fontColor = taskAdapter.getTaskFontColor(isFulfilled, dueIn)
             updatedCache[task] = TaskViewProperties(timeToDueDate, fontColor)
         }

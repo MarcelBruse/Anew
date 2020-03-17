@@ -133,14 +133,18 @@ class TaskAdapter(
     private fun createCachedTaskProperties(task: Task): TaskViewProperties {
         val isFulfilled = task.isFulfilled()
         val dueIn = task.dueIn()
-        val timeToDueDate = formatDueDate(task.period, dueIn)
+        val timeToDueDate = formatDueDate(task.period, isFulfilled, dueIn)
         val fontColor = getTaskFontColor(isFulfilled, dueIn)
         return TaskViewProperties(timeToDueDate, fontColor)
     }
 
-    fun formatDueDate(period: TimePeriod, dueIn: Duration) = timeToDueDateFormatter.formatDueDate(period, dueIn)
+    fun formatDueDate(period: TimePeriod, taskIsFulfilled: Boolean, dueIn: Duration): String {
+        return timeToDueDateFormatter.formatDueDate(period, taskIsFulfilled, dueIn)
+    }
 
-    fun getTaskFontColor(taskIsFulfilled: Boolean, dueIn: Duration) = taskColorizer.getFontColor(taskIsFulfilled, dueIn)
+    fun getTaskFontColor(taskIsFulfilled: Boolean, dueIn: Duration): Int {
+        return taskColorizer.getFontColor(taskIsFulfilled, dueIn)
+    }
 
     private fun setTaskName(holder: TaskViewHolder, task: Task) {
         val taskView = holder.taskView
