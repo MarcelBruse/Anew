@@ -76,6 +76,7 @@ class TaskAdapter(
                 dispatchUpdatesToView(diffResult)
                 updateTasks(newTasks)
             }
+            updateView {}
             pendingTaskUpdates.remove()
             if (pendingTaskUpdates.size > 0) {
                 updateViewAndTasks(pendingTaskUpdates.peek())
