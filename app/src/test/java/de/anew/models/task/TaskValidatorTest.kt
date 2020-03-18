@@ -1,8 +1,6 @@
 package de.anew.models.task
 
 import de.anew.models.task.TaskValidator.Error.*
-import de.anew.models.task.Task
-import de.anew.models.task.TaskValidator
 import de.anew.models.time.Daily
 import de.anew.models.time.UndefinedPeriod
 import org.assertj.core.api.Assertions.assertThat

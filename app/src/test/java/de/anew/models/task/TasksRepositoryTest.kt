@@ -1,8 +1,6 @@
 package de.anew.models.task
 
 import androidx.lifecycle.MutableLiveData
-import de.anew.models.task.Task
-import de.anew.models.task.TasksRepository
 import de.anew.persistency.TaskDao
 import io.mockk.every
 import io.mockk.mockk
