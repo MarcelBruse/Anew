@@ -3,4 +3,5 @@
     <color name="overdueYellow">#FFFF84</color>
     <color name="fulfilledGreen">#9CFFA2</color>
     <color name="lightFont">#F9F9F9</color>
+    <color name="ic_launcher_background">#DCD500</color>
 </resources>
