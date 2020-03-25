@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -55,7 +57,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
-
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
     testImplementation 'junit:junit:4.12'
     testImplementation "org.assertj:assertj-core:$assertj_version"
     testImplementation "io.mockk:mockk:$mockk_version"

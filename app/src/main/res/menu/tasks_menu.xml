@@ -10,4 +10,8 @@
         android:id="@+id/refresh_items"
         android:title="@string/refresh"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/third_party_licenses"
+        android:title="@string/third_party_licenses"
+        app:showAsAction="never" />
 </menu>
