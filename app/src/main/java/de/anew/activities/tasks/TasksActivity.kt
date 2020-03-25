@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import de.anew.R
 import de.anew.TasksApplication
 import de.anew.activities.ActivityArgumentKeys.TASK_ID
 import de.anew.activities.editor.EditorActivity
+import de.anew.activities.license.LicenseActivity
 
 class TasksActivity : AppCompatActivity(), TaskItemClickListener, OnRefreshListener {
 
@@ -86,7 +86,7 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener, OnRefreshListe
         when (item?.itemId) {
             R.id.new_menu_item -> startEditorWithNewTask()
             R.id.refresh_items -> taskAdapter.updateView {}
-            R.id.third_party_licenses -> startOssLicensesMenuActivity()
+            R.id.license -> startActivity(Intent(this, LicenseActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
@@ -97,11 +97,6 @@ class TasksActivity : AppCompatActivity(), TaskItemClickListener, OnRefreshListe
         } else {
             Toast.makeText(this, getString(R.string.max_number_of_tasks), Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun startOssLicensesMenuActivity() {
-        OssLicensesMenuActivity.setActivityTitle(getString(R.string.third_party_licenses))
-        startActivity(Intent(this, OssLicensesMenuActivity::class.java))
     }
 
     override fun onResume() {

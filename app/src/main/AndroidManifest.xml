@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.anew">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="de.anew">
 
-    <application
-        android:name="de.anew.TasksApplication"
-        android:allowBackup="true"
+    <application android:name=".TasksApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:fullBackupContent="@xml/backup_descriptor">
-        <activity android:name="de.anew.activities.editor.EditorActivity" />
-        <activity android:name="de.anew.activities.tasks.TasksActivity">
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".activities.editor.EditorActivity" />
+        <activity android:name=".activities.tasks.TasksActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.license.LicenseActivity" />
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
     </application>
 
 </manifest>

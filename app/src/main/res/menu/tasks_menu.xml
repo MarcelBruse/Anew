@@ -11,7 +11,7 @@
         android:title="@string/refresh"
         app:showAsAction="never" />
     <item
-        android:id="@+id/third_party_licenses"
-        android:title="@string/third_party_licenses"
+        android:id="@+id/license"
+        android:title="@string/license"
         app:showAsAction="never" />
 </menu>
