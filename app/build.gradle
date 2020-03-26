@@ -36,9 +36,9 @@ android {
 }
 
 dependencies {
-    def assertj_version = "3.11.1"
+    def assertj_version = '3.15.0'
     def room_version = "2.2.5"
-    def dagger_version = "2.24"
+    def dagger_version = '2.27'
     def lifecycle_version = "2.2.0"
     def mockk_version = "1.9.3"
     def threetenbp_version = "1.4.0"
@@ -51,14 +51,14 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.activity:activity-ktx:1.1.0'
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.2'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation "org.assertj:assertj-core:$assertj_version"
     testImplementation "io.mockk:mockk:$mockk_version"
     testImplementation("org.threeten:threetenbp:$threetenbp_version") {
