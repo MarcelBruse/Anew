@@ -47,5 +47,5 @@
     <string name="done">Erledigt</string>
     <string name="license">Lizenz</string>
     <string name="third_party_licenses">Drittanbieterlizenzen</string>
-    <string name="apache_license">Diese Software wurde unter der\nApache License, Version 2.0 freigegeben</string>
+    <string name="apache_license">Diese Software ist unter der\nApache License, Version 2.0 freigegeben</string>
 </resources>
