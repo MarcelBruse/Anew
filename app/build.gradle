@@ -37,11 +37,11 @@ android {
 
 dependencies {
     def assertj_version = '3.15.0'
-    def room_version = "2.2.5"
+    def room_version = '2.2.5'
     def dagger_version = '2.27'
-    def lifecycle_version = "2.2.0"
-    def mockk_version = "1.9.3"
-    def threetenbp_version = "1.4.0"
+    def lifecycle_version = '2.2.0'
+    def mockk_version = '1.9.3'
+    def threetenbp_version = '1.4.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
